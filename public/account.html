@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OFFICESUPPLY. 🌸 - Customize Account</title>
+    <!-- Google Fonts: Fredoka & Quicksand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              fredoka: ['Fredoka', 'sans-serif'],
+              quicksand: ['Quicksand', 'sans-serif'],
+            },
+            colors: {
+              cute: {
+                pink: '#FFAEC9',
+                lightpink: '#FFF0F5',
+                deeppink: '#FF69B4',
+                hotpink: '#FF1493',
+                green: '#C1E1C1',
+                darkgreen: '#556B2F',
+                border: '#FFD1DC'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        body { font-family: 'Quicksand', sans-serif; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Fredoka', sans-serif; }
+        .floral-bg {
+            background-color: #FFF0F5;
+            background-image: radial-gradient(#FFAEC9 0.75px, transparent 0.75px), radial-gradient(#FFAEC9 0.75px, #FFF0F5 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+    </style>
+</head>
+<body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-cute-pink text-slate-800 sticky top-0 z-40 shadow-md border-b-4 border-cute-deeppink">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
+                🌸 OFFICESUPPLY. ✨
+            </a>
+            <nav class="flex items-center space-x-6 text-base font-bold text-slate-800">
+                <a href="index.html" class="hover:text-white transition">← Main Store 🌷</a>
+                <a href="dashboard.html" class="hover:text-white transition">Dashboard 📊</a>
+                <button onclick="handleLogout()" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-1.5 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition text-xs">
+                    Logout 🚪
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ACCOUNT SETTINGS FORM CONTAINER -->
+    <main class="max-w-3xl mx-auto px-6 py-12 flex-1 w-full">
+        <div class="bg-white p-8 rounded-3xl border-4 border-cute-pink shadow-lg space-y-6">
+            <div>
+                <span class="text-xs font-bold text-cute-deeppink uppercase tracking-wider">Account Settings 🎀</span>
+                <h2 class="text-3xl font-heading font-extrabold text-slate-900 mt-1">Customize Your Profile</h2>
+                <p class="text-xs text-slate-500 font-bold mt-1">Update your display details, GCash number for seller payouts, and contact info.</p>
+            </div>
+
+            <form id="profile-form" onsubmit="handleSaveProfile(event)" class="space-y-4">
+                <!-- Email (Read-only) -->
+                <div>
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Email Address</label>
+                    <input type="email" id="acc-email" disabled class="w-full mt-1 p-3 border-2 border-slate-200 rounded-2xl text-sm bg-slate-100 text-slate-500 font-bold cursor-not-allowed">
+                </div>
+
+                <!-- Display Name -->
+                <div>
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Full Name / Display Name 🌸</label>
+                    <input type="text" id="acc-name" placeholder="e.g. Sakura Haruno" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                </div>
+
+                <!-- GCash Number -->
+                <div>
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">GCash Mobile Number 📱</label>
+                    <input type="tel" id="acc-gcash" placeholder="0917XXXXXXX" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                </div>
+
+                <!-- Delivery Address -->
+                <div>
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Default Shipping Address 🏠</label>
+                    <textarea id="acc-address" rows="3" placeholder="Enter your full street address..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink"></textarea>
+                </div>
+
+                <button type="submit" id="btn-save" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
+                    Save Changes ✨
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- SCRIPT -->
+    <script>
+        const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            
+            if (!session) {
+                alert("Please log in to manage your account settings! 🌸");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            currentUser = session.user;
+            document.getElementById('acc-email').value = currentUser.email;
+
+            // Fetch existing profile data
+            const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', currentUser.id).single();
+            if (profile) {
+                if (profile.full_name) document.getElementById('acc-name').value = profile.full_name;
+                if (profile.gcash_number) document.getElementById('acc-gcash').value = profile.gcash_number;
+                if (profile.address) document.getElementById('acc-address').value = profile.address;
+            }
+        });
+
+        async function handleSaveProfile(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btn-save');
+            btn.disabled = true;
+            btn.textContent = "Saving... 🌸";
+
+            const fullName = document.getElementById('acc-name').value;
+            const gcashNumber = document.getElementById('acc-gcash').value;
+            const address = document.getElementById('acc-address').value;
+
+            const { error } = await supabaseClient
+                .from('profiles')
+                .upsert({
+                    id: currentUser.id,
+                    full_name: fullName,
+                    gcash_number: gcashNumber,
+                    address: address,
+                    updated_at: new Date()
+                });
+
+            if (error) {
+                alert("Error updating profile: " + error.message);
+            } else {
+                alert("Profile saved successfully! 🌸");
+            }
+
+            btn.disabled = false;
+            btn.textContent = "Save Changes ✨";
+        }
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
