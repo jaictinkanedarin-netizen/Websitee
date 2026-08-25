@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OFFICESUPPLY. 🌸 - Floral & Cute Workspace Stationery</title>
+    <title>OFFICESUPPLY. 🌸 - Cute Korean & Japanese Stationery</title>
     <!-- Google Fonts: Fredoka & Quicksand -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,6 @@
                 hotpink: '#FF1493',
                 green: '#C1E1C1',
                 darkgreen: '#556B2F',
-                card: '#FFFFFF',
                 border: '#FFD1DC'
               }
             }
@@ -49,593 +48,381 @@
 </head>
 <body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen">
 
-    <!-- 1. HEADER SECTION -->
+    <!-- HEADER -->
     <header class="bg-cute-pink text-slate-800 sticky top-0 z-40 shadow-md border-b-4 border-cute-deeppink">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="index.html" class="text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
                 🌸 OFFICESUPPLY. ✨
             </a>
-            
-            <nav class="hidden md:flex space-x-8 text-base font-bold text-slate-800">
-                <a href="#hero" class="hover:text-white transition">Home 🌷</a>
-                <a href="#features" class="hover:text-white transition">Catalog 🌼</a>
+            <nav class="flex items-center space-x-6 text-base font-bold text-slate-800">
+                <a href="#store-section" class="hover:text-white transition">Shop 🌷</a>
                 <a href="dashboard.html" class="hover:text-white transition">Dashboard 📊</a>
-                <a href="#sitemap" class="hover:text-white transition">Sitemap 🌿</a>
+                <a href="account.html" class="hover:text-white transition">My Account 👤</a>
+                <button onclick="toggleCartDrawer()" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-1.5 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition text-sm flex items-center gap-1 shadow-sm">
+                    🛒 Cart (<span id="cart-count">0</span>)
+                </button>
             </nav>
-
-            <div class="flex items-center space-x-3">
-                <!-- Cart Button with Counter -->
-                <button onclick="toggleCartDrawer()" class="relative bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-2 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition shadow-sm text-sm flex items-center gap-2">
-                    🛒 Cart <span id="cart-badge" class="bg-cute-hotpink text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
-                </button>
-                <button id="add-item-nav-btn" onclick="toggleModal('add-item-modal')" class="hidden bg-cute-green text-cute-darkgreen border-2 border-cute-darkgreen px-4 py-2 rounded-full font-heading font-bold hover:bg-cute-darkgreen hover:text-white transition shadow-sm text-sm">
-                    + Sell Item 🌸
-                </button>
-                <button id="auth-btn" onclick="toggleModal('auth-modal')" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-5 py-2 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition shadow-sm text-sm">
-                    Account Portal 🎀
-                </button>
-            </div>
         </div>
     </header>
 
-    <!-- 2. HERO SECTION -->
-    <section id="hero" class="bg-gradient-to-b from-cute-pink to-cute-lightpink text-slate-800 border-b-2 border-cute-border">
-        <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
-            <div class="md:col-span-2 space-y-6">
-                <span class="inline-block bg-white text-cute-deeppink text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-widest border-2 border-cute-pink shadow-sm">
-                    🌸 Cute Workspace Stationery
-                </span>
-                <h1 class="text-4xl md:text-6xl font-heading font-extrabold leading-tight text-slate-900">
-                    Equip Your Desk for <span class="text-cute-deeppink">Cute Productivity! 💖</span>
-                </h1>
-                <p class="text-lg text-slate-700 max-w-xl font-medium leading-relaxed">
-                    Equip your favorite pastel desk accessories, floral notebooks, and cute flower stationery straight from verified sellers!
-                </p>
-                <div class="pt-2 flex flex-wrap gap-4">
-                    <a href="#features" class="bg-cute-deeppink text-white font-heading font-bold px-8 py-4 rounded-full shadow-lg hover:bg-cute-hotpink transition transform hover:scale-105 text-base tracking-wide flex items-center gap-2">
-                        Shop Flower Power! 🌺
-                    </a>
-                    <button onclick="toggleModal('add-item-modal')" class="bg-white text-cute-deeppink font-bold px-6 py-4 rounded-full border-2 border-cute-pink hover:bg-cute-pink hover:text-white transition text-sm">
-                        Become a Seller 💖
-                    </button>
-                </div>
-            </div>
-
-            <!-- Spotlight Card -->
-            <div class="col-span-1 bg-white p-6 rounded-3xl border-4 border-cute-pink shadow-xl space-y-4 text-center">
-                <div class="text-4xl">🌷</div>
-                <span class="text-xs font-bold text-cute-deeppink uppercase tracking-widest">Featured Cutie</span>
-                <h2 class="text-2xl font-heading font-bold text-slate-900">Blossom Gel Pen Set</h2>
-                <p class="text-xs text-slate-600">Pastel flower-capped pens with smooth gel ink that blooms on paper!</p>
-                <div class="pt-3 border-t-2 border-dashed border-cute-border flex justify-between items-center px-2">
-                    <span class="text-3xl font-heading font-black text-cute-deeppink">₱150.00</span>
-                    <button onclick="addToCart({id: 'feat-001', title: 'Blossom Gel Pen Set', price: 150, image_url: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=300', selectedVariant: 'Pastel Pink Mix'})" class="bg-cute-deeppink text-white font-bold text-xs px-4 py-2.5 rounded-full hover:bg-cute-hotpink transition shadow">
-                        Add to Cart 🛒
-                    </button>
-                </div>
-            </div>
-        </div>
+    <!-- HERO BANNER -->
+    <section class="max-w-7xl mx-auto px-6 py-12 w-full text-center space-y-4">
+        <span class="bg-white border-2 border-cute-deeppink text-cute-deeppink font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
+            ✨ Premium Korean & Japanese Supplies ✨
+        </span>
+        <h1 class="text-4xl md:text-6xl font-heading font-extrabold text-slate-900 tracking-tight">
+            Make Your Desk <span class="text-cute-deeppink">Adorable</span> & Organized 🌸
+        </h1>
+        <p class="text-slate-600 max-w-xl mx-auto font-medium text-sm md:text-base">
+            Discover charming sticky notes, pastel gel pens, aesthetic journals, and desk organizers for school and office!
+        </p>
     </section>
 
-    <!-- 3. CATALOG & PRODUCT GRID SECTION -->
-    <main id="features" class="max-w-7xl mx-auto px-6 py-16 flex-1 w-full">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
-            <div>
-                <h2 class="text-3xl font-heading font-extrabold text-slate-900 tracking-tight">Features / Catalog 💐</h2>
-                <p class="text-slate-600 text-sm mt-1 font-medium">Browse adorable desk supplies added by our seller community.</p>
-            </div>
-            <div id="role-badge" class="hidden mt-4 md:mt-0 bg-pink-200 text-cute-deeppink text-xs font-bold px-4 py-2 rounded-full border-2 border-cute-deeppink">
-                🌸 Active User Session
-            </div>
+    <!-- MAIN STORE CONTAINER -->
+    <main id="store-section" class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full space-y-10">
+        
+        <!-- SEARCH & ACTION BAR -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-3xl border-4 border-cute-pink shadow-md">
+            <input type="text" id="search-input" onkeyup="filterProducts()" placeholder="Search aesthetic supplies... 🔍" class="w-full sm:w-80 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+            
+            <button onclick="openModal('add-product-modal')" class="w-full sm:w-auto bg-cute-deeppink text-white font-heading font-bold px-6 py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
+                + Post Product for Sale 🎀
+            </button>
         </div>
 
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <p class="text-slate-500 font-bold col-span-full text-center">Loading cute products... 🌸</p>
+        <!-- PRODUCT GRID -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <p class="text-center col-span-full font-bold text-cute-deeppink py-10">Loading cute supplies... 🌸</p>
         </div>
+
+        <!-- REVIEWS SECTION -->
+        <section class="bg-white p-8 rounded-3xl border-4 border-cute-pink shadow-lg space-y-6">
+            <div>
+                <span class="text-xs font-bold text-cute-deeppink uppercase tracking-wider">Community Feedback 💬</span>
+                <h3 class="text-2xl font-heading font-extrabold text-slate-900">Human-Only Reviews 🌸</h3>
+                <p class="text-xs text-slate-500 font-bold">Bot comments are automatically flagged and rejected.</p>
+            </div>
+
+            <!-- REVIEW FORM -->
+            <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-3 bg-cute-lightpink p-4 rounded-2xl border-2 border-cute-border">
+                <input type="text" id="rev-name" placeholder="Your Name or Handle" required class="w-full p-2.5 border-2 border-cute-border rounded-xl text-sm focus:outline-none focus:border-cute-deeppink">
+                <textarea id="rev-content" rows="3" placeholder="Leave a review! (Note: AI generated phrases like 'As an AI language model' will be blocked)" required class="w-full p-2.5 border-2 border-cute-border rounded-xl text-sm focus:outline-none focus:border-cute-deeppink"></textarea>
+                <button type="submit" class="bg-cute-deeppink text-white font-heading font-bold px-5 py-2 rounded-xl text-xs hover:bg-cute-hotpink transition shadow-sm">
+                    Post Review ✨
+                </button>
+            </form>
+
+            <div id="reviews-list" class="space-y-3">
+                <p class="text-xs font-bold text-slate-400">Loading reviews...</p>
+            </div>
+        </section>
+
     </main>
 
-    <!-- 4. CART SIDE DRAWER UI -->
-    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
-        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="toggleCartDrawer()"></div>
-        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
-            <div class="w-screen max-w-md bg-white border-l-4 border-cute-pink shadow-2xl flex flex-col">
-                <!-- Cart Header -->
-                <div class="p-6 bg-cute-lightpink border-b-2 border-cute-border flex items-center justify-between">
-                    <h3 class="text-2xl font-heading font-extrabold text-cute-deeppink flex items-center gap-2">
-                        Your Shopping Basket 🛒
-                    </h3>
-                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-cute-deeppink text-2xl font-bold">&times;</button>
+    <!-- SHOPPING CART DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl border-l-4 border-cute-pink">
+            <div>
+                <div class="flex justify-between items-center border-b-2 border-cute-border pb-4">
+                    <h3 class="text-2xl font-heading font-extrabold text-slate-900">Your Cart 🛒</h3>
+                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 font-extrabold text-xl">✕</button>
                 </div>
-
-                <!-- Cart Items Container -->
-                <div id="cart-items-list" class="flex-1 overflow-y-auto p-6 space-y-4">
-                    <p class="text-center text-slate-400 font-bold py-10">Your cart is empty! 🌸</p>
+                <div id="cart-items" class="py-4 space-y-4 max-h-[60vh] overflow-y-auto">
+                    <!-- Dynamic cart items load here -->
                 </div>
-
-                <!-- Cart Footer / Total Section -->
-                <div class="p-6 bg-slate-50 border-t-2 border-cute-border space-y-4">
-                    <div class="flex justify-between items-center font-heading text-lg">
-                        <span class="font-bold text-slate-700">Total Amount:</span>
-                        <span id="cart-total" class="font-black text-2xl text-cute-deeppink">₱0.00</span>
-                    </div>
-                    <button onclick="checkoutCart()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-4 rounded-2xl shadow-lg hover:bg-cute-hotpink transition text-center text-base">
-                        Checkout via GCash / PayMongo 💖
-                    </button>
+            </div>
+            <div class="border-t-2 border-cute-border pt-4 space-y-3">
+                <div class="flex justify-between font-heading font-bold text-lg text-slate-900">
+                    <span>Total:</span>
+                    <span id="cart-total">₱0.00</span>
                 </div>
+                <button onclick="handleCheckout()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
+                    Checkout with GCash 💳
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- 5. ADD ITEM MODAL FOR SELLERS -->
-    <div id="add-item-modal" class="fixed inset-0 bg-pink-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 space-y-4 border-4 border-cute-pink max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b-2 border-cute-border pb-3">
-                <h3 class="text-xl font-heading font-extrabold text-cute-deeppink">List New Item for Sale 🌸</h3>
-                <button onclick="toggleModal('add-item-modal')" class="text-slate-400 hover:text-cute-deeppink text-2xl font-bold">&times;</button>
+    <!-- VARIANT SELECTION MODAL -->
+    <div id="variant-modal" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl border-4 border-cute-pink p-6 max-w-sm w-full space-y-4 shadow-xl">
+            <h3 id="variant-title" class="text-xl font-heading font-bold text-slate-900">Select Style 🎀</h3>
+            <div id="variant-options" class="space-y-2">
+                <!-- Dynamic variants load here -->
             </div>
-            
-            <form onsubmit="handleAddItem(event)" class="space-y-3">
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Product Title 🌸</label>
-                    <input type="text" id="item-title" required placeholder="e.g. Cherry Blossom Sticky Notes" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Price (PHP) ₱</label>
-                        <input type="number" step="0.01" id="item-price" required placeholder="150.00" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Category 🌼</label>
-                        <select id="item-category" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink font-bold">
-                            <option value="Stationery">Stationery</option>
-                            <option value="Pens & Ink">Pens & Ink</option>
-                            <option value="Notebooks">Notebooks</option>
-                            <option value="Desk Decor">Desk Decor</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Image URL 🖼️</label>
-                    <input type="url" id="item-image" required placeholder="https://images.unsplash.com/..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Variants (comma separated) 🎨</label>
-                    <input type="text" id="item-variants" placeholder="Pink, Soft Lavender, Mint Green" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Description 📝</label>
-                    <textarea id="item-description" rows="2" placeholder="Write a short description..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink"></textarea>
-                </div>
-                <button type="submit" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
-                    Publish Product Listing ✨
+            <button onclick="confirmVariantSelection()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-2.5 rounded-2xl text-sm hover:bg-cute-hotpink transition">
+                Add Selected to Cart ✨
+            </button>
+            <button onclick="closeModal('variant-modal')" class="w-full text-slate-400 font-bold text-xs py-1">Cancel</button>
+        </div>
+    </div>
+
+    <!-- ADD PRODUCT MODAL -->
+    <div id="add-product-modal" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl border-4 border-cute-pink p-6 max-w-md w-full space-y-4 shadow-xl">
+            <div class="flex justify-between items-center border-b-2 border-cute-border pb-2">
+                <h3 class="text-xl font-heading font-extrabold text-cute-deeppink">List New Item 🌸</h3>
+                <button onclick="closeModal('add-product-modal')" class="text-slate-400 font-bold text-lg">✕</button>
+            </div>
+            <form id="modal-product-form" onsubmit="handlePostProduct(event)" class="space-y-3">
+                <input type="text" id="m-title" required placeholder="Title (e.g. Cherry Gel Pen)" class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                <input type="number" step="0.01" id="m-price" required placeholder="Price in PHP (e.g. 120.00)" class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                <input type="url" id="m-image" required placeholder="Image URL" class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                <textarea id="m-desc" rows="2" placeholder="Item description..." class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink"></textarea>
+                <button type="submit" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3 rounded-xl text-xs hover:bg-cute-hotpink transition shadow-sm">
+                    List Product Now ✨
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- 6. VARIANT SELECTION MODAL -->
-    <div id="variant-modal" class="fixed inset-0 bg-pink-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 space-y-4 border-4 border-cute-pink">
-            <div class="flex justify-between items-center border-b-2 border-cute-border pb-2">
-                <h3 id="variant-modal-title" class="text-lg font-heading font-extrabold text-cute-deeppink">Select Variant 🌸</h3>
-                <button onclick="toggleModal('variant-modal')" class="text-slate-400 hover:text-cute-deeppink text-2xl font-bold">&times;</button>
-            </div>
-            <div id="variant-options-container" class="space-y-2">
-                <!-- Dynamic variant radio choices -->
-            </div>
-            <div class="pt-2">
-                <label class="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">Quantity</label>
-                <input type="number" id="variant-quantity" min="1" value="1" class="w-full p-2 border-2 border-cute-border rounded-xl text-center font-bold text-slate-800">
-            </div>
-            <button id="confirm-variant-btn" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
-                Add to Cart 🛒
-            </button>
-        </div>
-    </div>
-
-    <!-- 7. SITEMAP SECTION -->
-    <section id="sitemap" class="bg-cute-green text-cute-darkgreen py-12 border-t-4 border-cute-deeppink mt-auto">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div>
-                <h4 class="font-heading font-black uppercase text-sm tracking-wider mb-4 border-b-2 border-cute-darkgreen pb-1">Stationery 🌸</h4>
-                <ul class="space-y-2 text-sm font-bold">
-                    <li><a href="#features" class="hover:underline">Flower Pens</a></li>
-                    <li><a href="#features" class="hover:underline">Pastel Highlighters</a></li>
-                    <li><a href="#features" class="hover:underline">Floral Notebooks</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-heading font-black uppercase text-sm tracking-wider mb-4 border-b-2 border-cute-darkgreen pb-1">Desk Decor 🌼</h4>
-                <ul class="space-y-2 text-sm font-bold">
-                    <li><a href="#features" class="hover:underline">Pink Desk Pads</a></li>
-                    <li><a href="#features" class="hover:underline">Flower Organizers</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-heading font-black uppercase text-sm tracking-wider mb-4 border-b-2 border-cute-darkgreen pb-1">Portals 🎀</h4>
-                <ul class="space-y-2 text-sm font-bold">
-                    <li><a href="javascript:void(0)" onclick="toggleModal('auth-modal')" class="hover:underline">Account Access</a></li>
-                    <li><a href="dashboard.html" class="hover:underline">Seller & Buyer Dashboard</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-heading font-black uppercase text-sm tracking-wider mb-4 border-b-2 border-cute-darkgreen pb-1">Sitemap Info 🌱</h4>
-                <p class="text-xs font-semibold mb-2">Hosted on Vercel • Powered by Supabase & PayMongo Philippines</p>
-                <div class="flex gap-2 text-xs font-bold text-slate-800">
-                    <span class="bg-white px-2 py-1 rounded-full shadow-sm">GCash 🌸</span>
-                    <span class="bg-white px-2 py-1 rounded-full shadow-sm">Maya 🌺</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 8. FOOTER SECTION -->
-    <footer class="bg-cute-deeppink text-white text-xs py-6 font-bold">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-center">
-            <p>© 2026 OFFICESUPPLY. Bloomed with 💕 in the Philippines</p>
-            <p class="text-pink-100">Cutest Office Supplies Platform • All rights reserved 🌷</p>
-        </div>
-    </footer>
-
-    <!-- AUTHENTICATION MODAL -->
-    <div id="auth-modal" class="fixed inset-0 bg-pink-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 space-y-4 border-4 border-cute-pink">
-            <div class="flex justify-between items-center border-b-2 border-cute-border pb-3">
-                <h3 id="modal-title" class="text-xl font-heading font-extrabold text-cute-deeppink">Cute Account Portal 🎀</h3>
-                <button onclick="toggleModal('auth-modal')" class="text-slate-400 hover:text-cute-deeppink text-2xl font-bold">&times;</button>
-            </div>
-            
-            <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-3">
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Email Address 🌸</label>
-                    <input type="email" id="email" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Password 🔑</label>
-                    <input type="password" id="password" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">GCash Number 📱</label>
-                    <input type="text" id="gcash" placeholder="09XXXXXXXXX" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                </div>
-                <div class="flex gap-2 pt-2">
-                    <button type="submit" id="btn-login-action" onclick="setAuthAction('login')" class="flex-1 bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
-                        Login 💖
-                    </button>
-                    <button type="submit" id="btn-signup-action" onclick="setAuthAction('signup')" class="flex-1 bg-white text-cute-deeppink border-2 border-cute-deeppink font-heading font-bold py-3 rounded-2xl hover:bg-cute-lightpink transition text-sm">
-                        Register ✨
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- CLIENT CONTROLLER SCRIPT -->
+    <!-- SCRIPT ENGINE -->
     <script>
         const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
-        const supabaseClient = (window.supabase && SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL") 
-            ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
-            : null;
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let authAction = 'login';
-        let cart = JSON.parse(localStorage.getItem('office_supply_cart')) || [];
+        let allProducts = [];
+        let cart = [];
+        let selectedProductForVariant = null;
+        let selectedVariantOption = "Standard";
 
-        function setAuthAction(action) { authAction = action; }
-
-        function toggleModal(id) {
-            document.getElementById(id).classList.toggle('hidden');
-        }
-
-        function toggleCartDrawer() {
-            document.getElementById('cart-drawer').classList.toggle('hidden');
-            renderCart();
-        }
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            if (supabaseClient) {
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                if (session) {
-                    document.getElementById('auth-btn').textContent = 'Dashboard 📊';
-                    document.getElementById('auth-btn').onclick = () => window.location.href = 'dashboard.html';
-                    document.getElementById('role-badge').classList.remove('hidden');
-                    document.getElementById('add-item-nav-btn').classList.remove('hidden');
-                }
-            }
-            updateCartBadge();
-            loadProducts();
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchProducts();
+            fetchReviews();
         });
 
-        /* --- CART SYSTEM LOGIC --- */
-        function addToCart(item) {
-            const existingIndex = cart.findIndex(c => c.id === item.id && c.selectedVariant === item.selectedVariant);
-            if (existingIndex > -1) {
-                cart[existingIndex].quantity += (item.quantity || 1);
-            } else {
-                cart.push({ ...item, quantity: item.quantity || 1 });
+        // 1. FETCH & RENDER PRODUCTS
+        async function fetchProducts() {
+            const { data, error } = await supabaseClient.from('products').select('*');
+            if (error) {
+                console.error("Error fetching products:", error);
+                return;
             }
-            saveCart();
-            alert(`${item.title} added to your cart! 🌸`);
+            allProducts = data || [];
+            renderProducts(allProducts);
         }
 
-        function updateCartQuantity(index, delta) {
-            cart[index].quantity += delta;
-            if (cart[index].quantity <= 0) {
-                cart.splice(index, 1);
-            }
-            saveCart();
-            renderCart();
-        }
+        function renderProducts(products) {
+            const container = document.getElementById('product-grid');
+            container.innerHTML = '';
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            saveCart();
-            renderCart();
-        }
-
-        function saveCart() {
-            localStorage.setItem('office_supply_cart', JSON.stringify(cart));
-            updateCartBadge();
-        }
-
-        function updateCartBadge() {
-            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cart-badge').textContent = count;
-        }
-
-        function renderCart() {
-            const list = document.getElementById('cart-items-list');
-            const totalElement = document.getElementById('cart-total');
-            
-            if (cart.length === 0) {
-                list.innerHTML = `<p class="text-center text-slate-400 font-bold py-10">Your cart is empty! 🌸</p>`;
-                totalElement.textContent = '₱0.00';
+            if (products.length === 0) {
+                container.innerHTML = `<p class="col-span-full text-center font-bold text-slate-400">No cute items found! 🌸</p>`;
                 return;
             }
 
-            let total = 0;
-            list.innerHTML = '';
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl border-4 border-cute-pink p-4 flex flex-col justify-between shadow-md hover:shadow-xl transition";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <img src="${p.image_url}" alt="${p.title}" class="w-full h-48 object-cover rounded-2xl border-2 border-cute-border">
+                        <h4 class="font-heading font-extrabold text-slate-900 text-lg leading-tight">${p.title}</h4>
+                        <p class="text-slate-500 text-xs font-medium line-clamp-2">${p.description || 'Aesthetic stationery item.'}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t-2 border-cute-border flex items-center justify-between">
+                        <span class="text-lg font-black text-slate-900">₱${parseFloat(p.price).toFixed(2)}</span>
+                        <button onclick="openVariantModal('${p.id}')" class="bg-cute-lightpink text-cute-deeppink border-2 border-cute-deeppink px-3 py-1.5 rounded-xl font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition">
+                            Add to Cart 🛒
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterProducts() {
+            const q = document.getElementById('search-input').value.toLowerCase();
+            const filtered = allProducts.filter(p => p.title.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
+            renderProducts(filtered);
+        }
+
+        // 2. VARIANT SELECTION
+        function openVariantModal(productId) {
+            selectedProductForVariant = allProducts.find(p => p.id === productId);
+            if (!selectedProductForVariant) return;
+
+            document.getElementById('variant-title').textContent = `Select Style for ${selectedProductForVariant.title}`;
+            const container = document.getElementById('variant-options');
             
-            cart.forEach((item, index) => {
+            const variants = ["Pink Sakura 🌸", "Pastel Mint 🍃", "Sky Blue ☁️", "Standard ✨"];
+            selectedVariantOption = variants[0];
+
+            container.innerHTML = variants.map((v, idx) => `
+                <label class="flex items-center gap-3 p-3 border-2 border-cute-border rounded-xl cursor-pointer hover:bg-cute-lightpink transition">
+                    <input type="radio" name="variant" value="${v}" ${idx === 0 ? 'checked' : ''} onchange="selectedVariantOption='${v}'" class="accent-cute-deeppink">
+                    <span class="text-xs font-bold text-slate-700">${v}</span>
+                </label>
+            `).join('');
+
+            openModal('variant-modal');
+        }
+
+        function confirmVariantSelection() {
+            if (!selectedProductForVariant) return;
+            
+            const cartItem = {
+                ...selectedProductForVariant,
+                selectedVariant: selectedVariantOption,
+                cartId: `${selectedProductForVariant.id}-${selectedVariantOption}`,
+                quantity: 1
+            };
+
+            const existingIndex = cart.findIndex(item => item.cartId === cartItem.cartId);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push(cartItem);
+            }
+
+            updateCartUI();
+            closeModal('variant-modal');
+            toggleCartDrawer();
+        }
+
+        // 3. CART DRAWER CONTROLLER
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+            const container = document.getElementById('cart-items');
+            container.innerHTML = '';
+
+            let total = 0;
+            cart.forEach(item => {
                 const itemTotal = item.price * item.quantity;
                 total += itemTotal;
 
-                const itemCard = document.createElement('div');
-                itemCard.className = "p-3 bg-cute-lightpink border-2 border-cute-border rounded-2xl flex items-center justify-between gap-3";
-                itemCard.innerHTML = `
-                    <img src="${item.image_url || 'https://via.placeholder.com/60'}" class="w-14 h-14 object-cover rounded-xl border border-cute-pink" />
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-heading font-bold text-sm text-slate-900 truncate">${item.title}</h4>
-                        <p class="text-xs text-cute-deeppink font-semibold">${item.selectedVariant || 'Standard Variant'}</p>
-                        <p class="text-xs font-extrabold text-slate-700">₱${parseFloat(item.price).toFixed(2)}</p>
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between bg-cute-lightpink p-3 rounded-2xl border-2 border-cute-border";
+                row.innerHTML = `
+                    <div>
+                        <p class="font-heading font-bold text-xs text-slate-900">${item.title}</p>
+                        <p class="text-[10px] font-bold text-cute-deeppink">${item.selectedVariant}</p>
+                        <p class="text-xs font-black text-slate-700">₱${item.price} x ${item.quantity}</p>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <div class="flex items-center border border-cute-pink bg-white rounded-lg">
-                            <button onclick="updateCartQuantity(${index}, -1)" class="px-2 py-0.5 text-xs font-bold text-slate-600 hover:text-cute-deeppink">-</button>
-                            <span class="px-2 text-xs font-bold">${item.quantity}</span>
-                            <button onclick="updateCartQuantity(${index}, 1)" class="px-2 py-0.5 text-xs font-bold text-slate-600 hover:text-cute-deeppink">+</button>
-                        </div>
-                        <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-600 font-bold text-sm">✕</button>
-                    </div>
+                    <button onclick="removeFromCart('${item.cartId}')" class="text-xs font-bold text-red-500 hover:text-red-700">Remove</button>
                 `;
-                list.appendChild(itemCard);
+                container.appendChild(row);
             });
 
-            totalElement.textContent = `₱${total.toFixed(2)}`;
+            document.getElementById('cart-total').textContent = `₱${total.toFixed(2)}`;
         }
 
-        /* --- PRODUCT LOADING & REVIEWS LOGIC --- */
-        async function loadProducts() {
-            const grid = document.getElementById('product-grid');
-            if (!supabaseClient) {
-                grid.innerHTML = `<p class="text-slate-500 font-bold col-span-full text-center">Set your Supabase credentials to fetch products dynamically.</p>`;
+        function removeFromCart(cartId) {
+            cart = cart.filter(item => item.cartId !== cartId);
+            updateCartUI();
+        }
+
+        // 4. CHECKOUT VIA PAYMONGO
+        async function handleCheckout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty! 🌸");
                 return;
             }
 
-            // Fetch products and human reviews
-            const { data: products, error } = await supabaseClient.from('products').select('*');
-            const { data: reviews } = await supabaseClient.from('reviews').select('*');
-
-            if (error || !products || !products.length) {
-                grid.innerHTML = `<p class="text-slate-500 font-bold col-span-full text-center">No products listed yet. Be the first to add one! 🌸</p>`;
-                return;
-            }
-
-            grid.innerHTML = '';
-            products.forEach(prod => {
-                const prodReviews = reviews ? reviews.filter(r => r.product_id === prod.id) : [];
-                const variants = prod.category ? ['Standard Pink', 'Soft Lavender', 'Mint Floral'] : ['Default'];
-
-                const card = document.createElement('div');
-                card.className = "bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group";
-                
-                let reviewsHtml = '';
-                if (prodReviews.length > 0) {
-                    reviewsHtml = prodReviews.map(r => `
-                        <div class="p-1.5 bg-white rounded-lg border border-cute-border text-[11px]">
-                            <span class="text-amber-500 font-bold">${'★'.repeat(r.rating)}</span>
-                            <span class="text-slate-700 italic">"${r.comment || 'No comment'}"</span>
-                        </div>
-                    `).join('');
-                } else {
-                    reviewsHtml = `<p class="text-[10px] text-slate-400 italic">No human reviews yet. Be the first!</p>`;
-                }
-
-                card.innerHTML = `
-                    <div class="p-5 text-center">
-                        <img src="${prod.image_url || 'https://via.placeholder.com/150'}" alt="${prod.title}" class="h-32 w-32 object-cover mx-auto rounded-2xl mb-3 group-hover:scale-105 transition transform">
-                        <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">${prod.category || 'Stationery'}</span>
-                        <h3 class="text-lg font-heading font-bold text-slate-900 mt-1 mb-1">${prod.title}</h3>
-                        <p class="text-slate-600 text-xs">${prod.description || ''}</p>
-                    </div>
-
-                    <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border space-y-3">
-                        <div class="flex justify-between items-center px-1">
-                            <span class="text-xl font-heading font-bold text-slate-900">₱${parseFloat(prod.price).toFixed(2)}</span>
-                            <button onclick='openVariantModal(${JSON.stringify(prod)}, ${JSON.stringify(variants)})' class="bg-cute-deeppink text-white text-xs font-bold px-3 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
-                                Add to Cart 🛒
-                            </button>
-                        </div>
-
-                        <!-- Human Reviews Feed -->
-                        <div class="pt-2 border-t border-cute-border">
-                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Human Reviews 💬</p>
-                            <div class="space-y-1 max-h-20 overflow-y-auto mb-2">
-                                ${reviewsHtml}
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <select id="star-${prod.id}" class="bg-white border border-cute-border rounded-lg px-1 py-1 text-xs">
-                                    <option value="5">5 ★</option>
-                                    <option value="4">4 ★</option>
-                                    <option value="3">3 ★</option>
-                                    <option value="2">2 ★</option>
-                                    <option value="1">1 ★</option>
-                                </select>
-                                <input type="text" id="review-${prod.id}" placeholder="Write review..." class="flex-1 p-1 border border-cute-border rounded-lg text-xs">
-                                <button onclick="submitReview('${prod.id}')" class="bg-cute-pink text-slate-800 font-bold px-2 py-1 rounded-lg text-xs hover:bg-cute-deeppink hover:text-white transition">Post</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        /* --- VARIANT SELECTION & ADD ITEM SELLER LOGIC --- */
-        let currentVariantProduct = null;
-
-        function openVariantModal(product, variants) {
-            currentVariantProduct = product;
-            document.getElementById('variant-modal-title').textContent = `Select Option for ${product.title}`;
-            const container = document.getElementById('variant-options-container');
-            container.innerHTML = '';
-
-            variants.forEach((v, i) => {
-                const choice = document.createElement('label');
-                choice.className = "flex items-center gap-2 p-2 border-2 border-cute-border rounded-xl cursor-pointer hover:bg-cute-lightpink";
-                choice.innerHTML = `
-                    <input type="radio" name="variant-choice" value="${v}" ${i === 0 ? 'checked' : ''} class="accent-pink-500">
-                    <span class="text-xs font-bold text-slate-700">${v}</span>
-                `;
-                container.appendChild(choice);
-            });
-
-            document.getElementById('confirm-variant-btn').onclick = () => {
-                const selected = document.querySelector('input[name="variant-choice"]:checked').value;
-                const qty = parseInt(document.getElementById('variant-quantity').value) || 1;
-                addToCart({
-                    id: product.id,
-                    title: product.title,
-                    price: product.price,
-                    image_url: product.image_url,
-                    selectedVariant: selected,
-                    quantity: qty
-                });
-                toggleModal('variant-modal');
-            };
-
-            toggleModal('variant-modal');
-        }
-
-        async function handleAddItem(event) {
-            event.preventDefault();
-            if (!supabaseClient) return alert("Please configure Supabase.");
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) return alert("Please log in as a seller first! 🌸");
-
-            const title = document.getElementById('item-title').value;
-            const price = parseFloat(document.getElementById('item-price').value);
-            const category = document.getElementById('item-category').value;
-            const image_url = document.getElementById('item-image').value;
-            const description = document.getElementById('item-description').value;
-
-            const { error } = await supabaseClient.from('products').insert([
-                { seller_id: session.user.id, title, price, category, image_url, description }
-            ]);
-
-            if (error) {
-                alert(error.message);
-            } else {
-                alert("New item added to catalog! 🌸");
-                toggleModal('add-item-modal');
-                loadProducts();
-            }
-        }
-
-        /* --- AUTHENTICATION & CHECKOUT LOGIC --- */
-        async function handleAuth(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const gcash = document.getElementById('gcash').value;
-
-            if (!supabaseClient) {
-                alert("Please add your Supabase credentials!");
-                toggleModal('auth-modal');
-                return;
-            }
-
-            if (authAction === 'signup') {
-                const { data, error } = await supabaseClient.auth.signUp({ email, password });
-                if (error) return alert(error.message);
-                if (data.user) {
-                    await supabaseClient.from('profiles').insert([{ id: data.user.id, email, gcash_number: gcash }]);
-                    alert("Account registered successfully! 🌸");
-                    window.location.reload();
-                }
-            } else {
-                const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) return alert(error.message);
-                window.location.reload();
-            }
-        }
-
-        async function checkoutCart() {
-            if (cart.length === 0) return alert("Your cart is empty!");
-            if (!supabaseClient) return alert("Please configure Supabase.");
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) return alert("Please log in to complete your checkout! 🌸");
-
-            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const buyerId = session ? session.user.id : null;
+            const totalAmount = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
             try {
                 const res = await fetch('/api/checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ items: cart, amount: totalAmount, buyerId: session.user.id })
+                    body: JSON.stringify({ items: cart, amount: totalAmount, buyerId })
                 });
+
                 const data = await res.json();
                 if (data.checkoutUrl) {
                     window.location.href = data.checkoutUrl;
                 } else {
-                    alert("PayMongo Checkout Session Created! (Connecting to Gateway...)");
+                    alert("Checkout failed. Please check backend integration.");
                 }
             } catch (err) {
-                alert("Order recorded! Checkout service redirecting...");
+                alert("Error connecting to checkout service.");
             }
         }
 
-        async function submitReview(productId) {
-            if (!supabaseClient) return alert("Please configure Supabase.");
+        // 5. REVIEWS & AI BOT DETECTION
+        async function fetchReviews() {
+            const { data } = await supabaseClient.from('reviews').select('*').order('created_at', { ascending: false });
+            const container = document.getElementById('reviews-list');
+            container.innerHTML = '';
+
+            if (!data || data.length === 0) {
+                container.innerHTML = `<p class="text-xs font-bold text-slate-400">No reviews yet. Be the first! 🌸</p>`;
+                return;
+            }
+
+            data.forEach(r => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-3 rounded-xl border border-cute-border shadow-sm";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-xs font-bold text-cute-deeppink">
+                        <span>${r.author_name}</span>
+                        <span class="text-[10px] text-slate-400">Verified Human 🌸</span>
+                    </div>
+                    <p class="text-xs text-slate-700 mt-1">${r.content}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        async function handleReviewSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('rev-name').value;
+            const content = document.getElementById('rev-content').value;
+
+            // AI/Bot pattern checking
+            const botPatterns = [/as an ai/i, /language model/i, /i cannot feel/i, /openai/i, /http:/i, /https:/i];
+            const isBot = botPatterns.some(pattern => pattern.test(content));
+
+            if (isBot) {
+                alert("Automated or AI-generated reviews are not allowed! 🌸");
+                return;
+            }
+
+            const { error } = await supabaseClient.from('reviews').insert([{ author_name: name, content }]);
+            if (!error) {
+                document.getElementById('review-form').reset();
+                fetchReviews();
+            }
+        }
+
+        // 6. ADD PRODUCT FORM
+        async function handlePostProduct(e) {
+            e.preventDefault();
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) return alert("Please log in to leave a review! 🌸");
+            if (!session) {
+                alert("Please log in to sell items! 🌸");
+                return;
+            }
 
-            const rating = document.getElementById(`star-${productId}`).value;
-            const comment = document.getElementById(`review-${productId}`).value;
+            const title = document.getElementById('m-title').value;
+            const price = parseFloat(document.getElementById('m-price').value);
+            const image_url = document.getElementById('m-image').value;
+            const description = document.getElementById('m-desc').value;
 
-            if (!comment.trim()) return alert("Please write a short comment for your review!");
-
-            const { error } = await supabaseClient.from('reviews').insert([
-                { product_id: productId, buyer_id: session.user.id, rating: parseInt(rating), comment }
+            const { error } = await supabaseClient.from('products').insert([
+                { seller_id: session.user.id, title, price, image_url, description }
             ]);
 
-            if (error) alert(error.message);
-            else {
-                alert("Human review submitted! 🌸");
-                document.getElementById(`review-${productId}`).value = '';
-                loadProducts();
+            if (!error) {
+                alert("Product listed! 🌸");
+                closeModal('add-product-modal');
+                fetchProducts();
+            } else {
+                alert(error.message);
             }
         }
+
+        // MODAL HELPERS
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
     </script>
 </body>
 </html>
