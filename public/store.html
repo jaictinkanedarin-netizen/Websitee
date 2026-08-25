@@ -1,28 +1,248 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Store | DeskPro</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OFFICESUPPLY. 🌸 - All Products Store</title>
+    <!-- Google Fonts: Fredoka & Quicksand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              fredoka: ['Fredoka', 'sans-serif'],
+              quicksand: ['Quicksand', 'sans-serif'],
+            },
+            colors: {
+              cute: {
+                pink: '#FFAEC9',
+                lightpink: '#FFF0F5',
+                deeppink: '#FF69B4',
+                hotpink: '#FF1493',
+                border: '#FFD1DC'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        body { font-family: 'Quicksand', sans-serif; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Fredoka', sans-serif; }
+        .floral-bg {
+            background-color: #FFF0F5;
+            background-image: radial-gradient(#FFAEC9 0.75px, transparent 0.75px), radial-gradient(#FFAEC9 0.75px, #FFF0F5 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+    </style>
 </head>
-<body>
-  <header>
-    <h1>DeskPro</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="store.html">Store Page</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="auth.html" id="auth-link">Login/Register</a>
-    </nav>
-  </header>
+<body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen">
 
-  <main class="container">
-    <h2>Catalog</h2>
-    <div class="grid" id="store-products"></div>
-  </main>
+    <!-- HEADER -->
+    <header class="bg-cute-pink text-slate-800 sticky top-0 z-40 shadow-md border-b-4 border-cute-deeppink">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
+                🌸 OFFICESUPPLY. ✨
+            </a>
+            <nav class="flex items-center space-x-6 text-base font-bold text-slate-800">
+                <a href="index.html" class="hover:text-white transition">Home 🌷</a>
+                <a href="dashboard.html" class="hover:text-white transition">Dashboard 📊</a>
+                <a href="account.html" class="hover:text-white transition">My Account 👤</a>
+                <button onclick="toggleCartDrawer()" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-1.5 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition text-sm flex items-center gap-1 shadow-sm">
+                    🛒 Cart (<span id="cart-count">0</span>)
+                </button>
+            </nav>
+        </div>
+    </header>
 
-  <script src="app.js"></script>
+    <!-- STORE HEADER -->
+    <section class="max-w-7xl mx-auto px-6 py-10 w-full text-center space-y-3">
+        <span class="bg-white border-2 border-cute-deeppink text-cute-deeppink font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
+            ✨ Full Catalog ✨
+        </span>
+        <h1 class="text-4xl md:text-5xl font-heading font-extrabold text-slate-900 tracking-tight">
+            Explore All Cute Supplies 🛍️
+        </h1>
+        <p class="text-slate-600 max-w-lg mx-auto font-medium text-sm">
+            Handpicked aesthetic stationery for student desks and kawaii home offices.
+        </p>
+    </section>
+
+    <!-- MAIN STORE SECTION -->
+    <main class="max-w-7xl mx-auto px-6 py-4 flex-1 w-full space-y-8">
+        
+        <!-- SEARCH BAR -->
+        <div class="flex justify-center bg-white p-4 rounded-3xl border-4 border-cute-pink shadow-md max-w-lg mx-auto">
+            <input type="text" id="store-search" onkeyup="filterStoreProducts()" placeholder="Search store items... 🔍" class="w-full p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div id="store-product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Dynamic products load here -->
+        </div>
+
+    </main>
+
+    <!-- SHOPPING CART DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl border-l-4 border-cute-pink">
+            <div>
+                <div class="flex justify-between items-center border-b-2 border-cute-border pb-4">
+                    <h3 class="text-2xl font-heading font-extrabold text-slate-900">Your Cart 🛒</h3>
+                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 font-extrabold text-xl">✕</button>
+                </div>
+                <div id="cart-items" class="py-4 space-y-4 max-h-[60vh] overflow-y-auto"></div>
+            </div>
+            <div class="border-t-2 border-cute-border pt-4 space-y-3">
+                <div class="flex justify-between font-heading font-bold text-lg text-slate-900">
+                    <span>Total:</span>
+                    <span id="cart-total">₱0.00</span>
+                </div>
+                <button onclick="handleCheckout()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
+                    Checkout with GCash 💳
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT ENGINE -->
+    <script>
+        const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Pre-loaded stationery catalogue fallback
+        const defaultProducts = [
+            { id: "p1", title: "Sakura Blossom Pastel Gel Pens (Set of 6)", price: 180.00, image_url: "https://images.unsplash.com/photo-1585336261026-67576887146d?w=500&auto=format&fit=crop&q=60", description: "Smooth 0.5mm quick-dry black ink gel pens with comfortable aesthetic pastel barrels." },
+            { id: "p2", title: "Aesthetic Grid Spiral Journal Notebook", price: 240.00, image_url: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=60", description: "100gsm bleed-proof paper with cute cover design, perfect for bullet journaling and study notes." },
+            { id: "p3", title: "Kawaii Strawberry Sticky Note Pads", price: 85.00, image_url: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=500&auto=format&fit=crop&q=60", description: "Adorable adhesive sticky notes for reminders, page flags, and planner annotations." },
+            { id: "p4", title: "Pastel Desk Mat & Mouse Pad", price: 350.00, image_url: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?w=500&auto=format&fit=crop&q=60", description: "Non-slip water-resistant large desk mat to protect your workspace in style." },
+            { id: "p5", title: "Milk Box Pencil Case Pouch", price: 150.00, image_url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=500&auto=format&fit=crop&q=60", description: "High-capacity leatherette pencil case shaped like a sweet Japanese milk carton." },
+            { id: "p6", title: "Macaron Washi Tape Bundle (10 Rolls)", price: 195.00, image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60", description: "Decorative masking tape with floral and geometric patterns for crafts & journals." }
+        ];
+
+        let allProducts = [];
+        let cart = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadProducts();
+        });
+
+        async function loadProducts() {
+            const { data, error } = await supabaseClient.from('products').select('*');
+            if (!error && data && data.length > 0) {
+                allProducts = [...data, ...defaultProducts];
+            } else {
+                allProducts = defaultProducts;
+            }
+            renderProducts(allProducts);
+        }
+
+        function renderProducts(products) {
+            const container = document.getElementById('store-product-grid');
+            container.innerHTML = '';
+
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl border-4 border-cute-pink p-4 flex flex-col justify-between shadow-md hover:shadow-xl transition";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <img src="${p.image_url}" alt="${p.title}" class="w-full h-48 object-cover rounded-2xl border-2 border-cute-border">
+                        <h4 class="font-heading font-extrabold text-slate-900 text-lg leading-tight">${p.title}</h4>
+                        <p class="text-slate-500 text-xs font-medium line-clamp-2">${p.description}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t-2 border-cute-border flex items-center justify-between">
+                        <span class="text-lg font-black text-slate-900">₱${parseFloat(p.price).toFixed(2)}</span>
+                        <button onclick="addToCart('${p.id}')" class="bg-cute-lightpink text-cute-deeppink border-2 border-cute-deeppink px-3 py-1.5 rounded-xl font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition">
+                            Add to Cart 🛒
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterStoreProducts() {
+            const query = document.getElementById('store-search').value.toLowerCase();
+            const filtered = allProducts.filter(p => p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        function addToCart(productId) {
+            const item = allProducts.find(p => p.id === productId);
+            if (!item) return;
+
+            const existingIndex = cart.findIndex(c => c.id === item.id);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+
+            updateCartUI();
+            toggleCartDrawer();
+        }
+
+        function toggleCartDrawer() {
+            document.getElementById('cart-drawer').classList.toggle('hidden');
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+            const container = document.getElementById('cart-items');
+            container.innerHTML = '';
+
+            let total = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between bg-cute-lightpink p-3 rounded-2xl border-2 border-cute-border";
+                row.innerHTML = `
+                    <div>
+                        <p class="font-heading font-bold text-xs text-slate-900">${item.title}</p>
+                        <p class="text-xs font-black text-slate-700">₱${item.price} x ${item.quantity}</p>
+                    </div>
+                    <button onclick="removeFromCart('${item.id}')" class="text-xs font-bold text-red-500 hover:text-red-700">Remove</button>
+                `;
+                container.appendChild(row);
+            });
+
+            document.getElementById('cart-total').textContent = `₱${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        async function handleCheckout() {
+            if (cart.length === 0) return alert("Your cart is empty! 🌸");
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            const buyerId = session ? session.user.id : null;
+            const totalAmount = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+            try {
+                const res = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: cart, amount: totalAmount, buyerId })
+                });
+                const data = await res.json();
+                if (data.checkoutUrl) window.location.href = data.checkoutUrl;
+            } catch (err) {
+                alert("Error launching PayMongo checkout.");
+            }
+        }
+    </script>
 </body>
 </html>
