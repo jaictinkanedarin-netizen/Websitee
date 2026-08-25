@@ -178,6 +178,7 @@
                 const starsDisplay = '★'.repeat(r.rating || 5) + '☆'.repeat(5 - (r.rating || 5));
                 const dateFormatted = r.created_at ? new Date(r.created_at).toLocaleDateString() : 'Recently';
                 const authorName = r.name || r.author_name || 'Anonymous';
+                const reviewText = r.content || r.message || r.review || r.review_message || '';
 
                 const card = document.createElement('div');
                 card.className = "bg-white p-5 rounded-3xl border-4 border-cute-pink shadow-sm space-y-2";
@@ -189,7 +190,7 @@
                         </div>
                         <span class="text-[10px] text-slate-400 font-bold">${dateFormatted}</span>
                     </div>
-                    <p class="text-xs text-slate-600 font-medium leading-relaxed">${escapeHTML(r.content || '')}</p>
+                    <p class="text-xs text-slate-600 font-medium leading-relaxed">${escapeHTML(reviewText)}</p>
                 `;
                 container.appendChild(card);
             });
@@ -207,12 +208,36 @@
                 return;
             }
 
-            const { error } = await supabaseClient.from('reviews').insert([
-                { name: author, rating: selectedRating, content: content }
-            ]);
+            // Fallback list of message column names in case your Supabase uses a different header
+            const possibleColumns = ['content', 'message', 'review', 'review_message'];
+            let lastError = null;
+            let success = false;
 
-            if (error) {
-                alert("Error saving review: " + error.message);
+            for (const col of possibleColumns) {
+                const payload = { rating: selectedRating };
+                payload[col] = content;
+
+                // Try with 'name' first
+                payload.name = author;
+                let res = await supabaseClient.from('reviews').insert([payload]);
+
+                // Fallback to 'author_name' if 'name' column fails
+                if (res.error && res.error.message.includes('name')) {
+                    delete payload.name;
+                    payload.author_name = author;
+                    res = await supabaseClient.from('reviews').insert([payload]);
+                }
+
+                if (!res.error) {
+                    success = true;
+                    break;
+                } else {
+                    lastError = res.error;
+                }
+            }
+
+            if (!success) {
+                alert("Error saving review: " + (lastError ? lastError.message : "Unknown error"));
             } else {
                 document.getElementById('standalone-review-form').reset();
                 setRating(5);
