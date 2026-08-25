@@ -177,7 +177,9 @@
             data.forEach(r => {
                 const starsDisplay = '★'.repeat(r.rating || 5) + '☆'.repeat(5 - (r.rating || 5));
                 const dateFormatted = r.created_at ? new Date(r.created_at).toLocaleDateString() : 'Recently';
-                const authorName = r.name || r.author_name || 'Anonymous';
+                
+                // Get name and message dynamically regardless of column name
+                const authorName = r.name || r.author_name || r.author || 'Anonymous';
                 const reviewText = r.content || r.message || r.review || r.review_message || '';
 
                 const card = document.createElement('div');
@@ -208,36 +210,35 @@
                 return;
             }
 
-            // Fallback list of message column names in case your Supabase uses a different header
-            const possibleColumns = ['content', 'message', 'review', 'review_message'];
-            let lastError = null;
-            let success = false;
+            // Build dynamic insertion object by testing available table fields
+            const rowToInsert = { rating: selectedRating };
 
-            for (const col of possibleColumns) {
-                const payload = { rating: selectedRating };
-                payload[col] = content;
+            // Fetch table structure once to determine exact existing columns
+            const { data: existingRows } = await supabaseClient.from('reviews').select('*').limit(1);
+            
+            if (existingRows && existingRows.length > 0) {
+                const sampleRow = existingRows[0];
+                
+                // Set name field
+                if ('name' in sampleRow) rowToInsert.name = author;
+                else if ('author_name' in sampleRow) rowToInsert.author_name = author;
+                else if ('author' in sampleRow) rowToInsert.author = author;
 
-                // Try with 'name' first
-                payload.name = author;
-                let res = await supabaseClient.from('reviews').insert([payload]);
-
-                // Fallback to 'author_name' if 'name' column fails
-                if (res.error && res.error.message.includes('name')) {
-                    delete payload.name;
-                    payload.author_name = author;
-                    res = await supabaseClient.from('reviews').insert([payload]);
-                }
-
-                if (!res.error) {
-                    success = true;
-                    break;
-                } else {
-                    lastError = res.error;
-                }
+                // Set message field
+                if ('content' in sampleRow) rowToInsert.content = content;
+                else if ('message' in sampleRow) rowToInsert.message = content;
+                else if ('review' in sampleRow) rowToInsert.review = content;
+                else if ('review_message' in sampleRow) rowToInsert.review_message = content;
+            } else {
+                // Default fallback if table is completely empty
+                rowToInsert.name = author;
+                rowToInsert.content = content;
             }
 
-            if (!success) {
-                alert("Error saving review: " + (lastError ? lastError.message : "Unknown error"));
+            const { error } = await supabaseClient.from('reviews').insert([rowToInsert]);
+
+            if (error) {
+                alert("Error saving review: " + error.message);
             } else {
                 document.getElementById('standalone-review-form').reset();
                 setRating(5);
