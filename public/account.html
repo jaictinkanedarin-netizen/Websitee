@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OFFICESUPPLY. 🌸 - Customize Account</title>
+    <title>OFFICESUPPLY. 🌸 - My Account</title>
     <!-- Google Fonts: Fredoka & Quicksand -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,8 +26,6 @@
                 lightpink: '#FFF0F5',
                 deeppink: '#FF69B4',
                 hotpink: '#FF1493',
-                green: '#C1E1C1',
-                darkgreen: '#556B2F',
                 border: '#FFD1DC'
               }
             }
@@ -55,57 +53,52 @@
                 🌸 OFFICESUPPLY. ✨
             </a>
             <nav class="flex items-center space-x-6 text-base font-bold text-slate-800">
-                <a href="index.html" class="hover:text-white transition">← Main Store 🌷</a>
+                <a href="index.html" class="hover:text-white transition">Home 🌷</a>
+                <a href="store.html" class="hover:text-white transition">Shop 🛍️</a>
                 <a href="dashboard.html" class="hover:text-white transition">Dashboard 📊</a>
-                <button onclick="handleLogout()" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-1.5 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition text-xs">
-                    Logout 🚪
-                </button>
             </nav>
         </div>
     </header>
 
-    <!-- ACCOUNT SETTINGS FORM CONTAINER -->
-    <main class="max-w-3xl mx-auto px-6 py-12 flex-1 w-full">
-        <div class="bg-white p-8 rounded-3xl border-4 border-cute-pink shadow-lg space-y-6">
-            <div>
-                <span class="text-xs font-bold text-cute-deeppink uppercase tracking-wider">Account Settings 🎀</span>
-                <h2 class="text-3xl font-heading font-extrabold text-slate-900 mt-1">Customize Your Profile</h2>
-                <p class="text-xs text-slate-500 font-bold mt-1">Update your display details, GCash number for seller payouts, and contact info.</p>
+    <!-- ACCOUNT CONTENT -->
+    <main class="max-w-4xl mx-auto px-6 py-12 flex-1 w-full space-y-8">
+        
+        <!-- PROFILE CARD -->
+        <div class="bg-white p-8 rounded-3xl border-4 border-cute-pink shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+            <div class="space-y-2">
+                <span class="bg-cute-lightpink text-cute-deeppink border border-cute-border text-xs font-bold px-3 py-1 rounded-full inline-block">
+                    Active Account Profile 🌸
+                </span>
+                <h1 class="text-3xl font-heading font-extrabold text-slate-900">My Account</h1>
+                <p class="text-sm font-bold text-slate-600">Logged in as: <span id="user-email" class="text-cute-deeppink">Loading...</span></p>
+                <p class="text-xs text-slate-400 font-medium">User ID: <span id="user-id">...</span></p>
             </div>
 
-            <form id="profile-form" onsubmit="handleSaveProfile(event)" class="space-y-4">
-                <!-- Email (Read-only) -->
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Email Address</label>
-                    <input type="email" id="acc-email" disabled class="w-full mt-1 p-3 border-2 border-slate-200 rounded-2xl text-sm bg-slate-100 text-slate-500 font-bold cursor-not-allowed">
-                </div>
-
-                <!-- Display Name -->
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Full Name / Display Name 🌸</label>
-                    <input type="text" id="acc-name" placeholder="e.g. Sakura Haruno" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                </div>
-
-                <!-- GCash Number -->
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">GCash Mobile Number 📱</label>
-                    <input type="tel" id="acc-gcash" placeholder="0917XXXXXXX" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                </div>
-
-                <!-- Delivery Address -->
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Default Shipping Address 🏠</label>
-                    <textarea id="acc-address" rows="3" placeholder="Enter your full street address..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink"></textarea>
-                </div>
-
-                <button type="submit" id="btn-save" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
-                    Save Changes ✨
-                </button>
-            </form>
+            <!-- LOGOUT BUTTON -->
+            <button onclick="handleLogout()" class="bg-red-500 hover:bg-red-600 text-white font-heading font-bold px-6 py-3 rounded-2xl transition shadow-md text-sm flex items-center gap-2">
+                🚪 Log Out
+            </button>
         </div>
+
+        <!-- MY LISTED PRODUCTS SECTION -->
+        <div class="bg-white p-8 rounded-3xl border-4 border-cute-pink shadow-lg space-y-6">
+            <div class="flex justify-between items-center border-b-2 border-cute-border pb-4">
+                <div>
+                    <h2 class="text-2xl font-heading font-extrabold text-slate-900">My Product Listings 📦</h2>
+                    <p class="text-xs text-slate-500 font-bold">Items you have put up for sale on the marketplace.</p>
+                </div>
+                <a href="index.html" class="bg-cute-deeppink text-white font-heading font-bold px-4 py-2 rounded-xl text-xs hover:bg-cute-hotpink transition">
+                    + Add New Item 🎀
+                </a>
+            </div>
+
+            <div id="my-products-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <p class="text-xs font-bold text-slate-400 col-span-full">Loading your products...</p>
+            </div>
+        </div>
+
     </main>
 
-    <!-- SCRIPT -->
     <script>
         const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
@@ -117,56 +110,70 @@
             const { data: { session } } = await supabaseClient.auth.getSession();
             
             if (!session) {
-                alert("Please log in to manage your account settings! 🌸");
-                window.location.href = 'index.html';
+                alert("Please log in or sign up first! 🌸");
+                window.location.href = 'auth.html';
                 return;
             }
 
             currentUser = session.user;
-            document.getElementById('acc-email').value = currentUser.email;
+            document.getElementById('user-email').textContent = currentUser.email;
+            document.getElementById('user-id').textContent = currentUser.id;
 
-            // Fetch existing profile data
-            const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', currentUser.id).single();
-            if (profile) {
-                if (profile.full_name) document.getElementById('acc-name').value = profile.full_name;
-                if (profile.gcash_number) document.getElementById('acc-gcash').value = profile.gcash_number;
-                if (profile.address) document.getElementById('acc-address').value = profile.address;
-            }
+            fetchMyProducts();
         });
 
-        async function handleSaveProfile(event) {
-            event.preventDefault();
-            const btn = document.getElementById('btn-save');
-            btn.disabled = true;
-            btn.textContent = "Saving... 🌸";
-
-            const fullName = document.getElementById('acc-name').value;
-            const gcashNumber = document.getElementById('acc-gcash').value;
-            const address = document.getElementById('acc-address').value;
-
-            const { error } = await supabaseClient
-                .from('profiles')
-                .upsert({
-                    id: currentUser.id,
-                    full_name: fullName,
-                    gcash_number: gcashNumber,
-                    address: address,
-                    updated_at: new Date()
-                });
-
-            if (error) {
-                alert("Error updating profile: " + error.message);
+        // LOG OUT FUNCTION
+        async function handleLogout() {
+            const { error } = await supabaseClient.auth.signOut();
+            if (!error) {
+                alert("Logged out successfully! 🌸");
+                window.location.href = 'auth.html';
             } else {
-                alert("Profile saved successfully! 🌸");
+                alert("Error logging out: " + error.message);
             }
-
-            btn.disabled = false;
-            btn.textContent = "Save Changes ✨";
         }
 
-        async function handleLogout() {
-            await supabaseClient.auth.signOut();
-            window.location.href = 'index.html';
+        // FETCH SELLER'S PRODUCTS
+        async function fetchMyProducts() {
+            const { data, error } = await supabaseClient
+                .from('products')
+                .select('*')
+                .eq('seller_id', currentUser.id);
+
+            const container = document.getElementById('my-products-list');
+            container.innerHTML = '';
+
+            if (error || !data || data.length === 0) {
+                container.innerHTML = `<p class="text-xs font-bold text-slate-400 col-span-full">You haven't listed any items for sale yet! 🌸</p>`;
+                return;
+            }
+
+            data.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "flex items-center gap-4 bg-cute-lightpink p-3 rounded-2xl border-2 border-cute-border";
+                card.innerHTML = `
+                    <img src="${p.image_url}" alt="${p.title}" class="w-16 h-16 object-cover rounded-xl border border-cute-border">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-heading font-bold text-slate-900 text-sm truncate">${p.title}</h4>
+                        <p class="text-xs font-black text-cute-deeppink">₱${parseFloat(p.price).toFixed(2)}</p>
+                    </div>
+                    <button onclick="deleteProduct('${p.id}')" class="text-xs font-bold text-red-500 hover:text-red-700 bg-white px-2.5 py-1 rounded-lg border border-red-200">
+                        Delete
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm("Are you sure you want to remove this product?")) return;
+
+            const { error } = await supabaseClient.from('products').delete().eq('id', productId);
+            if (!error) {
+                fetchMyProducts();
+            } else {
+                alert("Could not delete product: " + error.message);
+            }
         }
     </script>
 </body>
