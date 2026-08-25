@@ -110,7 +110,7 @@
 
             <!-- ORDERS DISPLAY CONTAINER -->
             <div id="orders-container" class="space-y-3 min-h-[120px]">
-                <!-- Orders rendered here -->
+                <!-- Orders rendered dynamically -->
             </div>
         </section>
 
@@ -121,27 +121,16 @@
         const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Dummy orders for demo state management
-        const sampleOrders = {
-            purchases: [
-                { id: "ORD-9021", title: "Aesthetic Floral Notebook x2", status: "Completed", total: "₱250.00" }
-            ],
-            ship: [
-                { id: "ORD-9034", title: "Pastel Gel Pen Set (12 colors)", status: "Preparing Package", total: "₱180.00" }
-            ],
-            receive: [
-                { id: "ORD-9012", title: "Cute Desk Planner Pad", status: "Out for Delivery", total: "₱120.00" }
-            ],
-            rate: [
-                { id: "ORD-8988", title: "Kawaii Washi Tape Bundle", status: "Delivered", total: "₱150.00" }
-            ]
+        // Cleaned up orders state (ready for dynamic data integration)
+        const userOrders = {
+            purchases: [],
+            ship: [],
+            receive: [],
+            rate: []
         };
 
         // Cart items synced from localStorage
-        let cart = JSON.parse(localStorage.getItem('office_supply_cart')) || [
-            { id: 1, name: "Sakura Highlighters (Pack of 5)", price: 140, qty: 1, img: "https://via.placeholder.com/60" },
-            { id: 2, name: "Cute Cloud Mini Utility Knife", price: 45, qty: 2, img: "https://via.placeholder.com/60" }
-        ];
+        let cart = JSON.parse(localStorage.getItem('office_supply_cart')) || [];
 
         document.addEventListener('DOMContentLoaded', () => {
             loadUserProfile();
@@ -220,10 +209,10 @@
                 container.innerHTML += `
                     <div class="flex items-center justify-between border-2 border-cute-border bg-cute-lightpink/40 rounded-2xl p-3">
                         <div class="flex items-center gap-3">
-                            <img src="${item.img}" class="w-12 h-12 rounded-xl object-cover border border-cute-pink">
+                            <img src="${item.img || 'https://via.placeholder.com/60'}" class="w-12 h-12 rounded-xl object-cover border border-cute-pink">
                             <div>
                                 <h4 class="text-xs font-bold text-slate-800">${item.name}</h4>
-                                <p class="text-[11px] font-semibold text-cute-deeppink">₱${item.price.toFixed(2)} x ${item.qty}</p>
+                                <p class="text-[11px] font-semibold text-cute-deeppink">₱${Number(item.price).toFixed(2)} x ${item.qty}</p>
                             </div>
                         </div>
                         <button onclick="removeCartItem(${index})" class="text-xs text-red-500 hover:text-red-700 font-bold px-2 py-1 bg-white border border-red-200 rounded-lg shadow-sm">Remove</button>
@@ -254,7 +243,7 @@
             });
 
             const container = document.getElementById('orders-container');
-            const list = sampleOrders[tabKey] || [];
+            const list = userOrders[tabKey] || [];
 
             if (list.length === 0) {
                 container.innerHTML = `<p class="text-xs text-center font-bold text-slate-400 py-6">No orders found under this status 🎀</p>`;
