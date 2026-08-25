@@ -48,10 +48,15 @@
 
     <!-- TOP NAVIGATION BAR -->
     <header class="w-full max-w-md bg-white border-4 border-cute-pink rounded-3xl p-4 mb-6 shadow-md flex justify-between items-center">
-        <h1 class="text-xl font-heading font-extrabold text-slate-900">🌸 OFFICESUPPLY.</h1>
-        <a href="index.html" class="text-xs font-heading font-bold text-cute-deeppink border-2 border-cute-border px-3 py-1.5 rounded-xl hover:bg-cute-lightpink transition flex items-center gap-1">
-            🏠 Back to Store
-        </a>
+        <h1 class="text-lg font-heading font-extrabold text-slate-900">🌸 OFFICESUPPLY.</h1>
+        <div class="flex items-center gap-2">
+            <a href="index.html" class="text-xs font-heading font-bold text-cute-deeppink border-2 border-cute-border px-2.5 py-1.5 rounded-xl hover:bg-cute-lightpink transition flex items-center gap-1">
+                🏠 Home
+            </a>
+            <a href="products.html" class="text-xs font-heading font-bold text-cute-deeppink border-2 border-cute-border px-2.5 py-1.5 rounded-xl hover:bg-cute-lightpink transition flex items-center gap-1">
+                🛍️ Products
+            </a>
+        </div>
     </header>
 
     <!-- AUTH CARD (LOGIN / SIGN UP) -->
@@ -321,8 +326,8 @@
             if (error) {
                 alert("Profile update failed: " + error.message);
             } else {
-                alert("Profile updated successfully! ✨ Redirecting to Home Page...");
-                window.location.href = 'index.html'; // Redirect to home page
+                alert("Profile updated successfully! ✨");
+                window.location.href = 'profile.html'; // Redirect directly to profile dashboard
             }
         }
 
