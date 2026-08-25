@@ -26,8 +26,6 @@
                 lightpink: '#FFF0F5',
                 deeppink: '#FF69B4',
                 hotpink: '#FF1493',
-                green: '#C1E1C1',
-                darkgreen: '#556B2F',
                 border: '#FFD1DC'
               }
             }
@@ -55,9 +53,9 @@
                 🌸 OFFICESUPPLY. ✨
             </a>
             <nav class="flex items-center space-x-6 text-base font-bold text-slate-800">
-                <a href="#store-section" class="hover:text-white transition">Shop 🌷</a>
+                <a href="store.html" class="hover:text-white transition">Shop 🌷</a>
                 <a href="dashboard.html" class="hover:text-white transition">Dashboard 📊</a>
-                <a href="account.html" class="hover:text-white transition">My Account 👤</a>
+                <a id="nav-account" href="account.html" class="hover:text-white transition">My Account 👤</a>
                 <button onclick="toggleCartDrawer()" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-1.5 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition text-sm flex items-center gap-1 shadow-sm">
                     🛒 Cart (<span id="cart-count">0</span>)
                 </button>
@@ -65,58 +63,77 @@
         </div>
     </header>
 
-    <!-- HERO BANNER -->
-    <section class="max-w-7xl mx-auto px-6 py-12 w-full text-center space-y-4">
-        <span class="bg-white border-2 border-cute-deeppink text-cute-deeppink font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            ✨ Premium Korean & Japanese Supplies ✨
-        </span>
-        <h1 class="text-4xl md:text-6xl font-heading font-extrabold text-slate-900 tracking-tight">
-            Make Your Desk <span class="text-cute-deeppink">Adorable</span> & Organized 🌸
-        </h1>
-        <p class="text-slate-600 max-w-xl mx-auto font-medium text-sm md:text-base">
-            Discover charming sticky notes, pastel gel pens, aesthetic journals, and desk organizers for school and office!
-        </p>
+    <!-- RULE OF THIRDS HERO BANNER (2/3 Left Copy, 1/3 Right Feature Card) -->
+    <section class="max-w-7xl mx-auto px-6 pt-12 pb-6 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+            
+            <!-- 2/3 Primary Visual Focus Block -->
+            <div class="lg:col-span-2 space-y-4">
+                <span class="bg-white border-2 border-cute-deeppink text-cute-deeppink font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
+                    ✨ Premium Korean & Japanese Supplies ✨
+                </span>
+                <h1 class="text-4xl md:text-6xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
+                    Make Your Desk <span class="text-cute-deeppink">Adorable</span> & Organized 🌸
+                </h1>
+                <p class="text-slate-600 max-w-xl font-medium text-base">
+                    Discover charming sticky notes, pastel gel pens, aesthetic journals, and desk organizers tailored for modern student and office setups.
+                </p>
+            </div>
+
+            <!-- 1/3 Focal Power Point Card -->
+            <div class="lg:col-span-1 bg-white p-6 rounded-3xl border-4 border-cute-pink shadow-lg flex flex-col justify-between space-y-4">
+                <div>
+                    <span class="text-[10px] font-bold text-cute-deeppink uppercase tracking-wider">Quick Action</span>
+                    <h3 class="text-xl font-heading font-bold text-slate-900">Have items to sell?</h3>
+                    <p class="text-xs text-slate-500 mt-1">List your unused or handcrafted kawaii stationery on our store marketplace.</p>
+                </div>
+                <button onclick="handleSellButtonClick()" class="w-full bg-cute-deeppink text-white font-heading font-bold px-6 py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md text-center">
+                    + Post Product for Sale 🎀
+                </button>
+            </div>
+
+        </div>
     </section>
 
-    <!-- MAIN STORE CONTAINER -->
-    <main id="store-section" class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full space-y-10">
-        
-        <!-- SEARCH & ACTION BAR -->
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-3xl border-4 border-cute-pink shadow-md">
-            <input type="text" id="search-input" onkeyup="filterProducts()" placeholder="Search aesthetic supplies... 🔍" class="w-full sm:w-80 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+    <!-- MAIN ASYMMETRICAL RULE OF THIRDS LAYOUT -->
+    <main class="max-w-7xl mx-auto px-6 py-6 flex-1 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <button onclick="openModal('add-product-modal')" class="w-full sm:w-auto bg-cute-deeppink text-white font-heading font-bold px-6 py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
-                + Post Product for Sale 🎀
-            </button>
-        </div>
+            <!-- 2/3 COLUMN: PRODUCT GRID (Primary Visual Zone) -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="flex justify-between items-center bg-white p-4 rounded-3xl border-4 border-cute-pink shadow-sm">
+                    <input type="text" id="search-input" onkeyup="filterProducts()" placeholder="Search aesthetic supplies... 🔍" class="w-full p-2.5 border-2 border-cute-border rounded-xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                </div>
 
-        <!-- PRODUCT GRID -->
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <p class="text-center col-span-full font-bold text-cute-deeppink py-10">Loading cute supplies... 🌸</p>
-        </div>
-
-        <!-- REVIEWS SECTION -->
-        <section class="bg-white p-8 rounded-3xl border-4 border-cute-pink shadow-lg space-y-6">
-            <div>
-                <span class="text-xs font-bold text-cute-deeppink uppercase tracking-wider">Community Feedback 💬</span>
-                <h3 class="text-2xl font-heading font-extrabold text-slate-900">Human-Only Reviews 🌸</h3>
-                <p class="text-xs text-slate-500 font-bold">Bot comments are automatically flagged and rejected.</p>
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <p class="text-center col-span-full font-bold text-cute-deeppink py-10">Loading cute supplies... 🌸</p>
+                </div>
             </div>
 
-            <!-- REVIEW FORM -->
-            <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-3 bg-cute-lightpink p-4 rounded-2xl border-2 border-cute-border">
-                <input type="text" id="rev-name" placeholder="Your Name or Handle" required class="w-full p-2.5 border-2 border-cute-border rounded-xl text-sm focus:outline-none focus:border-cute-deeppink">
-                <textarea id="rev-content" rows="3" placeholder="Leave a review! (Note: AI generated phrases like 'As an AI language model' will be blocked)" required class="w-full p-2.5 border-2 border-cute-border rounded-xl text-sm focus:outline-none focus:border-cute-deeppink"></textarea>
-                <button type="submit" class="bg-cute-deeppink text-white font-heading font-bold px-5 py-2 rounded-xl text-xs hover:bg-cute-hotpink transition shadow-sm">
-                    Post Review ✨
-                </button>
-            </form>
+            <!-- 1/3 COLUMN: SIDEBAR & REVIEWS (Secondary Supporting Zone) -->
+            <div class="lg:col-span-1 space-y-6">
+                <section class="bg-white p-6 rounded-3xl border-4 border-cute-pink shadow-lg space-y-4">
+                    <div>
+                        <span class="text-[10px] font-bold text-cute-deeppink uppercase tracking-wider">Community Feedback 💬</span>
+                        <h3 class="text-xl font-heading font-extrabold text-slate-900">Human Reviews 🌸</h3>
+                        <p class="text-[11px] text-slate-500 font-bold">Bot spam is automatically blocked.</p>
+                    </div>
 
-            <div id="reviews-list" class="space-y-3">
-                <p class="text-xs font-bold text-slate-400">Loading reviews...</p>
+                    <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-3 bg-cute-lightpink p-3.5 rounded-2xl border-2 border-cute-border">
+                        <input type="text" id="rev-name" placeholder="Your Name" required class="w-full p-2 border-2 border-cute-border rounded-xl text-xs focus:outline-none focus:border-cute-deeppink">
+                        <textarea id="rev-content" rows="3" placeholder="Leave a review! (AI phrases will be auto-flagged)" required class="w-full p-2 border-2 border-cute-border rounded-xl text-xs focus:outline-none focus:border-cute-deeppink"></textarea>
+                        <button type="submit" class="w-full bg-cute-deeppink text-white font-heading font-bold py-2 rounded-xl text-xs hover:bg-cute-hotpink transition shadow-sm">
+                            Post Review ✨
+                        </button>
+                    </form>
+
+                    <div id="reviews-list" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+                        <p class="text-xs font-bold text-slate-400">Loading reviews...</p>
+                    </div>
+                </section>
             </div>
-        </section>
 
+        </div>
     </main>
 
     <!-- SHOPPING CART DRAWER -->
@@ -127,9 +144,7 @@
                     <h3 class="text-2xl font-heading font-extrabold text-slate-900">Your Cart 🛒</h3>
                     <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 font-extrabold text-xl">✕</button>
                 </div>
-                <div id="cart-items" class="py-4 space-y-4 max-h-[60vh] overflow-y-auto">
-                    <!-- Dynamic cart items load here -->
-                </div>
+                <div id="cart-items" class="py-4 space-y-4 max-h-[60vh] overflow-y-auto"></div>
             </div>
             <div class="border-t-2 border-cute-border pt-4 space-y-3">
                 <div class="flex justify-between font-heading font-bold text-lg text-slate-900">
@@ -140,20 +155,6 @@
                     Checkout with GCash 💳
                 </button>
             </div>
-        </div>
-    </div>
-
-    <!-- VARIANT SELECTION MODAL -->
-    <div id="variant-modal" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl border-4 border-cute-pink p-6 max-w-sm w-full space-y-4 shadow-xl">
-            <h3 id="variant-title" class="text-xl font-heading font-bold text-slate-900">Select Style 🎀</h3>
-            <div id="variant-options" class="space-y-2">
-                <!-- Dynamic variants load here -->
-            </div>
-            <button onclick="confirmVariantSelection()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-2.5 rounded-2xl text-sm hover:bg-cute-hotpink transition">
-                Add Selected to Cart ✨
-            </button>
-            <button onclick="closeModal('variant-modal')" class="w-full text-slate-400 font-bold text-xs py-1">Cancel</button>
         </div>
     </div>
 
@@ -184,21 +185,36 @@
 
         let allProducts = [];
         let cart = [];
-        let selectedProductForVariant = null;
-        let selectedVariantOption = "Standard";
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            checkAuthAndUpdateUI();
             fetchProducts();
             fetchReviews();
         });
 
-        // 1. FETCH & RENDER PRODUCTS
-        async function fetchProducts() {
-            const { data, error } = await supabaseClient.from('products').select('*');
-            if (error) {
-                console.error("Error fetching products:", error);
+        async function checkAuthAndUpdateUI() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            const accountNav = document.getElementById('nav-account');
+            
+            if (!session && accountNav) {
+                accountNav.href = "auth.html";
+                accountNav.textContent = "Log In / Sign Up 👤";
+            }
+        }
+
+        async function handleSellButtonClick() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) {
+                alert("Please log in or sign up first to sell items! 🌸");
+                window.location.href = "auth.html";
                 return;
             }
+            openModal('add-product-modal');
+        }
+
+        async function fetchProducts() {
+            const { data, error } = await supabaseClient.from('products').select('*');
+            if (error) return console.error(error);
             allProducts = data || [];
             renderProducts(allProducts);
         }
@@ -217,13 +233,13 @@
                 card.className = "bg-white rounded-3xl border-4 border-cute-pink p-4 flex flex-col justify-between shadow-md hover:shadow-xl transition";
                 card.innerHTML = `
                     <div class="space-y-3">
-                        <img src="${p.image_url}" alt="${p.title}" class="w-full h-48 object-cover rounded-2xl border-2 border-cute-border">
-                        <h4 class="font-heading font-extrabold text-slate-900 text-lg leading-tight">${p.title}</h4>
+                        <img src="${p.image_url}" alt="${p.title}" class="w-full h-44 object-cover rounded-2xl border-2 border-cute-border">
+                        <h4 class="font-heading font-extrabold text-slate-900 text-base leading-tight">${p.title}</h4>
                         <p class="text-slate-500 text-xs font-medium line-clamp-2">${p.description || 'Aesthetic stationery item.'}</p>
                     </div>
                     <div class="mt-4 pt-3 border-t-2 border-cute-border flex items-center justify-between">
-                        <span class="text-lg font-black text-slate-900">₱${parseFloat(p.price).toFixed(2)}</span>
-                        <button onclick="openVariantModal('${p.id}')" class="bg-cute-lightpink text-cute-deeppink border-2 border-cute-deeppink px-3 py-1.5 rounded-xl font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition">
+                        <span class="text-base font-black text-slate-900">₱${parseFloat(p.price).toFixed(2)}</span>
+                        <button onclick="addToCart('${p.id}')" class="bg-cute-lightpink text-cute-deeppink border-2 border-cute-deeppink px-3 py-1 rounded-xl font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition">
                             Add to Cart 🛒
                         </button>
                     </div>
@@ -238,53 +254,23 @@
             renderProducts(filtered);
         }
 
-        // 2. VARIANT SELECTION
-        function openVariantModal(productId) {
-            selectedProductForVariant = allProducts.find(p => p.id === productId);
-            if (!selectedProductForVariant) return;
+        function addToCart(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
 
-            document.getElementById('variant-title').textContent = `Select Style for ${selectedProductForVariant.title}`;
-            const container = document.getElementById('variant-options');
-            
-            const variants = ["Pink Sakura 🌸", "Pastel Mint 🍃", "Sky Blue ☁️", "Standard ✨"];
-            selectedVariantOption = variants[0];
-
-            container.innerHTML = variants.map((v, idx) => `
-                <label class="flex items-center gap-3 p-3 border-2 border-cute-border rounded-xl cursor-pointer hover:bg-cute-lightpink transition">
-                    <input type="radio" name="variant" value="${v}" ${idx === 0 ? 'checked' : ''} onchange="selectedVariantOption='${v}'" class="accent-cute-deeppink">
-                    <span class="text-xs font-bold text-slate-700">${v}</span>
-                </label>
-            `).join('');
-
-            openModal('variant-modal');
-        }
-
-        function confirmVariantSelection() {
-            if (!selectedProductForVariant) return;
-            
-            const cartItem = {
-                ...selectedProductForVariant,
-                selectedVariant: selectedVariantOption,
-                cartId: `${selectedProductForVariant.id}-${selectedVariantOption}`,
-                quantity: 1
-            };
-
-            const existingIndex = cart.findIndex(item => item.cartId === cartItem.cartId);
+            const existingIndex = cart.findIndex(item => item.id === productId);
             if (existingIndex > -1) {
                 cart[existingIndex].quantity += 1;
             } else {
-                cart.push(cartItem);
+                cart.push({ ...product, quantity: 1 });
             }
 
             updateCartUI();
-            closeModal('variant-modal');
             toggleCartDrawer();
         }
 
-        // 3. CART DRAWER CONTROLLER
         function toggleCartDrawer() {
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('hidden');
+            document.getElementById('cart-drawer').classList.toggle('hidden');
         }
 
         function updateCartUI() {
@@ -302,10 +288,9 @@
                 row.innerHTML = `
                     <div>
                         <p class="font-heading font-bold text-xs text-slate-900">${item.title}</p>
-                        <p class="text-[10px] font-bold text-cute-deeppink">${item.selectedVariant}</p>
                         <p class="text-xs font-black text-slate-700">₱${item.price} x ${item.quantity}</p>
                     </div>
-                    <button onclick="removeFromCart('${item.cartId}')" class="text-xs font-bold text-red-500 hover:text-red-700">Remove</button>
+                    <button onclick="removeFromCart('${item.id}')" class="text-xs font-bold text-red-500 hover:text-red-700">Remove</button>
                 `;
                 container.appendChild(row);
             });
@@ -313,17 +298,13 @@
             document.getElementById('cart-total').textContent = `₱${total.toFixed(2)}`;
         }
 
-        function removeFromCart(cartId) {
-            cart = cart.filter(item => item.cartId !== cartId);
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
             updateCartUI();
         }
 
-        // 4. CHECKOUT VIA PAYMONGO
         async function handleCheckout() {
-            if (cart.length === 0) {
-                alert("Your cart is empty! 🌸");
-                return;
-            }
+            if (cart.length === 0) return alert("Your cart is empty! 🌸");
 
             const { data: { session } } = await supabaseClient.auth.getSession();
             const buyerId = session ? session.user.id : null;
@@ -340,14 +321,13 @@
                 if (data.checkoutUrl) {
                     window.location.href = data.checkoutUrl;
                 } else {
-                    alert("Checkout failed. Please check backend integration.");
+                    alert("Checkout service error.");
                 }
             } catch (err) {
-                alert("Error connecting to checkout service.");
+                alert("Error connecting to checkout backend.");
             }
         }
 
-        // 5. REVIEWS & AI BOT DETECTION
         async function fetchReviews() {
             const { data } = await supabaseClient.from('reviews').select('*').order('created_at', { ascending: false });
             const container = document.getElementById('reviews-list');
@@ -364,7 +344,7 @@
                 card.innerHTML = `
                     <div class="flex justify-between items-center text-xs font-bold text-cute-deeppink">
                         <span>${r.author_name}</span>
-                        <span class="text-[10px] text-slate-400">Verified Human 🌸</span>
+                        <span class="text-[9px] text-slate-400">Verified Human 🌸</span>
                     </div>
                     <p class="text-xs text-slate-700 mt-1">${r.content}</p>
                 `;
@@ -377,11 +357,8 @@
             const name = document.getElementById('rev-name').value;
             const content = document.getElementById('rev-content').value;
 
-            // AI/Bot pattern checking
             const botPatterns = [/as an ai/i, /language model/i, /i cannot feel/i, /openai/i, /http:/i, /https:/i];
-            const isBot = botPatterns.some(pattern => pattern.test(content));
-
-            if (isBot) {
+            if (botPatterns.some(pattern => pattern.test(content))) {
                 alert("Automated or AI-generated reviews are not allowed! 🌸");
                 return;
             }
@@ -393,12 +370,12 @@
             }
         }
 
-        // 6. ADD PRODUCT FORM
         async function handlePostProduct(e) {
             e.preventDefault();
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) {
-                alert("Please log in to sell items! 🌸");
+                alert("Please log in or sign up first! 🌸");
+                window.location.href = "auth.html";
                 return;
             }
 
@@ -420,7 +397,6 @@
             }
         }
 
-        // MODAL HELPERS
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
     </script>
