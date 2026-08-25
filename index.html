@@ -91,7 +91,10 @@
             </nav>
 
             <div class="flex items-center space-x-4">
-                <button onclick="toggleModal('auth-modal')" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-5 py-2 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition shadow-sm text-sm">
+                <span id="user-display" class="hidden text-xs font-bold text-white bg-cute-deeppink px-3 py-1.5 rounded-full shadow-sm">
+                    🌸 Hello, <span id="user-email-text"></span>
+                </span>
+                <button id="auth-btn" onclick="toggleModal('auth-modal')" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-5 py-2 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition shadow-sm text-sm">
                     Account Portal 🎀
                 </button>
             </div>
@@ -217,26 +220,35 @@
         </div>
     </main>
 
-    <!-- 4. REAL CUSTOMER REVIEWS & RATING SYSTEM -->
+    <!-- 4. REAL REVIEWS & ACCOUNT REQUIREMENT -->
     <section id="reviews" class="bg-white py-16 border-t-2 border-cute-border">
         <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-3xl font-heading font-extrabold text-slate-900 text-center mb-2">Verified Human Reviews 🌸</h2>
-            <p class="text-slate-600 text-xs text-center mb-8 font-medium">All reviews listed below are left by real visitors.</p>
+            <h2 class="text-3xl font-heading font-extrabold text-slate-900 text-center mb-2">Verified Customer Reviews 🌸</h2>
+            <p class="text-slate-600 text-xs text-center mb-8 font-medium">Log in to leave a review linked to your registered account.</p>
             
-            <!-- Dynamic Reviews Container (Loads from Database/State) -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12" id="reviews-container">
                 <div id="no-reviews-msg" class="col-span-full text-center py-8 text-slate-400 font-medium text-sm">
-                    No reviews submitted yet. Be the first real person to leave feedback! 💖
+                    No reviews submitted yet. Create an account and be the first to leave feedback! 💖
                 </div>
             </div>
 
-            <!-- Submit Review Form -->
+            <!-- Review Submission Form (Requires Logged-In Account) -->
             <div class="max-w-lg mx-auto bg-cute-lightpink p-6 border-4 border-cute-border rounded-3xl shadow-md space-y-4">
-                <h3 class="text-xl font-heading font-bold text-cute-deeppink text-center">Leave Your Review ✨</h3>
-                <form onsubmit="handleReviewSubmit(event)" class="space-y-3">
+                <h3 class="text-xl font-heading font-bold text-cute-deeppink text-center">Post Your Review ✨</h3>
+                
+                <!-- Notice for Logged-Out Users -->
+                <div id="login-notice" class="bg-white p-4 rounded-2xl border-2 border-cute-pink text-center space-y-3">
+                    <p class="text-xs font-bold text-slate-700">🔒 You must create or log into an account before posting a review.</p>
+                    <button onclick="toggleModal('auth-modal')" class="bg-cute-deeppink text-white font-bold text-xs px-5 py-2.5 rounded-full hover:bg-cute-hotpink transition shadow">
+                        Sign In / Create Account 🎀
+                    </button>
+                </div>
+
+                <!-- Active Review Form -->
+                <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-3 hidden">
                     <div>
-                        <label class="text-xs font-bold text-slate-600 uppercase">Your Name / Alias 🌸</label>
-                        <input type="text" id="reviewer-name" required placeholder="e.g. Maria S." class="w-full mt-1 p-3 border-2 border-cute-border rounded-xl text-xs bg-white focus:outline-none focus:border-cute-deeppink">
+                        <label class="text-xs font-bold text-slate-600 uppercase">Logged In As 🌸</label>
+                        <input type="text" id="reviewer-account" readonly class="w-full mt-1 p-3 border-2 border-cute-border rounded-xl text-xs bg-slate-100 font-bold text-cute-deeppink cursor-not-allowed">
                     </div>
                     <div>
                         <label class="text-xs font-bold text-slate-600 uppercase">Select Rating ⭐</label>
@@ -249,11 +261,11 @@
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-600 uppercase">Your Honest Review 💖</label>
+                        <label class="text-xs font-bold text-slate-600 uppercase">Your Review 💖</label>
                         <textarea id="review-comment" required placeholder="Write your genuine feedback..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-xl text-xs bg-white focus:outline-none focus:border-cute-deeppink"></textarea>
                     </div>
                     <button type="submit" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3 rounded-xl hover:bg-cute-hotpink transition text-sm shadow">
-                        Post Real Review 🌸
+                        Record Review to Account 🌸
                     </button>
                 </form>
             </div>
@@ -318,25 +330,21 @@
             <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-3">
                 <div>
                     <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Email Address 🌸</label>
-                    <input type="email" id="email" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                    <input type="email" id="email" required placeholder="yourname@gmail.com" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
                 </div>
                 <div>
                     <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Password 🔑</label>
-                    <input type="password" id="password" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">GCash Payout Number 📱</label>
-                    <input type="text" id="gcash" placeholder="09XXXXXXXXX" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
                 </div>
                 <div>
                     <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Choose Role ✨</label>
                     <select id="user-role" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink font-bold text-slate-700">
-                        <option value="buyer">Buyer (Purchase Cute Gear)</option>
-                        <option value="seller">Seller (Upload Cute Products)</option>
+                        <option value="buyer">Buyer (Purchase & Review)</option>
+                        <option value="seller">Seller (Upload Products)</option>
                     </select>
                 </div>
                 <button type="submit" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
-                    Enter Portal 💖
+                    Sign In / Create Account 💖
                 </button>
             </form>
 
@@ -355,7 +363,7 @@
         </div>
     </div>
 
-    <!-- VOICEFLOW AI CHATBOT INTEGRATION -->
+    <!-- FIXED & THEMED VOICEFLOW AI CHATBOT INTEGRATION -->
     <script type="text/javascript">
       (function(d, t) {
           var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
@@ -363,10 +371,18 @@
             window.voiceflow.chat.load({
               verify: { projectID: 'YOUR_VOICEFLOW_PROJECT_ID' },
               url: 'https://general-runtime.voiceflow.com',
-              versionID: 'production'
+              versionID: 'production',
+              assistant: {
+                title: "Stationery Helper 🌸",
+                description: "Ask me anything about products or orders!",
+                image: "https://api.iconify.design/fluent-emoji-flat:cherry-blossom.svg",
+                color: "#FF69B4"
+              }
             });
           }
-          v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+          v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
+          v.type = "text/javascript"; 
+          s.parentNode.insertBefore(v, s);
       })(document, 'script');
     </script>
 
@@ -378,22 +394,40 @@
             ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
             : null;
 
-        // Fetch Real Reviews from Supabase or Local Storage on page load
-        document.addEventListener('DOMContentLoaded', loadRealReviews);
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRealReviews();
+            checkUserSession();
+        });
+
+        function checkUserSession() {
+            const storedUser = localStorage.getItem('logged_user_email');
+            if (storedUser) {
+                currentUser = storedUser;
+                document.getElementById('user-email-text').innerText = storedUser;
+                document.getElementById('user-display').classList.remove('hidden');
+                document.getElementById('auth-btn').innerText = 'Switch Account 🎀';
+                
+                // Enable review form for logged in user
+                document.getElementById('login-notice').classList.add('hidden');
+                document.getElementById('review-form').classList.remove('hidden');
+                document.getElementById('reviewer-account').value = storedUser;
+            }
+        }
 
         async function loadRealReviews() {
             const container = document.getElementById('reviews-container');
             const placeholder = document.getElementById('no-reviews-msg');
 
             if (supabase) {
-                const { data: reviews, error } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
+                const { data: reviews } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
                 if (reviews && reviews.length > 0) {
                     if (placeholder) placeholder.remove();
                     container.innerHTML = '';
-                    reviews.forEach(r => renderReviewCard(r.name, r.rating, r.comment));
+                    reviews.forEach(r => renderReviewCard(r.user_email || r.name, r.rating, r.comment));
                 }
             } else {
-                // Local storage fallback for live browsing testing
                 const saved = JSON.parse(localStorage.getItem('real_reviews') || '[]');
                 if (saved.length > 0) {
                     if (placeholder) placeholder.remove();
@@ -403,7 +437,7 @@
             }
         }
 
-        function renderReviewCard(name, rating, comment) {
+        function renderReviewCard(accountName, rating, comment) {
             const container = document.getElementById('reviews-container');
             const placeholder = document.getElementById('no-reviews-msg');
             if (placeholder) placeholder.remove();
@@ -415,30 +449,33 @@
             card.innerHTML = `
                 <div class="text-yellow-400 text-lg">${stars}</div>
                 <p class="text-xs text-slate-700 italic">"${comment}"</p>
-                <p class="text-xs font-bold text-cute-deeppink">— ${name} (Real Buyer)</p>
+                <p class="text-xs font-bold text-cute-deeppink">— ${accountName} (Verified Account)</p>
             `;
             container.appendChild(card);
         }
 
         async function handleReviewSubmit(event) {
             event.preventDefault();
-            const name = document.getElementById('reviewer-name').value;
+            if (!currentUser) {
+                alert("Please sign in or create an account first!");
+                toggleModal('auth-modal');
+                return;
+            }
+
             const rating = document.getElementById('review-rating').value;
             const comment = document.getElementById('review-comment').value;
 
             if (supabase) {
-                const { error } = await supabase.from('reviews').insert([{ name, rating: parseInt(rating), comment }]);
+                const { error } = await supabase.from('reviews').insert([{ user_email: currentUser, rating: parseInt(rating), comment }]);
                 if (error) alert("Error saving review: " + error.message);
             } else {
-                // Save locally
                 const saved = JSON.parse(localStorage.getItem('real_reviews') || '[]');
-                saved.push({ name, rating, comment });
+                saved.push({ name: currentUser, rating, comment });
                 localStorage.setItem('real_reviews', JSON.stringify(saved));
             }
 
-            renderReviewCard(name, rating, comment);
-            alert("Thank you! Your real review has been published 💖");
-            document.getElementById('reviewer-name').value = '';
+            renderReviewCard(currentUser, rating, comment);
+            alert("Yay! Your review has been recorded to your account 💖");
             document.getElementById('review-comment').value = '';
         }
 
@@ -457,27 +494,20 @@
             const password = document.getElementById('password').value;
             const role = document.getElementById('user-role').value;
 
-            if (!supabase) {
-                alert("Demo Mode Active 🌸");
-                if (role === 'seller') {
-                    document.getElementById('seller-panel').classList.remove('hidden');
-                    document.getElementById('role-badge').classList.remove('hidden');
-                } else {
-                    toggleModal('auth-modal');
+            if (supabase) {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) {
+                    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
+                    if (signUpError) return alert(signUpError.message);
+                    await supabase.from('profiles').insert([{ id: signUpData.user.id, email, role }]);
                 }
-                return;
             }
 
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) {
-                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
-                if (signUpError) return alert(signUpError.message);
-                await supabase.from('profiles').insert([{ id: signUpData.user.id, email, role }]);
-                alert("Account created successfully 🌸");
-            } else {
-                alert("Logged in successfully! ✨");
-            }
+            // Save user session locally
+            localStorage.setItem('logged_user_email', email);
+            checkUserSession();
 
+            alert("Logged in as " + email + " 🌸");
             if (role === 'seller') {
                 document.getElementById('seller-panel').classList.remove('hidden');
                 document.getElementById('role-badge').classList.remove('hidden');
@@ -491,7 +521,7 @@
                 const response = await fetch('/api/paymongo-checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount, description: productName, buyerEmail: "buyer@example.com" })
+                    body: JSON.stringify({ amount, description: productName, buyerEmail: currentUser || "guest@example.com" })
                 });
 
                 const data = await response.json();
