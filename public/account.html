@@ -173,7 +173,18 @@
             const authCard = document.getElementById('auth-card');
             const profileSection = document.getElementById('profile-section');
 
+            // Detect if user clicked "Edit Profile" from the profile page
+            const urlParams = new URLSearchParams(window.location.search);
+            const isManualEdit = urlParams.get('edit') === 'true';
+
             if (user) {
+                // Redirect saved users directly to profile.html unless explicitly editing
+                if (user.user_metadata && user.user_metadata.full_name && !isManualEdit) {
+                    window.location.href = 'profile.html';
+                    return;
+                }
+
+                // Show the customize form for first-time or editing users
                 authCard.classList.add('hidden');
                 profileSection.classList.remove('hidden');
                 
