@@ -158,7 +158,6 @@
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Notebooks</span>
                     <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">Flowery Hardcover Notebook</h3>
                     <p class="text-slate-600 text-xs">A5 ribbon-bound journal with pressed flower motifs and gold foil edges.</p>
-                    <div class="mt-2 text-yellow-400 text-sm">★★★★★ <span class="text-slate-500 text-xs">(5.0)</span></div>
                 </div>
                 <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
                     <span class="text-2xl font-heading font-bold text-slate-900">₱280.00</span>
@@ -175,7 +174,6 @@
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Highlighters</span>
                     <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">Cute Petal Highlighters</h3>
                     <p class="text-slate-600 text-xs">5 soft pastel highlighters connected in an adorable flower shape wheel.</p>
-                    <div class="mt-2 text-yellow-400 text-sm">★★★★☆ <span class="text-slate-500 text-xs">(4.8)</span></div>
                 </div>
                 <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
                     <span class="text-2xl font-heading font-bold text-slate-900">₱180.00</span>
@@ -192,7 +190,6 @@
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Accessories</span>
                     <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">Blossom Paper Clips</h3>
                     <p class="text-slate-600 text-xs">Box of 20 vinyl-coated metal clips shaped like cherry blossoms.</p>
-                    <div class="mt-2 text-yellow-400 text-sm">★★★★★ <span class="text-slate-500 text-xs">(5.0)</span></div>
                 </div>
                 <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
                     <span class="text-2xl font-heading font-bold text-slate-900">₱120.00</span>
@@ -209,7 +206,6 @@
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Desk Tools</span>
                     <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">Pastel Flower Scissors</h3>
                     <p class="text-slate-600 text-xs">Compact safety scissors featuring cute flower handles and protective sheath.</p>
-                    <div class="mt-2 text-yellow-400 text-sm">★★★★☆ <span class="text-slate-500 text-xs">(4.5)</span></div>
                 </div>
                 <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
                     <span class="text-2xl font-heading font-bold text-slate-900">₱190.00</span>
@@ -221,36 +217,27 @@
         </div>
     </main>
 
-    <!-- 4. CUSTOMER REVIEWS & RATING SYSTEM -->
+    <!-- 4. REAL CUSTOMER REVIEWS & RATING SYSTEM -->
     <section id="reviews" class="bg-white py-16 border-t-2 border-cute-border">
         <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-3xl font-heading font-extrabold text-slate-900 text-center mb-8">Customer Reviews & Ratings 🌸</h2>
+            <h2 class="text-3xl font-heading font-extrabold text-slate-900 text-center mb-2">Verified Human Reviews 🌸</h2>
+            <p class="text-slate-600 text-xs text-center mb-8 font-medium">All reviews listed below are left by real visitors.</p>
             
+            <!-- Dynamic Reviews Container (Loads from Database/State) -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12" id="reviews-container">
-                <!-- Review 1 -->
-                <div class="p-6 bg-cute-lightpink border-2 border-cute-border rounded-2xl shadow-sm space-y-2">
-                    <div class="text-yellow-400 text-lg">★★★★★</div>
-                    <p class="text-xs text-slate-700 italic">"The Blossom Gel Pens write super smoothly! My desk looks so cute now."</p>
-                    <p class="text-xs font-bold text-cute-deeppink">— Maria S. (Verified Buyer)</p>
-                </div>
-                <!-- Review 2 -->
-                <div class="p-6 bg-cute-lightpink border-2 border-cute-border rounded-2xl shadow-sm space-y-2">
-                    <div class="text-yellow-400 text-lg">★★★★★</div>
-                    <p class="text-xs text-slate-700 italic">"Fast delivery via PayMongo GCash checkout! Highlighters are gorgeous pastel colors."</p>
-                    <p class="text-xs font-bold text-cute-deeppink">— Chloe G. (Verified Buyer)</p>
-                </div>
-                <!-- Review 3 -->
-                <div class="p-6 bg-cute-lightpink border-2 border-cute-border rounded-2xl shadow-sm space-y-2">
-                    <div class="text-yellow-400 text-lg">★★★★☆</div>
-                    <p class="text-xs text-slate-700 italic">"Great seller marketplace! Very easy to publish and list my stationery items."</p>
-                    <p class="text-xs font-bold text-cute-deeppink">— Angela K. (Merchant Seller)</p>
+                <div id="no-reviews-msg" class="col-span-full text-center py-8 text-slate-400 font-medium text-sm">
+                    No reviews submitted yet. Be the first real person to leave feedback! 💖
                 </div>
             </div>
 
             <!-- Submit Review Form -->
             <div class="max-w-lg mx-auto bg-cute-lightpink p-6 border-4 border-cute-border rounded-3xl shadow-md space-y-4">
-                <h3 class="text-xl font-heading font-bold text-cute-deeppink text-center">Leave a Product Review ✨</h3>
+                <h3 class="text-xl font-heading font-bold text-cute-deeppink text-center">Leave Your Review ✨</h3>
                 <form onsubmit="handleReviewSubmit(event)" class="space-y-3">
+                    <div>
+                        <label class="text-xs font-bold text-slate-600 uppercase">Your Name / Alias 🌸</label>
+                        <input type="text" id="reviewer-name" required placeholder="e.g. Maria S." class="w-full mt-1 p-3 border-2 border-cute-border rounded-xl text-xs bg-white focus:outline-none focus:border-cute-deeppink">
+                    </div>
                     <div>
                         <label class="text-xs font-bold text-slate-600 uppercase">Select Rating ⭐</label>
                         <select id="review-rating" class="w-full mt-1 p-3 border-2 border-cute-border rounded-xl text-sm bg-white font-bold text-slate-700">
@@ -262,11 +249,11 @@
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-600 uppercase">Your Review 💖</label>
-                        <textarea id="review-comment" required placeholder="Write your feedback..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-xl text-xs bg-white focus:outline-none focus:border-cute-deeppink"></textarea>
+                        <label class="text-xs font-bold text-slate-600 uppercase">Your Honest Review 💖</label>
+                        <textarea id="review-comment" required placeholder="Write your genuine feedback..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-xl text-xs bg-white focus:outline-none focus:border-cute-deeppink"></textarea>
                     </div>
                     <button type="submit" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3 rounded-xl hover:bg-cute-hotpink transition text-sm shadow">
-                        Submit Review 🌸
+                        Post Real Review 🌸
                     </button>
                 </form>
             </div>
@@ -391,6 +378,70 @@
             ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
             : null;
 
+        // Fetch Real Reviews from Supabase or Local Storage on page load
+        document.addEventListener('DOMContentLoaded', loadRealReviews);
+
+        async function loadRealReviews() {
+            const container = document.getElementById('reviews-container');
+            const placeholder = document.getElementById('no-reviews-msg');
+
+            if (supabase) {
+                const { data: reviews, error } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
+                if (reviews && reviews.length > 0) {
+                    if (placeholder) placeholder.remove();
+                    container.innerHTML = '';
+                    reviews.forEach(r => renderReviewCard(r.name, r.rating, r.comment));
+                }
+            } else {
+                // Local storage fallback for live browsing testing
+                const saved = JSON.parse(localStorage.getItem('real_reviews') || '[]');
+                if (saved.length > 0) {
+                    if (placeholder) placeholder.remove();
+                    container.innerHTML = '';
+                    saved.forEach(r => renderReviewCard(r.name, r.rating, r.comment));
+                }
+            }
+        }
+
+        function renderReviewCard(name, rating, comment) {
+            const container = document.getElementById('reviews-container');
+            const placeholder = document.getElementById('no-reviews-msg');
+            if (placeholder) placeholder.remove();
+
+            const card = document.createElement('div');
+            card.className = "p-6 bg-cute-lightpink border-2 border-cute-border rounded-2xl shadow-sm space-y-2";
+            let stars = "★".repeat(parseInt(rating)) + "☆".repeat(5 - parseInt(rating));
+            
+            card.innerHTML = `
+                <div class="text-yellow-400 text-lg">${stars}</div>
+                <p class="text-xs text-slate-700 italic">"${comment}"</p>
+                <p class="text-xs font-bold text-cute-deeppink">— ${name} (Real Buyer)</p>
+            `;
+            container.appendChild(card);
+        }
+
+        async function handleReviewSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('reviewer-name').value;
+            const rating = document.getElementById('review-rating').value;
+            const comment = document.getElementById('review-comment').value;
+
+            if (supabase) {
+                const { error } = await supabase.from('reviews').insert([{ name, rating: parseInt(rating), comment }]);
+                if (error) alert("Error saving review: " + error.message);
+            } else {
+                // Save locally
+                const saved = JSON.parse(localStorage.getItem('real_reviews') || '[]');
+                saved.push({ name, rating, comment });
+                localStorage.setItem('real_reviews', JSON.stringify(saved));
+            }
+
+            renderReviewCard(name, rating, comment);
+            alert("Thank you! Your real review has been published 💖");
+            document.getElementById('reviewer-name').value = '';
+            document.getElementById('review-comment').value = '';
+        }
+
         function toggleModal(id) {
             document.getElementById(id).classList.toggle('hidden');
         }
@@ -469,7 +520,6 @@
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Seller Upload</span>
                     <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">${title}</h3>
                     <p class="text-slate-600 text-xs">${description}</p>
-                    <div class="mt-2 text-yellow-400 text-sm">★★★★★ <span class="text-slate-500 text-xs">(New)</span></div>
                 </div>
                 <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
                     <span class="text-2xl font-heading font-bold text-slate-900">₱${price.toFixed(2)}</span>
@@ -481,26 +531,6 @@
             container.appendChild(newCard);
             alert("Yay! Product added to online store catalog! 🌸");
             toggleModal('auth-modal');
-        }
-
-        function handleReviewSubmit(event) {
-            event.preventDefault();
-            const rating = document.getElementById('review-rating').value;
-            const comment = document.getElementById('review-comment').value;
-
-            const reviewsContainer = document.getElementById('reviews-container');
-            const newReview = document.createElement('div');
-            newReview.className = "p-6 bg-cute-lightpink border-2 border-cute-border rounded-2xl shadow-sm space-y-2";
-            
-            let stars = "★".repeat(parseInt(rating)) + "☆".repeat(5 - parseInt(rating));
-            newReview.innerHTML = `
-                <div class="text-yellow-400 text-lg">${stars}</div>
-                <p class="text-xs text-slate-700 italic">"${comment}"</p>
-                <p class="text-xs font-bold text-cute-deeppink">— Verified User</p>
-            `;
-            reviewsContainer.appendChild(newReview);
-            alert("Thank you for submitting your review! 💖");
-            document.getElementById('review-comment').value = '';
         }
     </script>
 </body>
