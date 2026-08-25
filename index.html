@@ -4,20 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO & Google Indexing Meta Tags -->
     <title>OFFICESUPPLY. 🌸 - Floral & Cute Workspace Stationery</title>
     <meta name="description" content="Shop adorable floral workspace supplies, cute stationery, desk organizers, and aesthetic office equipment in the Philippines. Direct seller marketplace with GCash and PayMongo payments.">
     <meta name="keywords" content="office supplies, cute stationery, floral stationery, desktop decor, desk accessories, Philippines office store, GCash payments">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://websitee-six-kappa.vercel.app">
 
-    <!-- Open Graph (Facebook / Social Media sharing) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="OFFICESUPPLY. 🌸 - Floral & Cute Workspace Stationery">
     <meta property="og:description" content="Equip your workspace with aesthetic flower pens, highlighters, and desk accessories.">
     <meta property="og:url" content="https://websitee-six-kappa.vercel.app">
 
-    <!-- Google Structured Data (JSON-LD Schema for E-Commerce Store) -->
+    <!-- Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -30,14 +29,13 @@
     }
     </script>
 
-    <!-- Google Fonts: Fredoka & Quicksand -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS & Supabase SDK -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
       tailwind.config = {
@@ -76,7 +74,7 @@
 </head>
 <body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen">
 
-    <!-- 1. HEADER SECTION -->
+    <!-- HEADER SECTION -->
     <header class="bg-cute-pink text-slate-800 sticky top-0 z-50 shadow-md border-b-4 border-cute-deeppink">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
@@ -86,14 +84,20 @@
             <nav class="hidden md:flex space-x-8 text-base font-bold text-slate-800">
                 <a href="#hero" class="hover:text-white transition">Home 🌷</a>
                 <a href="#features" class="hover:text-white transition">Catalog 🌼</a>
+                <a href="#history" class="hover:text-white transition">History 📜</a>
                 <a href="#reviews" class="hover:text-white transition">Reviews ⭐</a>
-                <a href="#sitemap" class="hover:text-white transition">Sitemap 🌿</a>
             </nav>
 
-            <div class="flex items-center space-x-4">
-                <span id="user-display" class="hidden text-xs font-bold text-white bg-cute-deeppink px-3 py-1.5 rounded-full shadow-sm">
-                    🌸 Hello, <span id="user-email-text"></span>
+            <div class="flex items-center space-x-3">
+                <!-- Cart Button -->
+                <button onclick="toggleModal('cart-modal')" class="relative bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-2 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition shadow-sm text-sm">
+                    🛒 Cart <span id="cart-count-badge" class="bg-cute-hotpink text-white rounded-full px-2 py-0.5 text-xs font-black ml-1">0</span>
+                </button>
+
+                <span id="user-display" class="hidden text-xs font-bold text-white bg-cute-deeppink px-3 py-2 rounded-full shadow-sm">
+                    🌸 <span id="user-email-text"></span>
                 </span>
+                
                 <button id="auth-btn" onclick="toggleModal('auth-modal')" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-5 py-2 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition shadow-sm text-sm">
                     Account Portal 🎀
                 </button>
@@ -101,7 +105,7 @@
         </div>
     </header>
 
-    <!-- 2. HERO / CALL TO ACTION -->
+    <!-- HERO SECTION -->
     <section id="hero" class="bg-gradient-to-b from-cute-pink to-cute-lightpink text-slate-800 border-b-2 border-cute-border">
         <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
             <div class="md:col-span-2 space-y-6">
@@ -112,7 +116,7 @@
                     Equip Your Desk for <span class="text-cute-deeppink">Cute Productivity! 💖</span>
                 </h1>
                 <p class="text-lg text-slate-700 max-w-xl font-medium leading-relaxed">
-                    Equip your favorite pastel desk accessories, floral notebooks, and cute flower stationery straight from verified sellers!
+                    Log in to save your personal shopping cart, view item browsing history across devices, and share account-backed reviews!
                 </p>
                 <div class="pt-2 flex flex-wrap gap-4">
                     <a href="#features" class="bg-cute-deeppink text-white font-heading font-bold px-8 py-4 rounded-full shadow-lg hover:bg-cute-hotpink transition transform hover:scale-105 text-base tracking-wide flex items-center gap-2">
@@ -124,7 +128,7 @@
                 </div>
             </div>
 
-            <!-- Focus Spotlight Card -->
+            <!-- Spotlight Card -->
             <div class="col-span-1 bg-white p-6 rounded-3xl border-4 border-cute-pink shadow-xl space-y-4 text-center">
                 <div class="text-4xl">🌷</div>
                 <span class="text-xs font-bold text-cute-deeppink uppercase tracking-widest">Featured Cutie</span>
@@ -132,7 +136,7 @@
                 <p class="text-xs text-slate-600">Pastel flower-capped pens with smooth gel ink that blooms on paper!</p>
                 <div class="pt-3 border-t-2 border-dashed border-cute-border flex justify-between items-center px-2">
                     <span class="text-3xl font-heading font-black text-cute-deeppink">₱150.00</span>
-                    <button onclick="handleCheckout('Blossom Gel Pen Set', 150)" class="bg-cute-deeppink text-white font-bold text-xs px-4 py-2.5 rounded-full hover:bg-cute-hotpink transition shadow">
+                    <button onclick="addToCart('Blossom Gel Pen Set', 150)" class="bg-cute-deeppink text-white font-bold text-xs px-4 py-2.5 rounded-full hover:bg-cute-hotpink transition shadow">
                         Add to Cart 🛒
                     </button>
                 </div>
@@ -140,22 +144,21 @@
         </div>
     </section>
 
-    <!-- 3. ONLINE STORE & PRODUCT LISTING MARKETPLACE -->
+    <!-- STORE CATALOG -->
     <main id="features" class="max-w-7xl mx-auto px-6 py-16 flex-1 w-full">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
             <div>
                 <h2 class="text-3xl font-heading font-extrabold text-slate-900 tracking-tight">Online Store Catalog 💐</h2>
-                <p class="text-slate-600 text-sm mt-1 font-medium">Browse adorable desk supplies added by our merchant community.</p>
+                <p class="text-slate-600 text-sm mt-1 font-medium">Click any product to add it to your saved history and user cart.</p>
             </div>
             <div id="role-badge" class="hidden mt-4 md:mt-0 bg-pink-200 text-cute-deeppink text-xs font-bold px-4 py-2 rounded-full border-2 border-cute-deeppink">
                 🌸 Logged in as Cute Seller
             </div>
         </div>
 
-        <!-- Product Cards Container -->
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             <!-- Item 1 -->
-            <div class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group">
+            <div onclick="recordProductView('Flowery Hardcover Notebook')" class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer">
                 <div class="p-6 text-center">
                     <div class="text-5xl mb-3 group-hover:scale-110 transition transform">📖</div>
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Notebooks</span>
@@ -164,14 +167,14 @@
                 </div>
                 <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
                     <span class="text-2xl font-heading font-bold text-slate-900">₱280.00</span>
-                    <button onclick="handleCheckout('Flowery Hardcover Notebook', 280)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
+                    <button onclick="event.stopPropagation(); addToCart('Flowery Hardcover Notebook', 280)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
                         Add to Cart 🛍️
                     </button>
                 </div>
             </div>
 
             <!-- Item 2 -->
-            <div class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group">
+            <div onclick="recordProductView('Cute Petal Highlighters')" class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer">
                 <div class="p-6 text-center">
                     <div class="text-5xl mb-3 group-hover:scale-110 transition transform">🖍️</div>
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Highlighters</span>
@@ -180,14 +183,14 @@
                 </div>
                 <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
                     <span class="text-2xl font-heading font-bold text-slate-900">₱180.00</span>
-                    <button onclick="handleCheckout('Cute Petal Highlighters', 180)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
+                    <button onclick="event.stopPropagation(); addToCart('Cute Petal Highlighters', 180)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
                         Add to Cart 🛍️
                     </button>
                 </div>
             </div>
 
             <!-- Item 3 -->
-            <div class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group">
+            <div onclick="recordProductView('Blossom Paper Clips')" class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer">
                 <div class="p-6 text-center">
                     <div class="text-5xl mb-3 group-hover:scale-110 transition transform">📎</div>
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Accessories</span>
@@ -196,14 +199,14 @@
                 </div>
                 <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
                     <span class="text-2xl font-heading font-bold text-slate-900">₱120.00</span>
-                    <button onclick="handleCheckout('Blossom Paper Clips', 120)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
+                    <button onclick="event.stopPropagation(); addToCart('Blossom Paper Clips', 120)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
                         Add to Cart 🛍️
                     </button>
                 </div>
             </div>
 
             <!-- Item 4 -->
-            <div class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group">
+            <div onclick="recordProductView('Pastel Flower Scissors')" class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer">
                 <div class="p-6 text-center">
                     <div class="text-5xl mb-3 group-hover:scale-110 transition transform">✂️</div>
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Desk Tools</span>
@@ -212,7 +215,7 @@
                 </div>
                 <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
                     <span class="text-2xl font-heading font-bold text-slate-900">₱190.00</span>
-                    <button onclick="handleCheckout('Pastel Flower Scissors', 190)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
+                    <button onclick="event.stopPropagation(); addToCart('Pastel Flower Scissors', 190)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
                         Add to Cart 🛍️
                     </button>
                 </div>
@@ -220,7 +223,21 @@
         </div>
     </main>
 
-    <!-- 4. REAL REVIEWS & ACCOUNT REQUIREMENT -->
+    <!-- SAVED BROWSING HISTORY SECTION -->
+    <section id="history" class="bg-cute-lightpink py-12 border-t-2 border-cute-border">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-2xl font-heading font-extrabold text-slate-900 mb-2 flex items-center gap-2">
+                📜 Recently Viewed Products
+            </h2>
+            <p class="text-xs text-slate-600 font-medium mb-6">Saved automatically to your signed-in account session.</p>
+            
+            <div id="view-history-list" class="flex gap-4 overflow-x-auto pb-4">
+                <p id="no-history-msg" class="text-xs text-slate-400 font-bold italic">No browsing history recorded yet. Click on products above to build your list!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS SECTION -->
     <section id="reviews" class="bg-white py-16 border-t-2 border-cute-border">
         <div class="max-w-7xl mx-auto px-6">
             <h2 class="text-3xl font-heading font-extrabold text-slate-900 text-center mb-2">Verified Customer Reviews 🌸</h2>
@@ -232,19 +249,17 @@
                 </div>
             </div>
 
-            <!-- Review Submission Form (Requires Logged-In Account) -->
+            <!-- Review Submission Form -->
             <div class="max-w-lg mx-auto bg-cute-lightpink p-6 border-4 border-cute-border rounded-3xl shadow-md space-y-4">
                 <h3 class="text-xl font-heading font-bold text-cute-deeppink text-center">Post Your Review ✨</h3>
                 
-                <!-- Notice for Logged-Out Users -->
                 <div id="login-notice" class="bg-white p-4 rounded-2xl border-2 border-cute-pink text-center space-y-3">
-                    <p class="text-xs font-bold text-slate-700">🔒 You must create or log into an account before posting a review.</p>
+                    <p class="text-xs font-bold text-slate-700">🔒 You must create or log into an account before posting a review or saving items.</p>
                     <button onclick="toggleModal('auth-modal')" class="bg-cute-deeppink text-white font-bold text-xs px-5 py-2.5 rounded-full hover:bg-cute-hotpink transition shadow">
                         Sign In / Create Account 🎀
                     </button>
                 </div>
 
-                <!-- Active Review Form -->
                 <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-3 hidden">
                     <div>
                         <label class="text-xs font-bold text-slate-600 uppercase">Logged In As 🌸</label>
@@ -272,54 +287,38 @@
         </div>
     </section>
 
-    <!-- 5. SITEMAP SECTION -->
-    <section id="sitemap" class="bg-cute-green text-cute-darkgreen py-12 border-t-4 border-cute-deeppink">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div>
-                <h4 class="font-heading font-black uppercase text-sm tracking-wider mb-4 border-b-2 border-cute-darkgreen pb-1">Stationery 🌸</h4>
-                <ul class="space-y-2 text-sm font-bold">
-                    <li><a href="#features" class="hover:underline">Flower Pens</a></li>
-                    <li><a href="#features" class="hover:underline">Pastel Highlighters</a></li>
-                    <li><a href="#features" class="hover:underline">Floral Notebooks</a></li>
-                    <li><a href="#features" class="hover:underline">Cute Paper Clips</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-heading font-black uppercase text-sm tracking-wider mb-4 border-b-2 border-cute-darkgreen pb-1">Desk Decor 🌼</h4>
-                <ul class="space-y-2 text-sm font-bold">
-                    <li><a href="#features" class="hover:underline">Pink Desk Pads</a></li>
-                    <li><a href="#features" class="hover:underline">Flower Organizers</a></li>
-                    <li><a href="#features" class="hover:underline">Cute Tape Dispensers</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-heading font-black uppercase text-sm tracking-wider mb-4 border-b-2 border-cute-darkgreen pb-1">Portals 🎀</h4>
-                <ul class="space-y-2 text-sm font-bold">
-                    <li><a href="#" onclick="openPortalRole('buyer')" class="hover:underline">Buyer Login</a></li>
-                    <li><a href="#" onclick="openPortalRole('seller')" class="hover:underline">Seller Registration</a></li>
-                    <li><a href="#" class="hover:underline">PayMongo Payments</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-heading font-black uppercase text-sm tracking-wider mb-4 border-b-2 border-cute-darkgreen pb-1">Sitemap Info 🌱</h4>
-                <p class="text-xs font-semibold mb-2">Hosted on Vercel • Powered by Supabase & PayMongo Philippines</p>
-                <div class="flex gap-2 text-xs font-bold text-slate-800">
-                    <span class="bg-white px-2 py-1 rounded-full shadow-sm">GCash 🌸</span>
-                    <span class="bg-white px-2 py-1 rounded-full shadow-sm">Maya 🌺</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. FOOTER -->
-    <footer class="bg-cute-deeppink text-white text-xs py-6 font-bold">
+    <!-- FOOTER -->
+    <footer class="bg-cute-deeppink text-white text-xs py-6 font-bold mt-auto">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-center">
             <p>© 2026 OFFICESUPPLY. Bloomed with 💕 in the Philippines</p>
             <p class="text-pink-100">Cutest Office Supplies Platform • All rights reserved 🌷</p>
         </div>
     </footer>
 
-    <!-- AUTHENTICATION & SELLER PORTAL MODAL -->
+    <!-- CART MODAL -->
+    <div id="cart-modal" class="fixed inset-0 bg-pink-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 space-y-4 border-4 border-cute-pink">
+            <div class="flex justify-between items-center border-b-2 border-cute-border pb-3">
+                <h3 class="text-xl font-heading font-extrabold text-cute-deeppink">Saved Cart Items 🛒</h3>
+                <button onclick="toggleModal('cart-modal')" class="text-slate-400 hover:text-cute-deeppink text-2xl font-bold">&times;</button>
+            </div>
+            
+            <div id="cart-items-container" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                <p class="text-xs text-slate-400 font-bold text-center py-4">Your cart is empty!</p>
+            </div>
+
+            <div class="border-t-2 border-dashed border-cute-border pt-4 flex justify-between items-center">
+                <span class="text-sm font-bold text-slate-700">Total:</span>
+                <span id="cart-total-price" class="text-xl font-heading font-black text-cute-deeppink">₱0.00</span>
+            </div>
+
+            <button onclick="handleCartCheckout()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
+                Proceed to Checkout 🌸
+            </button>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
     <div id="auth-modal" class="fixed inset-0 bg-pink-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 space-y-4 border-4 border-cute-pink">
             <div class="flex justify-between items-center border-b-2 border-cute-border pb-3">
@@ -339,7 +338,7 @@
                 <div>
                     <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Choose Role ✨</label>
                     <select id="user-role" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink font-bold text-slate-700">
-                        <option value="buyer">Buyer (Purchase & Review)</option>
+                        <option value="buyer">Buyer (Save Cart, History & Reviews)</option>
                         <option value="seller">Seller (Upload Products)</option>
                     </select>
                 </div>
@@ -348,12 +347,11 @@
                 </button>
             </form>
 
-            <!-- Seller Product Upload Box -->
             <div id="seller-panel" class="hidden border-t-2 border-dashed border-cute-border pt-4 space-y-3">
                 <h4 class="font-heading font-bold text-cute-deeppink text-sm">Add Cute Product (Seller Dashboard) 🌷</h4>
                 <form onsubmit="handleAddProduct(event)" class="space-y-2">
-                    <input type="text" id="prod-title" placeholder="Product Title (e.g. Flower Clips)" required class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink">
-                    <input type="number" id="prod-price" placeholder="Price in PHP (e.g. 150)" step="0.01" required class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink">
+                    <input type="text" id="prod-title" placeholder="Product Title" required class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink">
+                    <input type="number" id="prod-price" placeholder="Price in PHP" step="0.01" required class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink">
                     <textarea id="prod-desc" placeholder="Product Description..." class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink"></textarea>
                     <button type="submit" class="w-full bg-cute-pink text-slate-800 font-heading font-extrabold py-2.5 rounded-xl hover:bg-cute-deeppink hover:text-white transition text-xs shadow">
                         Publish to Marketplace 🌸
@@ -363,7 +361,7 @@
         </div>
     </div>
 
-    <!-- FIXED & THEMED VOICEFLOW AI CHATBOT INTEGRATION -->
+    <!-- VOICEFLOW AI CHATBOT INTEGRATION -->
     <script type="text/javascript">
       (function(d, t) {
           var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
@@ -386,7 +384,7 @@
       })(document, 'script');
     </script>
 
-    <!-- CLIENT CONTROLLER SCRIPT -->
+    <!-- SCRIPT CLIENT CONTROLLER -->
     <script>
         const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
         const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
@@ -395,6 +393,8 @@
             : null;
 
         let currentUser = null;
+        let userCart = [];
+        let viewHistory = [];
 
         document.addEventListener('DOMContentLoaded', () => {
             loadRealReviews();
@@ -409,11 +409,126 @@
                 document.getElementById('user-display').classList.remove('hidden');
                 document.getElementById('auth-btn').innerText = 'Switch Account 🎀';
                 
-                // Enable review form for logged in user
                 document.getElementById('login-notice').classList.add('hidden');
                 document.getElementById('review-form').classList.remove('hidden');
                 document.getElementById('reviewer-account').value = storedUser;
+
+                loadUserData();
             }
+        }
+
+        async function loadUserData() {
+            if (!currentUser) return;
+
+            if (supabase) {
+                // Fetch saved cart from Supabase
+                const { data: cartData } = await supabase.from('carts').select('*').eq('user_email', currentUser);
+                if (cartData) {
+                    userCart = cartData;
+                    renderCart();
+                }
+
+                // Fetch view history from Supabase
+                const { data: historyData } = await supabase.from('view_history').select('*').eq('user_email', currentUser).order('created_at', { ascending: false });
+                if (historyData) {
+                    viewHistory = historyData.map(h => h.product_title);
+                    renderHistory();
+                }
+            } else {
+                // Fallback to user-scoped local storage
+                userCart = JSON.parse(localStorage.getItem(`cart_${currentUser}`) || '[]');
+                viewHistory = JSON.parse(localStorage.getItem(`history_${currentUser}`) || '[]');
+                renderCart();
+                renderHistory();
+            }
+        }
+
+        async function addToCart(productTitle, price) {
+            if (!currentUser) {
+                alert("Please log in to save items to your personal shopping cart! 🌸");
+                toggleModal('auth-modal');
+                return;
+            }
+
+            const existingItem = userCart.find(i => i.product_title === productTitle);
+            if (existingItem) {
+                existingItem.quantity = (existingItem.quantity || 1) + 1;
+            } else {
+                userCart.push({ product_title: productTitle, price, quantity: 1 });
+            }
+
+            if (supabase) {
+                await supabase.from('carts').upsert({ user_email: currentUser, product_title: productTitle, price, quantity: existingItem ? existingItem.quantity : 1 });
+            } else {
+                localStorage.setItem(`cart_${currentUser}`, JSON.stringify(userCart));
+            }
+
+            renderCart();
+            alert(`Added "${productTitle}" to your saved account cart! 🛒`);
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-count-badge');
+            const totalPriceEl = document.getElementById('cart-total-price');
+
+            const totalCount = userCart.reduce((sum, i) => sum + i.quantity, 0);
+            badge.innerText = totalCount;
+
+            if (userCart.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 font-bold text-center py-4">Your cart is empty!</p>';
+                totalPriceEl.innerText = '₱0.00';
+                return;
+            }
+
+            container.innerHTML = '';
+            let total = 0;
+
+            userCart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center p-3 bg-cute-lightpink rounded-xl border border-cute-border text-xs font-bold text-slate-800";
+                div.innerHTML = `
+                    <div>
+                        <p class="text-slate-900">${item.product_title}</p>
+                        <p class="text-cute-deeppink">₱${item.price.toFixed(2)} x ${item.quantity}</p>
+                    </div>
+                    <span>₱${itemTotal.toFixed(2)}</span>
+                `;
+                container.appendChild(div);
+            });
+
+            totalPriceEl.innerText = `₱${total.toFixed(2)}`;
+        }
+
+        async function recordProductView(productTitle) {
+            if (!currentUser) return;
+
+            if (!viewHistory.includes(productTitle)) {
+                viewHistory.unshift(productTitle);
+                
+                if (supabase) {
+                    await supabase.from('view_history').insert([{ user_email: currentUser, product_title: productTitle }]);
+                } else {
+                    localStorage.setItem(`history_${currentUser}`, JSON.stringify(viewHistory));
+                }
+                renderHistory();
+            }
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('view-history-list');
+            if (viewHistory.length === 0) return;
+
+            container.innerHTML = '';
+            viewHistory.forEach(item => {
+                const tag = document.createElement('div');
+                tag.className = "flex-shrink-0 bg-white border-2 border-cute-pink px-4 py-2 rounded-full text-xs font-bold text-cute-deeppink shadow-sm flex items-center gap-1.5";
+                tag.innerHTML = `🌸 ${item}`;
+                container.appendChild(tag);
+            });
         }
 
         async function loadRealReviews() {
@@ -503,7 +618,6 @@
                 }
             }
 
-            // Save user session locally
             localStorage.setItem('logged_user_email', email);
             checkUserSession();
 
@@ -516,23 +630,12 @@
             }
         }
 
-        async function handleCheckout(productName, amount) {
-            try {
-                const response = await fetch('/api/paymongo-checkout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount, description: productName, buyerEmail: currentUser || "guest@example.com" })
-                });
-
-                const data = await response.json();
-                if (data.checkoutUrl) {
-                    window.location.href = data.checkoutUrl;
-                } else {
-                    alert("PayMongo Link created for: " + productName + " (₱" + amount + ")");
-                }
-            } catch (err) {
-                alert("🌸 PayMongo Checkout Triggered!\nItem: " + productName + "\nAmount: ₱" + amount + ".00");
+        function handleCartCheckout() {
+            if (userCart.length === 0) {
+                alert("Your cart is empty!");
+                return;
             }
+            alert("Redirecting to PayMongo secure checkout...");
         }
 
         function handleAddProduct(event) {
@@ -543,7 +646,8 @@
 
             const container = document.getElementById('product-grid');
             const newCard = document.createElement('div');
-            newCard.className = "bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group";
+            newCard.className = "bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer";
+            newCard.onclick = () => recordProductView(title);
             newCard.innerHTML = `
                 <div class="p-6 text-center">
                     <div class="text-5xl mb-3 group-hover:scale-110 transition transform">🌸</div>
@@ -553,7 +657,7 @@
                 </div>
                 <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
                     <span class="text-2xl font-heading font-bold text-slate-900">₱${price.toFixed(2)}</span>
-                    <button onclick="handleCheckout('${title}', ${price})" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
+                    <button onclick="event.stopPropagation(); addToCart('${title}', ${price})" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
                         Add to Cart 🛍️
                     </button>
                 </div>
