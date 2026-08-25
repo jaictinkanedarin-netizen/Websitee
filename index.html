@@ -171,7 +171,7 @@
                             </button>
                         </div>
                         <button onclick="openReviewModal('Flowery Hardcover Notebook')" class="w-full text-center text-xs font-bold text-cute-deeppink border border-cute-deeppink bg-white py-2 rounded-xl hover:bg-cute-deeppink hover:text-white transition">
-                            ⭐ Add / View Reviews
+                            ⭐ Write Review
                         </button>
                     </div>
                 </div>
@@ -202,7 +202,7 @@
                             </button>
                         </div>
                         <button onclick="openReviewModal('Cute Petal Highlighters')" class="w-full text-center text-xs font-bold text-cute-deeppink border border-cute-deeppink bg-white py-2 rounded-xl hover:bg-cute-deeppink hover:text-white transition">
-                            ⭐ Add / View Reviews
+                            ⭐ Write Review
                         </button>
                     </div>
                 </div>
@@ -216,8 +216,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
                 <div>
-                    <h2 class="text-2xl sm:text-3xl font-heading font-extrabold text-slate-900">Community Reviews 💖</h2>
-                    <p class="text-xs sm:text-sm text-slate-600 font-medium">See feedback from our workspace stationery community.</p>
+                    <h2 class="text-2xl sm:text-3xl font-heading font-extrabold text-slate-900">Verified Customer Reviews 💖</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 font-medium">Real reviews submitted by active users in our store.</p>
                 </div>
                 <button onclick="openReviewModal('Flowery Hardcover Notebook')" class="bg-cute-deeppink text-white font-heading font-bold px-6 py-3 rounded-full hover:bg-cute-hotpink transition shadow text-xs sm:text-sm min-h-[44px] flex items-center gap-1.5">
                     ✨ Write a Review
@@ -225,7 +225,7 @@
             </div>
 
             <div id="reviews-feed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Reviews render dynamically here -->
+                <!-- User-submitted reviews render dynamically here -->
             </div>
         </div>
     </section>
@@ -331,10 +331,8 @@
     <script>
         let currentUser = null;
         let userCart = [];
-        let reviews = [
-            { product: "Flowery Hardcover Notebook", author: "maria@gmail.com", rating: 5, comment: "Super cute paper quality! Does not bleed with gel pens! 🌸" },
-            { product: "Cute Petal Highlighters", author: "hannah@gmail.com", rating: 4, comment: "The pastel colors are soft and beautiful on standard office paper." }
-        ];
+        // Empty by default: strictly real user-submitted reviews will appear here
+        let reviews = [];
 
         document.addEventListener('DOMContentLoaded', () => {
             // Mobile Menu
@@ -428,6 +426,16 @@
 
         function renderReviews() {
             const feed = document.getElementById('reviews-feed');
+            
+            if (reviews.length === 0) {
+                feed.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-slate-400 font-bold text-xs italic">
+                        No customer reviews yet. Be the first human to post a review! 🌸
+                    </div>
+                `;
+                return;
+            }
+
             feed.innerHTML = '';
 
             reviews.forEach(r => {
