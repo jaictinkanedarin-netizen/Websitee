@@ -59,7 +59,6 @@
                 <a href="#hero" class="hover:text-white transition">Home 🌷</a>
                 <a href="#features" class="hover:text-white transition">Catalog 🌼</a>
                 <a href="#history" class="hover:text-white transition">History 📜</a>
-                <a href="#reviews" class="hover:text-white transition">Reviews ⭐</a>
             </nav>
 
             <div class="flex items-center space-x-3">
@@ -89,7 +88,7 @@
                     Equip Your Desk for <span class="text-cute-deeppink">Cute Productivity! 💖</span>
                 </h1>
                 <p class="text-lg text-slate-700 max-w-xl font-medium leading-relaxed">
-                    Log in to save your personal shopping cart, view item browsing history across devices, and share account-backed reviews!
+                    Log in to save your personal shopping cart, select item options, and keep track of your active purchases.
                 </p>
                 <div class="pt-2 flex flex-wrap gap-4">
                     <a href="#features" class="bg-cute-deeppink text-white font-heading font-bold px-8 py-4 rounded-full shadow-lg hover:bg-cute-hotpink transition transform hover:scale-105 text-base tracking-wide flex items-center gap-2">
@@ -104,9 +103,17 @@
                 <span class="text-xs font-bold text-cute-deeppink uppercase tracking-widest">Featured Cutie</span>
                 <h2 class="text-2xl font-heading font-bold text-slate-900">Blossom Gel Pen Set</h2>
                 <p class="text-xs text-slate-600">Pastel flower-capped pens with smooth gel ink that blooms on paper!</p>
+                <div class="space-y-2 text-left">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase">Ink Color Option:</label>
+                    <select id="spotlight-variant" class="w-full text-xs p-2 border border-cute-border rounded-xl bg-cute-lightpink font-bold">
+                        <option value="Pastel Pink Ink">Pastel Pink Ink</option>
+                        <option value="Sky Blue Ink">Sky Blue Ink</option>
+                        <option value="Lavender Ink">Lavender Ink</option>
+                    </select>
+                </div>
                 <div class="pt-3 border-t-2 border-dashed border-cute-border flex justify-between items-center px-2">
                     <span class="text-3xl font-heading font-black text-cute-deeppink">₱150.00</span>
-                    <button class="add-to-cart-btn bg-cute-deeppink text-white font-bold text-xs px-4 py-2.5 rounded-full hover:bg-cute-hotpink transition shadow" data-title="Blossom Gel Pen Set" data-price="150">
+                    <button id="add-spotlight-btn" class="bg-cute-deeppink text-white font-bold text-xs px-4 py-2.5 rounded-full hover:bg-cute-hotpink transition shadow">
                         Add to Cart 🛒
                     </button>
                 </div>
@@ -119,40 +126,63 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
             <div>
                 <h2 class="text-3xl font-heading font-extrabold text-slate-900 tracking-tight">Online Store Catalog 💐</h2>
-                <p class="text-slate-600 text-sm mt-1 font-medium">Click any product to add it to your saved history and user cart.</p>
+                <p class="text-slate-600 text-sm mt-1 font-medium">Select your preferred item variants before adding them to your cart.</p>
             </div>
         </div>
 
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <div class="product-card bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer" data-title="Flowery Hardcover Notebook">
-                <div class="p-6 text-center">
+            
+            <!-- Item 1 -->
+            <div class="product-card bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group" data-title="Flowery Hardcover Notebook">
+                <div class="p-6 text-center cursor-pointer" onclick="recordViewHistory('Flowery Hardcover Notebook')">
                     <div class="text-5xl mb-3 group-hover:scale-110 transition transform">📖</div>
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Notebooks</span>
                     <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">Flowery Hardcover Notebook</h3>
                     <p class="text-slate-600 text-xs">A5 ribbon-bound journal with pressed flower motifs and gold foil edges.</p>
                 </div>
-                <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
-                    <span class="text-2xl font-heading font-bold text-slate-900">₱280.00</span>
-                    <button class="add-to-cart-btn bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow" data-title="Flowery Hardcover Notebook" data-price="280">
-                        Add to Cart 🛍️
-                    </button>
+                <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border space-y-3">
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase">Select Cover:</label>
+                        <select class="variant-select w-full text-xs p-1.5 border border-cute-border rounded-lg bg-white font-bold">
+                            <option value="Rose Floral Cover">Rose Floral Cover</option>
+                            <option value="Daisy Yellow Cover">Daisy Yellow Cover</option>
+                            <option value="Lavender Field Cover">Lavender Field Cover</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-2xl font-heading font-bold text-slate-900">₱280.00</span>
+                        <button class="add-to-cart-btn bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow" data-title="Flowery Hardcover Notebook" data-price="280">
+                            Add to Cart 🛍️
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="product-card bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer" data-title="Cute Petal Highlighters">
-                <div class="p-6 text-center">
+            <!-- Item 2 -->
+            <div class="product-card bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group" data-title="Cute Petal Highlighters">
+                <div class="p-6 text-center cursor-pointer" onclick="recordViewHistory('Cute Petal Highlighters')">
                     <div class="text-5xl mb-3 group-hover:scale-110 transition transform">🖍️</div>
                     <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Highlighters</span>
                     <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">Cute Petal Highlighters</h3>
                     <p class="text-slate-600 text-xs">5 soft pastel highlighters connected in an adorable flower shape wheel.</p>
                 </div>
-                <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
-                    <span class="text-2xl font-heading font-bold text-slate-900">₱180.00</span>
-                    <button class="add-to-cart-btn bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow" data-title="Cute Petal Highlighters" data-price="180">
-                        Add to Cart 🛍️
-                    </button>
+                <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border space-y-3">
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase">Tone Palette:</label>
+                        <select class="variant-select w-full text-xs p-1.5 border border-cute-border rounded-lg bg-white font-bold">
+                            <option value="Soft Pastel Set">Soft Pastel Set</option>
+                            <option value="Neon Glow Set">Neon Glow Set</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-2xl font-heading font-bold text-slate-900">₱180.00</span>
+                        <button class="add-to-cart-btn bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow" data-title="Cute Petal Highlighters" data-price="180">
+                            Add to Cart 🛍️
+                        </button>
+                    </div>
                 </div>
             </div>
+
         </div>
     </main>
 
@@ -169,32 +199,36 @@
             </div>
             
             <div id="view-history-list" class="flex gap-4 overflow-x-auto pb-4 min-h-[50px] items-center">
-                <p id="no-history-msg" class="text-xs text-slate-400 font-bold italic">No browsing history recorded yet. Click on products above to build your list!</p>
+                <p id="no-history-msg" class="text-xs text-slate-400 font-bold italic">No browsing history recorded yet. Click on product cards above to record!</p>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="bg-cute-deeppink text-white text-xs py-6 font-bold mt-auto">
+    <!-- FOOTER SECTION (Ensured full visibility with explicit padding & border) -->
+    <footer class="bg-cute-deeppink text-white text-xs py-8 font-bold mt-auto border-t-4 border-cute-hotpink relative z-30">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-center">
+            <div>
+                <p class="text-sm font-heading">🌸 OFFICESUPPLY. Workspace Shop</p>
+                <p class="text-pink-100 font-medium mt-0.5">Bringing blooms and color to your daily productivity.</p>
+            </div>
             <p>© 2026 OFFICESUPPLY. Bloomed with 💕 in the Philippines</p>
         </div>
     </footer>
 
-    <!-- CART MODAL -->
+    <!-- CART MODAL WITH EXTENDED FEATURES -->
     <div id="cart-modal" class="fixed inset-0 bg-pink-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 space-y-4 border-4 border-cute-pink">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 space-y-4 border-4 border-cute-pink">
             <div class="flex justify-between items-center border-b-2 border-cute-border pb-3">
                 <h3 class="text-xl font-heading font-extrabold text-cute-deeppink">Saved Cart Items 🛒</h3>
                 <button class="close-modal-btn text-slate-400 hover:text-cute-deeppink text-2xl font-bold" data-target="cart-modal">&times;</button>
             </div>
             
-            <div id="cart-items-container" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+            <div id="cart-items-container" class="space-y-3 max-h-72 overflow-y-auto pr-1">
                 <p class="text-xs text-slate-400 font-bold text-center py-4">Your cart is empty!</p>
             </div>
 
             <div class="border-t-2 border-dashed border-cute-border pt-4 flex justify-between items-center">
-                <span class="text-sm font-bold text-slate-700">Total:</span>
+                <span class="text-sm font-bold text-slate-700">Total Amount:</span>
                 <span id="cart-total-price" class="text-xl font-heading font-black text-cute-deeppink">₱0.00</span>
             </div>
 
@@ -228,7 +262,7 @@
         </div>
     </div>
 
-    <!-- AI CHATBOT INTEGRATION -->
+    <!-- AI CHATBOT WIDGET -->
     <button id="ai-toggle-btn" class="fixed bottom-6 right-6 z-50 bg-cute-deeppink text-white p-4 rounded-full shadow-2xl hover:scale-110 hover:bg-cute-hotpink transition border-2 border-white flex items-center justify-center">
         💬 <span class="ml-2 font-heading font-bold text-xs hidden sm:inline">Stationery AI Helper</span>
     </button>
@@ -256,45 +290,40 @@
         let viewHistory = [];
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Modal Open Toggles
             document.getElementById('cart-modal-btn').addEventListener('click', () => toggleModal('cart-modal'));
             document.getElementById('auth-modal-btn').addEventListener('click', () => toggleModal('auth-modal'));
             
-            // Modal Close Buttons
             document.querySelectorAll('.close-modal-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => toggleModal(e.target.getAttribute('data-target')));
             });
 
-            // Add To Cart Event Listeners
+            // Feature Item Handlers
+            document.getElementById('add-spotlight-btn').addEventListener('click', () => {
+                const variant = document.getElementById('spotlight-variant').value;
+                addToCart('Blossom Gel Pen Set', 150, variant);
+            });
+
+            // Catalog Items Add Handlers
             document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
+                    const card = btn.closest('.product-card');
                     const title = btn.getAttribute('data-title');
                     const price = parseFloat(btn.getAttribute('data-price'));
-                    addToCart(title, price);
+                    const variant = card.querySelector('.variant-select').value;
+                    addToCart(title, price, variant);
                 });
             });
 
-            // Product View History Event Listeners
-            document.querySelectorAll('.product-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const title = card.getAttribute('data-title');
-                    recordViewHistory(title);
-                });
-            });
-
-            // Auth Form Submission
+            // Forms & AI Handlers
             document.getElementById('auth-form').addEventListener('submit', handleAuth);
-
-            // AI Toggle & Chat Submission
             document.getElementById('ai-toggle-btn').addEventListener('click', toggleAIChat);
             document.getElementById('ai-close-btn').addEventListener('click', toggleAIChat);
             document.getElementById('ai-chat-form').addEventListener('submit', handleAISubmit);
 
-            // Checkout Button Handler
             document.getElementById('checkout-btn').addEventListener('click', () => {
                 if (userCart.length === 0) return alert('Your cart is empty!');
-                alert('Order processed successfully! 🌸');
+                alert('Order placed successfully! 🌸');
                 userCart = [];
                 renderCart();
                 toggleModal('cart-modal');
@@ -329,22 +358,35 @@
             }
         }
 
-        function addToCart(title, price) {
+        function addToCart(title, price, variant) {
             if (!currentUser) {
                 alert("Please click 'Account Portal' to create an account or sign in first! 🌸");
                 toggleModal('auth-modal');
                 return;
             }
 
-            const item = userCart.find(i => i.title === title);
-            if (item) {
-                item.quantity += 1;
+            const existingItem = userCart.find(i => i.title === title && i.variant === variant);
+            if (existingItem) {
+                existingItem.quantity += 1;
             } else {
-                userCart.push({ title, price, quantity: 1 });
+                userCart.push({ title, price, variant, quantity: 1 });
             }
 
             renderCart();
-            alert(`Added "${title}" to your cart! 🛒`);
+            alert(`Added "${title} (${variant})" to your cart! 🛒`);
+        }
+
+        function updateQuantity(index, delta) {
+            userCart[index].quantity += delta;
+            if (userCart[index].quantity <= 0) {
+                userCart.splice(index, 1);
+            }
+            renderCart();
+        }
+
+        function removeFromCart(index) {
+            userCart.splice(index, 1);
+            renderCart();
         }
 
         function renderCart() {
@@ -364,18 +406,28 @@
             container.innerHTML = '';
             let grandTotal = 0;
 
-            userCart.forEach(item => {
+            userCart.forEach((item, idx) => {
                 const subtotal = item.price * item.quantity;
                 grandTotal += subtotal;
 
                 const row = document.createElement('div');
-                row.className = "flex justify-between items-center p-3 bg-cute-lightpink rounded-xl border border-cute-border text-xs font-bold text-slate-800";
+                row.className = "flex justify-between items-center p-3 bg-cute-lightpink rounded-2xl border border-cute-border text-xs text-slate-800";
                 row.innerHTML = `
-                    <div>
-                        <p class="text-slate-900">${item.title}</p>
-                        <p class="text-cute-deeppink">₱${item.price.toFixed(2)} x ${item.quantity}</p>
+                    <div class="space-y-0.5 max-w-[50%]">
+                        <p class="font-bold text-slate-900 leading-tight">${item.title}</p>
+                        <p class="text-[10px] text-cute-deeppink font-semibold">Option: ${item.variant}</p>
+                        <p class="text-[11px] text-slate-500 font-bold">₱${item.price.toFixed(2)}</p>
                     </div>
-                    <span>₱${subtotal.toFixed(2)}</span>
+
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center border border-cute-border bg-white rounded-full overflow-hidden shadow-sm">
+                            <button onclick="updateQuantity(${idx}, -1)" class="px-2.5 py-0.5 text-slate-600 hover:bg-cute-pink hover:text-white transition font-bold">-</button>
+                            <span class="px-2 font-bold text-slate-800">${item.quantity}</span>
+                            <button onclick="updateQuantity(${idx}, 1)" class="px-2.5 py-0.5 text-slate-600 hover:bg-cute-pink hover:text-white transition font-bold">+</button>
+                        </div>
+
+                        <button onclick="removeFromCart(${idx})" class="text-red-400 hover:text-red-600 font-bold text-base p-1 transition" title="Remove item">&times;</button>
+                    </div>
                 `;
                 container.appendChild(row);
             });
@@ -425,7 +477,7 @@
             setTimeout(() => {
                 const aiBubble = document.createElement('div');
                 aiBubble.className = "bg-cute-lightpink p-2.5 rounded-2xl text-slate-800 font-medium mr-8";
-                aiBubble.innerText = "Thanks for asking! Check out our cute floral catalog items or log into your account to save your cart! 🌸";
+                aiBubble.innerText = "Thanks for asking! You can choose item variants from dropdown menus before adding items to your cart! 🌸";
                 
                 chatMessages.appendChild(aiBubble);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
