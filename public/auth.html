@@ -1,37 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <title>Account Access | DeskPro</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OFFICESUPPLY. 🌸 - Login / Sign Up</title>
+    <!-- Google Fonts: Fredoka & Quicksand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              fredoka: ['Fredoka', 'sans-serif'],
+              quicksand: ['Quicksand', 'sans-serif'],
+            },
+            colors: {
+              cute: {
+                pink: '#FFAEC9',
+                lightpink: '#FFF0F5',
+                deeppink: '#FF69B4',
+                hotpink: '#FF1493',
+                border: '#FFD1DC'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        body { font-family: 'Quicksand', sans-serif; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Fredoka', sans-serif; }
+        .floral-bg {
+            background-color: #FFF0F5;
+            background-image: radial-gradient(#FFAEC9 0.75px, transparent 0.75px), radial-gradient(#FFAEC9 0.75px, #FFF0F5 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+    </style>
 </head>
-<body>
-  <header>
-    <h1>DeskPro</h1>
-    <nav><a href="index.html">Home</a></nav>
-  </header>
+<body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen">
 
-  <main class="container" style="max-width: 500px;">
-    <h2>Authentication</h2>
-    <form id="auth-form">
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="auth-email" required>
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="auth-password" required>
-      </div>
-      <div class="form-group">
-        <label>GCash Number</label>
-        <input type="text" id="auth-gcash" placeholder="09XXXXXXXXX">
-      </div>
-      <button type="button" class="btn-cta" id="btn-login">Login</button>
-      <button type="button" class="btn-cta" id="btn-signup" style="background:#0284c7; color:#fff;">Register</button>
-    </form>
-  </main>
+    <!-- HEADER -->
+    <header class="bg-cute-pink text-slate-800 sticky top-0 z-40 shadow-md border-b-4 border-cute-deeppink">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
+                🌸 OFFICESUPPLY. ✨
+            </a>
+            <a href="index.html" class="hover:text-white font-bold text-sm transition">← Back to Store 🌷</a>
+        </div>
+    </header>
 
-  <script src="app.js"></script>
+    <!-- AUTH FORM CONTAINER -->
+    <main class="max-w-md mx-auto px-6 py-16 flex-1 w-full flex items-center justify-center">
+        <div class="bg-white p-8 rounded-3xl border-4 border-cute-pink shadow-xl w-full space-y-6">
+            
+            <!-- TOGGLE BUTTONS -->
+            <div class="flex bg-cute-lightpink p-1.5 rounded-2xl border-2 border-cute-border">
+                <button id="tab-login" onclick="switchMode('login')" class="w-1/2 py-2 rounded-xl font-heading font-bold text-sm bg-cute-deeppink text-white transition shadow-sm">
+                    Log In 🌸
+                </button>
+                <button id="tab-signup" onclick="switchMode('signup')" class="w-1/2 py-2 rounded-xl font-heading font-bold text-sm text-slate-600 transition hover:text-cute-deeppink">
+                    Sign Up ✨
+                </button>
+            </div>
+
+            <div>
+                <h2 id="form-title" class="text-2xl font-heading font-extrabold text-slate-900">Welcome Back! 🌸</h2>
+                <p id="form-subtitle" class="text-xs text-slate-500 font-bold mt-1">Log in to manage your orders & account details.</p>
+            </div>
+
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Email Address</label>
+                    <input type="email" id="auth-email" placeholder="your@email.com" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                </div>
+
+                <div>
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Password</label>
+                    <input type="password" id="auth-password" placeholder="••••••••" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                </div>
+
+                <button type="submit" id="btn-submit" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
+                    Log In ✨
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let isSignUp = false;
+
+        function switchMode(mode) {
+            isSignUp = mode === 'signup';
+            
+            const tabLogin = document.getElementById('tab-login');
+            const tabSignup = document.getElementById('tab-signup');
+            const title = document.getElementById('form-title');
+            const subtitle = document.getElementById('form-subtitle');
+            const btn = document.getElementById('btn-submit');
+
+            if (isSignUp) {
+                tabSignup.className = "w-1/2 py-2 rounded-xl font-heading font-bold text-sm bg-cute-deeppink text-white transition shadow-sm";
+                tabLogin.className = "w-1/2 py-2 rounded-xl font-heading font-bold text-sm text-slate-600 transition hover:text-cute-deeppink";
+                title.textContent = "Create Account ✨";
+                subtitle.textContent = "Sign up to start buying & selling aesthetic stationery!";
+                btn.textContent = "Create My Account ✨";
+            } else {
+                tabLogin.className = "w-1/2 py-2 rounded-xl font-heading font-bold text-sm bg-cute-deeppink text-white transition shadow-sm";
+                tabSignup.className = "w-1/2 py-2 rounded-xl font-heading font-bold text-sm text-slate-600 transition hover:text-cute-deeppink";
+                title.textContent = "Welcome Back! 🌸";
+                subtitle.textContent = "Log in to manage your orders & account details.";
+                btn.textContent = "Log In ✨";
+            }
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const btn = document.getElementById('btn-submit');
+
+            btn.disabled = true;
+            btn.textContent = "Processing... 🌸";
+
+            if (isSignUp) {
+                const { data, error } = await supabaseClient.auth.signUp({ email, password });
+                if (error) {
+                    alert("Sign Up Error: " + error.message);
+                } else {
+                    alert("Account created successfully! Logging you in... 🌸");
+                    window.location.href = 'account.html';
+                }
+            } else {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) {
+                    alert("Login Error: " + error.message);
+                } else {
+                    window.location.href = 'account.html';
+                }
+            }
+
+            btn.disabled = false;
+            btn.textContent = isSignUp ? "Create My Account ✨" : "Log In ✨";
+        }
+    </script>
 </body>
 </html>
