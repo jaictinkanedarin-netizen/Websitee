@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OFFICESUPPLY. 🌸 - Login / Sign Up</title>
+    <title>OFFICESUPPLY. 🌸 - Account & Profile</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +46,8 @@
 </head>
 <body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen justify-center items-center p-6">
 
-    <div class="bg-white border-4 border-cute-pink rounded-3xl p-8 max-w-md w-full shadow-lg space-y-6">
+    <!-- AUTH CARD (LOGIN / SIGN UP) -->
+    <div id="auth-card" class="bg-white border-4 border-cute-pink rounded-3xl p-8 max-w-md w-full shadow-lg space-y-6">
         
         <!-- HEADER / TOGGLE TABS -->
         <div class="text-center space-y-2">
@@ -63,7 +64,7 @@
             </button>
         </div>
 
-        <!-- LOG IN FORM (Email & Password Only) -->
+        <!-- LOG IN FORM -->
         <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
             <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
@@ -78,7 +79,7 @@
             </button>
         </form>
 
-        <!-- SIGN UP FORM (Includes Extra Fields) -->
+        <!-- SIGN UP FORM -->
         <form id="signup-form" onsubmit="handleSignUp(event)" class="space-y-4 hidden">
             <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
@@ -103,10 +104,61 @@
 
     </div>
 
+    <!-- CUSTOMIZE PROFILE SECTION (Shown when user is logged in) -->
+    <div id="profile-section" class="bg-white border-4 border-cute-pink rounded-3xl p-8 max-w-md w-full shadow-lg space-y-6 hidden">
+        <div class="text-center space-y-2">
+            <h1 class="text-3xl font-heading font-extrabold text-slate-900">Customize Profile ✨</h1>
+            <p class="text-xs font-bold text-slate-500">Update your account details below</p>
+        </div>
+
+        <form id="profile-form" onsubmit="handleUpdateProfile(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Display / Full Name</label>
+                <input type="text" id="profile-fullname" placeholder="e.g. Cherry Blossom" class="w-full px-4 py-2.5 rounded-xl border-2 border-cute-border focus:border-cute-deeppink focus:outline-none text-sm font-medium">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number</label>
+                <input type="tel" id="profile-phone" placeholder="09123456789" class="w-full px-4 py-2.5 rounded-xl border-2 border-cute-border focus:border-cute-deeppink focus:outline-none text-sm font-medium">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Avatar Image URL</label>
+                <input type="url" id="profile-avatar" placeholder="https://example.com/photo.png" class="w-full px-4 py-2.5 rounded-xl border-2 border-cute-border focus:border-cute-deeppink focus:outline-none text-sm font-medium">
+            </div>
+            <button type="submit" class="w-full bg-cute-deeppink hover:bg-cute-hotpink text-white font-heading font-bold py-3 rounded-2xl transition shadow-md text-sm">
+                Save Profile ✨
+            </button>
+            <button type="button" onclick="handleLogout()" class="w-full border-2 border-cute-deeppink text-cute-deeppink hover:bg-cute-lightpink font-heading font-bold py-2.5 rounded-2xl transition text-sm">
+                Log Out 🚪
+            </button>
+        </form>
+    </div>
+
     <script>
         const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        document.addEventListener('DOMContentLoaded', checkUserSession);
+
+        async function checkUserSession() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            const authCard = document.getElementById('auth-card');
+            const profileSection = document.getElementById('profile-section');
+
+            if (user) {
+                authCard.classList.add('hidden');
+                profileSection.classList.remove('hidden');
+                
+                if (user.user_metadata) {
+                    document.getElementById('profile-fullname').value = user.user_metadata.full_name || '';
+                    document.getElementById('profile-phone').value = user.user_metadata.phone_number || '';
+                    document.getElementById('profile-avatar').value = user.user_metadata.avatar_url || '';
+                }
+            } else {
+                authCard.classList.remove('hidden');
+                profileSection.classList.add('hidden');
+            }
+        }
 
         function switchTab(tab) {
             const loginForm = document.getElementById('login-form');
@@ -127,7 +179,6 @@
             }
         }
 
-        // LOG IN: Accepts Email & Password
         async function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -141,12 +192,11 @@
             if (error) {
                 alert("Login failed: " + error.message);
             } else {
-                alert("Welcome back! 🌸");
-                window.location.href = 'account.html';
+                alert("Welcome back! 🌸 Redirecting to your profile...");
+                window.location.href = 'profile.html';
             }
         }
 
-        // SIGN UP: Collects Full Name, Phone, Email, & Password
         async function handleSignUp(e) {
             e.preventDefault();
             const fullName = document.getElementById('signup-fullname').value;
@@ -168,9 +218,36 @@
             if (error) {
                 alert("Sign Up failed: " + error.message);
             } else {
-                alert("Account created successfully! 🌸");
-                window.location.href = 'account.html';
+                alert("Account created successfully! 🌸 Redirecting to profile customization...");
+                window.location.href = 'profile.html';
             }
+        }
+
+        async function handleUpdateProfile(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('profile-fullname').value;
+            const phone = document.getElementById('profile-phone').value;
+            const avatar = document.getElementById('profile-avatar').value;
+
+            const { error } = await supabaseClient.auth.updateUser({
+                data: {
+                    full_name: fullName,
+                    phone_number: phone,
+                    avatar_url: avatar
+                }
+            });
+
+            if (error) {
+                alert("Profile update failed: " + error.message);
+            } else {
+                alert("Profile updated successfully! ✨");
+            }
+        }
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            alert("Logged out successfully! 🌸");
+            location.reload();
         }
     </script>
 </body>
