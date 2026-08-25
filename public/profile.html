@@ -1,126 +1,290 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OFFICESUPPLY. - Customize Account</title>
+    <title>OFFICESUPPLY. 🌸 - My Account Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              fredoka: ['Fredoka', 'sans-serif'],
+              quicksand: ['Quicksand', 'sans-serif'],
+            },
+            colors: {
+              cute: {
+                pink: '#FFAEC9',
+                lightpink: '#FFF0F5',
+                deeppink: '#FF69B4',
+                hotpink: '#FF1493',
+                border: '#FFD1DC'
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fce4ec;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .profile-card {
-            background: #ffffff;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            width: 100%;
-            max-width: 400px;
-            border: 2px solid #f8bbd0;
-        }
-        h2 { text-align: center; color: #ad1457; margin-bottom: 1.5rem; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; font-size: 0.85rem; font-weight: bold; color: #880e4f; margin-bottom: 0.3rem; }
-        input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #f48fb1;
-            border-radius: 8px;
-            box-sizing: border-box;
-            background-color: #fff8fa;
-        }
-        .btn-submit {
-            width: 100%;
-            padding: 0.8rem;
-            background-color: #ad1457;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-        .btn-submit:hover { background-color: #880e4f; }
-        .btn-logout {
-            width: 100%;
-            padding: 0.6rem;
-            background-color: transparent;
-            color: #ad1457;
-            border: 1px solid #ad1457;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 0.5rem;
+        body { font-family: 'Quicksand', sans-serif; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Fredoka', sans-serif; }
+        .floral-bg {
+            background-color: #FFF0F5;
+            background-image: radial-gradient(#FFAEC9 0.75px, transparent 0.75px), radial-gradient(#FFAEC9 0.75px, #FFF0F5 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
         }
     </style>
 </head>
-<body>
+<body class="floral-bg text-slate-800 antialiased min-h-screen flex flex-col items-center p-4 md:p-8">
 
-<div class="profile-card">
-    <h2>Customize Account 🌸</h2>
-    <form id="profile-form">
-        <div class="form-group">
-            <label>DISPLAY NAME</label>
-            <input type="text" id="display-name" placeholder="Enter your name">
+    <!-- NAVIGATION BAR -->
+    <header class="w-full max-w-4xl bg-white border-4 border-cute-pink rounded-3xl p-4 mb-6 shadow-md flex justify-between items-center">
+        <h1 class="text-xl md:text-2xl font-heading font-extrabold text-slate-900">🌸 OFFICESUPPLY.</h1>
+        <div class="flex items-center gap-3">
+            <a href="account.html" class="text-xs font-heading font-bold text-cute-deeppink border-2 border-cute-border px-3 py-1.5 rounded-xl hover:bg-cute-lightpink transition">Edit Profile ✏️</a>
+            <button onclick="handleLogout()" class="text-xs font-heading font-bold bg-cute-deeppink hover:bg-cute-hotpink text-white px-3 py-1.5 rounded-xl transition shadow">Log Out 🚪</button>
         </div>
-        <div class="form-group">
-            <label>AVATAR URL</label>
-            <input type="text" id="avatar-url" placeholder="https://example.com/avatar.png">
-        </div>
-        <button type="submit" class="btn-submit">Save Changes ✨</button>
-        <button type="button" class="btn-logout" id="logout-btn">Log Out</button>
-    </form>
-</div>
+    </header>
 
-<script>
-    const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-    const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    <main class="w-full max-w-4xl space-y-6">
 
-    // Guard page: check user state on load
-    async function initProfile() {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) {
-            window.location.href = 'auth.html';
-            return;
-        }
-        if (user.user_metadata) {
-            document.getElementById('display-name').value = user.user_metadata.display_name || '';
-            document.getElementById('avatar-url').value = user.user_metadata.avatar_url || '';
-        }
-    }
+        <!-- ACCOUNT INFORMATION & LOCATION CARD -->
+        <section class="bg-white border-4 border-cute-pink rounded-3xl p-6 shadow-lg flex flex-col md:flex-row items-center gap-6">
+            <img id="user-avatar" src="https://via.placeholder.com/120" alt="Avatar" class="w-28 h-28 rounded-full border-4 border-cute-pink object-cover shadow-md flex-shrink-0">
+            
+            <div class="flex-1 w-full space-y-3">
+                <div class="border-b-2 border-cute-lightpink pb-2">
+                    <h2 id="user-fullname" class="text-2xl font-heading font-bold text-slate-900">Loading profile...</h2>
+                    <p id="user-email" class="text-xs font-semibold text-slate-400">Loading email...</p>
+                    <p id="user-phone" class="text-xs font-semibold text-cute-deeppink mt-1">Phone: Not provided</p>
+                </div>
 
-    // Save profile metadata
-    document.getElementById('profile-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const displayName = document.getElementById('display-name').value;
-        const avatarUrl = document.getElementById('avatar-url').value;
+                <!-- LOCATION / DELIVERY ADDRESS SECTION -->
+                <form onsubmit="handleSaveLocation(event)" class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">📍 Delivery Address / Location</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="user-location" placeholder="Enter street, city, zip code..." class="flex-1 px-4 py-2 rounded-xl border-2 border-cute-border focus:border-cute-deeppink focus:outline-none text-xs font-medium">
+                        <button type="submit" id="loc-btn" class="bg-cute-deeppink hover:bg-cute-hotpink text-white font-heading font-bold px-4 py-2 rounded-xl text-xs transition shadow">Save 📍</button>
+                    </div>
+                </form>
+            </div>
+        </section>
 
-        const { error } = await supabaseClient.auth.updateUser({
-            data: { display_name: displayName, avatar_url: avatarUrl }
+        <!-- MY CART SECTION -->
+        <section class="bg-white border-4 border-cute-pink rounded-3xl p-6 shadow-lg space-y-4">
+            <div class="flex justify-between items-center border-b-2 border-cute-lightpink pb-2">
+                <h3 class="text-xl font-heading font-bold text-slate-900">🛒 My Cart</h3>
+                <span id="cart-count" class="bg-cute-pink text-white font-heading font-bold text-xs px-2.5 py-1 rounded-full">0 items</span>
+            </div>
+
+            <div id="cart-items-container" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                <!-- Cart items populated via JS -->
+            </div>
+
+            <div class="flex justify-between items-center border-t-2 border-cute-lightpink pt-3">
+                <span class="text-sm font-bold text-slate-700">Total:</span>
+                <span id="cart-total" class="text-lg font-heading font-extrabold text-cute-deeppink">₱0.00</span>
+            </div>
+        </section>
+
+        <!-- PURCHASES & TRACKING TABS -->
+        <section class="bg-white border-4 border-cute-pink rounded-3xl p-6 shadow-lg space-y-4">
+            <h3 class="text-xl font-heading font-bold text-slate-900">📦 Order Status</h3>
+
+            <!-- TABS NAVIGATION -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-cute-lightpink p-1.5 rounded-2xl border-2 border-cute-border">
+                <button onclick="switchOrderTab('purchases')" id="tab-purchases" class="py-2 rounded-xl font-heading font-bold text-xs bg-cute-deeppink text-white transition">My Purchases</button>
+                <button onclick="switchOrderTab('ship')" id="tab-ship" class="py-2 rounded-xl font-heading font-bold text-xs text-slate-600 hover:text-cute-deeppink transition">To Ship</button>
+                <button onclick="switchOrderTab('receive')" id="tab-receive" class="py-2 rounded-xl font-heading font-bold text-xs text-slate-600 hover:text-cute-deeppink transition">To Receive</button>
+                <button onclick="switchOrderTab('rate')" id="tab-rate" class="py-2 rounded-xl font-heading font-bold text-xs text-slate-600 hover:text-cute-deeppink transition">To Rate</button>
+            </div>
+
+            <!-- ORDERS DISPLAY CONTAINER -->
+            <div id="orders-container" class="space-y-3 min-h-[120px]">
+                <!-- Orders rendered here -->
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Dummy orders for demo state management
+        const sampleOrders = {
+            purchases: [
+                { id: "ORD-9021", title: "Aesthetic Floral Notebook x2", status: "Completed", total: "₱250.00" }
+            ],
+            ship: [
+                { id: "ORD-9034", title: "Pastel Gel Pen Set (12 colors)", status: "Preparing Package", total: "₱180.00" }
+            ],
+            receive: [
+                { id: "ORD-9012", title: "Cute Desk Planner Pad", status: "Out for Delivery", total: "₱120.00" }
+            ],
+            rate: [
+                { id: "ORD-8988", title: "Kawaii Washi Tape Bundle", status: "Delivered", total: "₱150.00" }
+            ]
+        };
+
+        // Cart items synced from localStorage
+        let cart = JSON.parse(localStorage.getItem('office_supply_cart')) || [
+            { id: 1, name: "Sakura Highlighters (Pack of 5)", price: 140, qty: 1, img: "https://via.placeholder.com/60" },
+            { id: 2, name: "Cute Cloud Mini Utility Knife", price: 45, qty: 2, img: "https://via.placeholder.com/60" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+            renderCart();
+            switchOrderTab('purchases');
         });
 
-        if (error) {
-            alert('Error updating profile: ' + error.message);
-        } else {
-            alert('Profile updated successfully! ✨');
+        // Load logged in user data
+        async function loadUserProfile() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+
+            if (!user) {
+                alert("Please log in first! 🌸");
+                window.location.href = 'account.html';
+                return;
+            }
+
+            document.getElementById('user-email').textContent = user.email || 'No email associated';
+            
+            if (user.user_metadata) {
+                document.getElementById('user-fullname').textContent = user.user_metadata.full_name || 'Valued Shopper';
+                document.getElementById('user-phone').textContent = user.user_metadata.phone_number ? `Phone: ${user.user_metadata.phone_number}` : 'Phone: Not provided';
+                document.getElementById('user-location').value = user.user_metadata.location || '';
+                
+                if (user.user_metadata.avatar_url) {
+                    document.getElementById('user-avatar').src = user.user_metadata.avatar_url;
+                }
+            }
         }
-    });
 
-    // Handle Logout
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-        await supabaseClient.auth.signOut();
-        window.location.href = 'auth.html';
-    });
+        // Save delivery address/location
+        async function handleSaveLocation(e) {
+            e.preventDefault();
+            const btn = document.getElementById('loc-btn');
+            const newLocation = document.getElementById('user-location').value;
 
-    initProfile();
-</script>
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
 
+            const { error } = await supabaseClient.auth.updateUser({
+                data: { location: newLocation }
+            });
+
+            btn.textContent = 'Save 📍';
+            btn.disabled = false;
+
+            if (error) {
+                alert("Failed to save location: " + error.message);
+            } else {
+                alert("Location updated successfully! 📍✨");
+            }
+        }
+
+        // Render shopping cart
+        function renderCart() {
+            const container = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total');
+            const countEl = document.getElementById('cart-count');
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-xs text-center font-bold text-slate-400 py-4">Your cart is currently empty 🌸</p>`;
+                totalEl.textContent = "₱0.00";
+                countEl.textContent = "0 items";
+                return;
+            }
+
+            let total = 0;
+            let totalItems = 0;
+            container.innerHTML = '';
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.qty;
+                total += itemTotal;
+                totalItems += item.qty;
+
+                container.innerHTML += `
+                    <div class="flex items-center justify-between border-2 border-cute-border bg-cute-lightpink/40 rounded-2xl p-3">
+                        <div class="flex items-center gap-3">
+                            <img src="${item.img}" class="w-12 h-12 rounded-xl object-cover border border-cute-pink">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800">${item.name}</h4>
+                                <p class="text-[11px] font-semibold text-cute-deeppink">₱${item.price.toFixed(2)} x ${item.qty}</p>
+                            </div>
+                        </div>
+                        <button onclick="removeCartItem(${index})" class="text-xs text-red-500 hover:text-red-700 font-bold px-2 py-1 bg-white border border-red-200 rounded-lg shadow-sm">Remove</button>
+                    </div>
+                `;
+            });
+
+            totalEl.textContent = `₱${total.toFixed(2)}`;
+            countEl.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''}`;
+            localStorage.setItem('office_supply_cart', JSON.stringify(cart));
+        }
+
+        function removeCartItem(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        // Switch between Order Status Tabs
+        function switchOrderTab(tabKey) {
+            const tabs = ['purchases', 'ship', 'receive', 'rate'];
+            tabs.forEach(key => {
+                const btn = document.getElementById(`tab-${key}`);
+                if (key === tabKey) {
+                    btn.className = "py-2 rounded-xl font-heading font-bold text-xs bg-cute-deeppink text-white transition";
+                } else {
+                    btn.className = "py-2 rounded-xl font-heading font-bold text-xs text-slate-600 hover:text-cute-deeppink transition";
+                }
+            });
+
+            const container = document.getElementById('orders-container');
+            const list = sampleOrders[tabKey] || [];
+
+            if (list.length === 0) {
+                container.innerHTML = `<p class="text-xs text-center font-bold text-slate-400 py-6">No orders found under this status 🎀</p>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            list.forEach(order => {
+                container.innerHTML += `
+                    <div class="border-2 border-cute-border bg-white rounded-2xl p-4 shadow-sm flex justify-between items-center">
+                        <div class="space-y-1">
+                            <span class="text-[10px] font-extrabold text-cute-deeppink bg-cute-lightpink px-2 py-0.5 rounded-md border border-cute-border">${order.id}</span>
+                            <h4 class="text-xs font-bold text-slate-800">${order.title}</h4>
+                            <p class="text-[11px] font-semibold text-slate-500">Status: <span class="text-slate-700 font-bold">${order.status}</span></p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-extrabold text-slate-900">${order.total}</p>
+                            ${tabKey === 'rate' ? '<button onclick="alert(\'Thank you for rating! 🌸\')" class="mt-1 text-[10px] font-heading font-bold bg-cute-deeppink text-white px-2.5 py-1 rounded-lg">Rate Order ⭐️</button>' : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Handle Logout
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            alert("Logged out successfully! 🌸");
+            window.location.href = 'account.html';
+        }
+    </script>
 </body>
 </html>
