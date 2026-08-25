@@ -47,11 +47,21 @@
 <body class="floral-bg text-slate-800 antialiased min-h-screen flex flex-col items-center p-4 md:p-8">
 
     <!-- NAVIGATION BAR -->
-    <header class="w-full max-w-4xl bg-white border-4 border-cute-pink rounded-3xl p-4 mb-6 shadow-md flex justify-between items-center">
+    <header class="w-full max-w-4xl bg-white border-4 border-cute-pink rounded-3xl p-4 mb-6 shadow-md flex justify-between items-center flex-wrap gap-3">
         <h1 class="text-xl md:text-2xl font-heading font-extrabold text-slate-900">🌸 OFFICESUPPLY.</h1>
-        <div class="flex items-center gap-3">
-            <a href="account.html" class="text-xs font-heading font-bold text-cute-deeppink border-2 border-cute-border px-3 py-1.5 rounded-xl hover:bg-cute-lightpink transition">Edit Profile ✏️</a>
-            <button onclick="handleLogout()" class="text-xs font-heading font-bold bg-cute-deeppink hover:bg-cute-hotpink text-white px-3 py-1.5 rounded-xl transition shadow">Log Out 🚪</button>
+        <div class="flex items-center gap-2 flex-wrap">
+            <a href="index.html" class="text-xs font-heading font-bold text-cute-deeppink border-2 border-cute-border px-3 py-1.5 rounded-xl hover:bg-cute-lightpink transition flex items-center gap-1">
+                🏠 Home
+            </a>
+            <a href="products.html" class="text-xs font-heading font-bold text-cute-deeppink border-2 border-cute-border px-3 py-1.5 rounded-xl hover:bg-cute-lightpink transition flex items-center gap-1">
+                🛍️ Products
+            </a>
+            <a href="account.html" class="text-xs font-heading font-bold text-cute-deeppink border-2 border-cute-border px-3 py-1.5 rounded-xl hover:bg-cute-lightpink transition">
+                Edit Profile ✏️
+            </a>
+            <button onclick="handleLogout()" class="text-xs font-heading font-bold bg-cute-deeppink hover:bg-cute-hotpink text-white px-3 py-1.5 rounded-xl transition shadow">
+                Log Out 🚪
+            </button>
         </div>
     </header>
 
@@ -121,7 +131,7 @@
         const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Cleaned up orders state (ready for dynamic data integration)
+        // Cleaned up orders state
         const userOrders = {
             purchases: [],
             ship: [],
@@ -246,7 +256,7 @@
             const list = userOrders[tabKey] || [];
 
             if (list.length === 0) {
-                container.innerHTML = `<p class="text-xs text-center font-bold text-slate-400 py-6">No orders found under this status 🎀</p>`;
+                container.innerHTML = `<p class="text-xs text-center font-bold text-slate-400 py-6">Your cart is currently empty 🌸</p>`;
                 return;
             }
 
