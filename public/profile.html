@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OFFICESUPPLY. - Customize Account</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fce4ec;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .profile-card {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid #f8bbd0;
+        }
+        h2 { text-align: center; color: #ad1457; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; font-size: 0.85rem; font-weight: bold; color: #880e4f; margin-bottom: 0.3rem; }
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #f48fb1;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #fff8fa;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #ad1457;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        .btn-submit:hover { background-color: #880e4f; }
+        .btn-logout {
+            width: 100%;
+            padding: 0.6rem;
+            background-color: transparent;
+            color: #ad1457;
+            border: 1px solid #ad1457;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-card">
+    <h2>Customize Account 🌸</h2>
+    <form id="profile-form">
+        <div class="form-group">
+            <label>DISPLAY NAME</label>
+            <input type="text" id="display-name" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+            <label>AVATAR URL</label>
+            <input type="text" id="avatar-url" placeholder="https://example.com/avatar.png">
+        </div>
+        <button type="submit" class="btn-submit">Save Changes ✨</button>
+        <button type="button" class="btn-logout" id="logout-btn">Log Out</button>
+    </form>
+</div>
+
+<script>
+    const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+    const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Guard page: check user state on load
+    async function initProfile() {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) {
+            window.location.href = 'auth.html';
+            return;
+        }
+        if (user.user_metadata) {
+            document.getElementById('display-name').value = user.user_metadata.display_name || '';
+            document.getElementById('avatar-url').value = user.user_metadata.avatar_url || '';
+        }
+    }
+
+    // Save profile metadata
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const displayName = document.getElementById('display-name').value;
+        const avatarUrl = document.getElementById('avatar-url').value;
+
+        const { error } = await supabaseClient.auth.updateUser({
+            data: { display_name: displayName, avatar_url: avatarUrl }
+        });
+
+        if (error) {
+            alert('Error updating profile: ' + error.message);
+        } else {
+            alert('Profile updated successfully! ✨');
+        }
+    });
+
+    // Handle Logout
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = 'auth.html';
+    });
+
+    initProfile();
+</script>
+
+</body>
+</html>
