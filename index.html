@@ -46,7 +46,7 @@
         }
     </style>
 </head>
-<body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen selection:bg-cute-pink selection:text-white">
+<body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen selection:bg-cute-pink selection:text-white pb-20">
 
     <!-- HEADER SECTION -->
     <header class="bg-cute-pink text-slate-800 sticky top-0 z-40 shadow-md border-b-4 border-cute-deeppink">
@@ -101,7 +101,7 @@
                     Equip Your Desk for <span class="text-cute-deeppink">Cute Productivity! 💖</span>
                 </h1>
                 <p class="text-sm sm:text-lg text-slate-700 max-w-xl mx-auto md:mx-0 font-medium leading-relaxed">
-                    Log in to save your shopping cart, post product reviews, and pick custom item options!
+                    Log in to save your shopping cart, post product reviews, and chat with our online Gemini AI assistant!
                 </p>
                 <div class="pt-2 flex justify-center md:justify-start">
                     <a href="#features" class="w-full sm:w-auto bg-cute-deeppink text-white font-heading font-bold px-8 py-3.5 sm:py-4 rounded-full shadow-lg hover:bg-cute-hotpink transition transform hover:scale-105 text-center text-sm sm:text-base tracking-wide flex items-center justify-center gap-2 min-h-[48px]">
@@ -241,6 +241,50 @@
         </div>
     </footer>
 
+    <!-- GEMINI AI CHATBOT WIDGET -->
+    <div id="gemini-chatbot-wrapper" class="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+        
+        <!-- Chat Window Window -->
+        <div id="gemini-chat-box" class="hidden w-80 sm:w-96 bg-white border-4 border-cute-pink rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 mb-3">
+            <!-- Chat Header -->
+            <div class="bg-cute-deeppink text-white p-3.5 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl">✨</span>
+                    <div>
+                        <h4 class="font-heading font-bold text-sm leading-tight">Gemini Assistant</h4>
+                        <p class="text-[10px] text-pink-100 font-semibold">Online Store AI Assistant</p>
+                    </div>
+                </div>
+                <button id="close-chat-btn" class="text-white hover:text-pink-200 text-2xl font-bold leading-none px-2">&times;</button>
+            </div>
+
+            <!-- API Key Input Banner (Fallback for client side) -->
+            <div id="gemini-key-container" class="bg-cute-lightpink p-2.5 border-b border-cute-border flex items-center gap-2 text-xs">
+                <input type="password" id="gemini-api-key" placeholder="Paste Gemini API Key..." class="flex-1 p-1.5 border border-cute-pink rounded-lg text-xs bg-white focus:outline-none">
+                <button id="save-key-btn" class="bg-cute-deeppink text-white font-bold px-2.5 py-1.5 rounded-lg text-[10px]">Save Key</button>
+            </div>
+
+            <!-- Chat Messages Area -->
+            <div id="chat-messages" class="p-3 h-64 overflow-y-auto space-y-3 text-xs bg-slate-50">
+                <div class="bg-cute-lightpink border border-cute-pink text-slate-800 p-3 rounded-2xl max-w-[85%] font-medium">
+                    Hello! 🌸 I am powered online by Google's Gemini AI! How can I help you pick stationery or answer questions today?
+                </div>
+            </div>
+
+            <!-- Chat Input Form -->
+            <form id="chat-form" class="p-2 bg-white border-t border-cute-border flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ask Gemini AI..." required class="flex-1 p-2.5 border border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                <button type="submit" class="bg-cute-deeppink text-white font-bold px-4 py-2.5 rounded-xl hover:bg-cute-hotpink transition text-xs shadow">Send</button>
+            </form>
+        </div>
+
+        <!-- Floating Chat Toggle Button -->
+        <button id="toggle-chat-btn" class="bg-cute-deeppink hover:bg-cute-hotpink text-white font-heading font-bold p-3.5 sm:px-5 sm:py-3.5 rounded-full shadow-2xl transition transform hover:scale-105 flex items-center gap-2 border-2 border-white">
+            <span class="text-xl">🤖</span>
+            <span class="hidden sm:inline text-xs">Ask Gemini AI ✨</span>
+        </button>
+    </div>
+
     <!-- ADD REVIEW MODAL -->
     <div id="review-modal" class="fixed inset-0 bg-pink-950/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4 z-50">
         <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-w-lg w-full p-5 sm:p-6 space-y-4 border-4 border-cute-pink">
@@ -331,8 +375,8 @@
     <script>
         let currentUser = null;
         let userCart = [];
-        // Empty by default: strictly real user-submitted reviews will appear here
         let reviews = [];
+        let geminiApiKey = localStorage.getItem('gemini_api_key') || '';
 
         document.addEventListener('DOMContentLoaded', () => {
             // Mobile Menu
@@ -367,6 +411,9 @@
             // Forms
             document.getElementById('auth-form').addEventListener('submit', handleAuth);
             document.getElementById('review-form').addEventListener('submit', submitReview);
+
+            // Chatbot Setup
+            setupGeminiChatbot();
 
             checkUserSession();
             renderReviews();
@@ -527,6 +574,94 @@
         function removeFromCart(index) {
             userCart.splice(index, 1);
             renderCart();
+        }
+
+        // --- GEMINI AI CHATBOT FUNCTIONALITY ---
+        function setupGeminiChatbot() {
+            const toggleBtn = document.getElementById('toggle-chat-btn');
+            const closeBtn = document.getElementById('close-chat-btn');
+            const chatBox = document.getElementById('gemini-chat-box');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+            const apiKeyInput = document.getElementById('gemini-api-key');
+            const saveKeyBtn = document.getElementById('save-key-btn');
+            const keyContainer = document.getElementById('gemini-key-container');
+
+            if (geminiApiKey) {
+                apiKeyInput.value = geminiApiKey;
+            }
+
+            toggleBtn.addEventListener('click', () => chatBox.classList.toggle('hidden'));
+            closeBtn.addEventListener('click', () => chatBox.classList.add('hidden'));
+
+            saveKeyBtn.addEventListener('click', () => {
+                const key = apiKeyInput.value.trim();
+                if (key) {
+                    geminiApiKey = key;
+                    localStorage.setItem('gemini_api_key', key);
+                    alert('Gemini API Key saved online! 🌸');
+                }
+            });
+
+            chatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const query = chatInput.value.trim();
+                if (!query) return;
+
+                // Append User Message
+                appendChatMessage('user', query);
+                chatInput.value = '';
+
+                // Show loading state
+                const loadingBubble = appendChatMessage('bot', 'Thinking with Gemini AI... ✨');
+
+                try {
+                    const keyToUse = geminiApiKey || window.GEMINI_API_KEY || '';
+                    if (!keyToUse) {
+                        loadingBubble.innerText = "Please input a Gemini API Key above to connect to Google Gemini AI!";
+                        return;
+                    }
+
+                    // Direct Online Call to official Gemini API
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${keyToUse}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{
+                                    text: `You are a helpful customer assistant for OFFICESUPPLY., a cute online workspace stationery store. Be friendly, concise, and helpful. User question: ${query}`
+                                }]
+                            }]
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                        loadingBubble.innerText = data.candidates[0].content.parts[0].text;
+                    } else if (data.error) {
+                        loadingBubble.innerText = `Gemini API Error: ${data.error.message || 'Unable to connect to Gemini API.'}`;
+                    } else {
+                        loadingBubble.innerText = "Sorry, I received an unrecognized response from Gemini.";
+                    }
+                } catch (err) {
+                    loadingBubble.innerText = "Error connecting online to Google Gemini API. Please check network connection or API Key.";
+                }
+            });
+        }
+
+        function appendChatMessage(sender, message) {
+            const container = document.getElementById('chat-messages');
+            const wrapper = document.createElement('div');
+            wrapper.className = sender === 'user' 
+                ? "bg-cute-deeppink text-white p-3 rounded-2xl max-w-[85%] ml-auto font-medium"
+                : "bg-cute-lightpink border border-cute-pink text-slate-800 p-3 rounded-2xl max-w-[85%] font-medium";
+
+            wrapper.innerText = message;
+            container.appendChild(wrapper);
+            container.scrollTop = container.scrollHeight;
+            return wrapper;
         }
     </script>
 </body>
