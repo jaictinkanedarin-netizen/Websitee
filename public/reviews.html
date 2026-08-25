@@ -177,18 +177,19 @@
             data.forEach(r => {
                 const starsDisplay = '★'.repeat(r.rating || 5) + '☆'.repeat(5 - (r.rating || 5));
                 const dateFormatted = r.created_at ? new Date(r.created_at).toLocaleDateString() : 'Recently';
+                const authorName = r.name || r.author_name || 'Anonymous';
 
                 const card = document.createElement('div');
                 card.className = "bg-white p-5 rounded-3xl border-4 border-cute-pink shadow-sm space-y-2";
                 card.innerHTML = `
                     <div class="flex justify-between items-center">
                         <div class="flex items-center space-x-2">
-                            <span class="font-bold text-slate-900 text-sm">${escapeHTML(r.author_name)}</span>
+                            <span class="font-bold text-slate-900 text-sm">${escapeHTML(authorName)}</span>
                             <span class="text-xs text-yellow-400 font-bold tracking-widest">${starsDisplay}</span>
                         </div>
                         <span class="text-[10px] text-slate-400 font-bold">${dateFormatted}</span>
                     </div>
-                    <p class="text-xs text-slate-600 font-medium leading-relaxed">${escapeHTML(r.content)}</p>
+                    <p class="text-xs text-slate-600 font-medium leading-relaxed">${escapeHTML(r.content || '')}</p>
                 `;
                 container.appendChild(card);
             });
@@ -207,7 +208,7 @@
             }
 
             const { error } = await supabaseClient.from('reviews').insert([
-                { author_name: author, rating: selectedRating, content: content }
+                { name: author, rating: selectedRating, content: content }
             ]);
 
             if (error) {
