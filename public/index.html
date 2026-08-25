@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeskPro | Modern Office Supplies</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header>
+    <h1>DeskPro</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="store.html">Store Page</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="auth.html" id="auth-link">Login/Register</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Elevate Your Workspace Efficiency</h2>
+      <p>Premium office essentials, ergonomic tools, and accessories delivered directly to your door.</p>
+      <a href="store.html" class="btn-cta">Shop All Products</a>
+    </div>
+  </section>
+
+  <main class="container">
+    <h3>Featured Products</h3>
+    <div class="grid" id="featured-products"></div>
+  </main>
+
+  <footer>
+    <div class="sitemap">
+      <div>
+        <h4>Shop</h4>
+        <ul><li><a href="store.html">All Products</a></li></ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul><li><a href="#">About Us</a></li><li><a href="#">Contact</a></li></ul>
+      </div>
+      <div>
+        <h4>Account</h4>
+        <ul><li><a href="auth.html">Login</a></li><li><a href="dashboard.html">Seller Hub</a></li></ul>
+      </div>
+    </div>
+    <div class="copyright">&copy; 2026 DeskPro Supplies. All rights reserved.</div>
+  </footer>
+
+  <script type="text/javascript">
+    (function(d, t) {
+        var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+        v.onload = function() {
+          window.voiceflow.chat.load({
+            verify: { projectID: 'YOUR_VOICEFLOW_PROJECT_ID' },
+            url: 'https://general-runtime.voiceflow.com',
+            versionID: 'production'
+          });
+        }
+        v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+    })(document, 'script');
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
