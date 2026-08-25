@@ -1,54 +1,57 @@
-const axios = require('axios');
-const { createClient } = require('@supabase/supabase-js');
+// api/checkout.js
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-
-module.exports = async (req, res) => {
-  if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
-
-  const { productId, amount, buyerId } = req.body;
+  const { items, amount, buyerId } = req.body;
 
   try {
-    // 1. Fetch Product for Seller info
-    const { data: product } = await supabase.from('products').select('seller_id, title').eq('id', productId).single();
+    // Format items for PayMongo Line Items
+    const lineItems = items && items.length > 0 
+      ? items.map(item => ({
+          currency: 'PHP',
+          amount: Math.round(item.price * 100), // PayMongo expects amount in centavos
+          name: `${item.title} (${item.selectedVariant || 'Standard'})`,
+          quantity: item.quantity || 1
+        }))
+      : [{
+          currency: 'PHP',
+          amount: Math.round(amount * 100),
+          name: 'Office Supply Checkout',
+          quantity: 1
+        }];
 
-    // 2. Call PayMongo API to create Checkout Session
-    const response = await axios.post('https://api.paymongo.com/v1/checkout_sessions', {
-      data: {
-        attributes: {
-          line_items: [{
-            currency: 'PHP',
-            amount: Math.round(amount * 100), // convert to centavos
-            name: product.title,
-            quantity: 1
-          }],
-          payment_method_types: ['gcash', 'card'],
-          success_url: `${req.headers.origin}/dashboard.html`,
-          cancel_url: `${req.headers.origin}/store.html`
-        }
-      }
-    }, {
+    const options = {
+      method: 'POST',
       headers: {
-        Authorization: `Basic ${Buffer.from(process.env.PAYMONGO_SECRET_KEY).toString('base64')}`,
-        'Content-Type': 'application/json'
-      }
-    });
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        authorization: `Basic ${Buffer.from(process.env.PAYMONGO_SECRET_KEY + ':').toString('base64')}`
+      },
+      body: JSON.stringify({
+        data: {
+          attributes: {
+            send_email_receipt: true,
+            show_description: true,
+            show_line_items: true,
+            payment_method_types: ['gcash', 'paymaya', 'card', 'dob'],
+            line_items: lineItems,
+            description: `Order for Buyer ID: ${buyerId || 'Guest'}`
+          }
+        }
+      })
+    };
 
-    const sessionId = response.data.data.id;
-    const checkoutUrl = response.data.data.attributes.checkout_url;
+    const response = await fetch('https://api.paymongo.com/v1/checkout_sessions', options);
+    const data = await response.json();
 
-    // 3. Register transaction record in Pending state
-    await supabase.from('orders').insert([{
-      buyer_id: buyerId,
-      seller_id: product.seller_id,
-      product_id: productId,
-      amount: amount,
-      status: 'pending',
-      paymongo_session_id: sessionId
-    }]);
-
-    return res.status(200).json({ checkoutUrl });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+    if (data.data && data.data.attributes && data.data.attributes.checkout_url) {
+      return res.status(200).json({ checkoutUrl: data.data.attributes.checkout_url });
+    } else {
+      return res.status(400).json({ error: 'Failed to create checkout session', details: data });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
-};
+}
