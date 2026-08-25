@@ -1,45 +1,230 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard | DeskPro</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OFFICESUPPLY. 🌸 - Seller & Buyer Dashboard</title>
+    <!-- Google Fonts: Fredoka & Quicksand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              fredoka: ['Fredoka', 'sans-serif'],
+              quicksand: ['Quicksand', 'sans-serif'],
+            },
+            colors: {
+              cute: {
+                pink: '#FFAEC9',
+                lightpink: '#FFF0F5',
+                deeppink: '#FF69B4',
+                hotpink: '#FF1493',
+                green: '#C1E1C1',
+                darkgreen: '#556B2F',
+                border: '#FFD1DC'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        body { font-family: 'Quicksand', sans-serif; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Fredoka', sans-serif; }
+        .floral-bg {
+            background-color: #FFF0F5;
+            background-image: radial-gradient(#FFAEC9 0.75px, transparent 0.75px), radial-gradient(#FFAEC9 0.75px, #FFF0F5 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+    </style>
 </head>
-<body>
-  <header>
-    <h1>DeskPro</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="store.html">Store Page</a>
-      <a href="#" id="btn-logout">Logout</a>
-    </nav>
-  </header>
+<body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen">
 
-  <main class="container">
-    <h2>Seller Dashboard</h2>
-    <section style="background:#fff; padding:1.5rem; margin-top:1rem; border-radius:8px;">
-      <h3>Post New Product</h3>
-      <form id="add-product-form">
-        <div class="form-group"><label>Title</label><input type="text" id="p-title" required></div>
-        <div class="form-group"><label>Description</label><textarea id="p-desc" required></textarea></div>
-        <div class="form-group"><label>Price (PHP)</label><input type="number" step="0.01" id="p-price" required></div>
-        <div class="form-group"><label>Image URL</label><input type="url" id="p-image" required></div>
-        <button type="submit" class="btn-cta">List Product</button>
-      </form>
-    </section>
+    <!-- HEADER -->
+    <header class="bg-cute-pink text-slate-800 sticky top-0 z-40 shadow-md border-b-4 border-cute-deeppink">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
+                🌸 OFFICESUPPLY. ✨
+            </a>
+            <nav class="flex items-center space-x-6 text-base font-bold text-slate-800">
+                <a href="index.html" class="hover:text-white transition">← Main Store 🌷</a>
+                <button onclick="handleLogout()" id="btn-logout" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-1.5 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition text-xs">
+                    Logout 🚪
+                </button>
+            </nav>
+        </div>
+    </header>
 
-    <section style="margin-top: 3rem;">
-      <h3>Sales History</h3>
-      <div id="sales-history" class="grid"></div>
-    </section>
+    <!-- DASHBOARD CONTENT -->
+    <main class="max-w-7xl mx-auto px-6 py-10 flex-1 w-full space-y-10">
+        
+        <!-- USER PROFILE / STATUS -->
+        <div class="bg-white p-6 rounded-3xl border-4 border-cute-pink shadow-md flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="text-xs font-bold text-cute-deeppink uppercase tracking-wider">Account Dashboard 🌸</span>
+                <h2 id="user-email-display" class="text-2xl font-heading font-bold text-slate-900">Loading profile...</h2>
+            </div>
+            <div id="user-gcash-badge" class="bg-cute-lightpink px-4 py-2 rounded-2xl border-2 border-cute-border font-bold text-xs text-slate-700">
+                GCash: Loading...
+            </div>
+        </div>
 
-    <section style="margin-top: 3rem;">
-      <h3>Purchase History</h3>
-      <div id="purchase-history" class="grid"></div>
-    </section>
-  </main>
+        <!-- POST NEW PRODUCT SECTION -->
+        <section class="bg-white p-6 rounded-3xl border-4 border-cute-pink shadow-md space-y-4">
+            <h3 class="text-xl font-heading font-extrabold text-cute-deeppink flex items-center gap-2">
+                Post New Product for Sale 🌸
+            </h3>
+            <form id="add-product-form" onsubmit="handlePostProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Title 🌸</label>
+                    <input type="text" id="p-title" required placeholder="e.g. Blossom Gel Pen" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Price (PHP) ₱</label>
+                    <input type="number" step="0.01" id="p-price" required placeholder="150.00" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Image URL 🖼️</label>
+                    <input type="url" id="p-image" required placeholder="https://images.unsplash.com/..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Description 📝</label>
+                    <textarea id="p-desc" rows="2" placeholder="Describe your cute stationery item..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink"></textarea>
+                </div>
+                <button type="submit" class="md:col-span-2 bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
+                    List Product ✨
+                </button>
+            </form>
+        </section>
 
-  <script src="app.js"></script>
+        <!-- SALES HISTORY -->
+        <section class="space-y-4">
+            <h3 class="text-2xl font-heading font-extrabold text-slate-900">Sales History 📊</h3>
+            <div id="sales-history" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <p class="text-slate-500 font-bold col-span-full">Loading sales history...</p>
+            </div>
+        </section>
+
+        <!-- PURCHASE HISTORY -->
+        <section class="space-y-4">
+            <h3 class="text-2xl font-heading font-extrabold text-slate-900">Purchase History 🛍️</h3>
+            <div id="purchase-history" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <p class="text-slate-500 font-bold col-span-full">Loading purchase history...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CLIENT CONTROLLER SCRIPT -->
+    <script>
+        const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) {
+                alert("Please log in to access the dashboard! 🌸");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            currentUser = session.user;
+            document.getElementById('user-email-display').textContent = currentUser.email;
+
+            // Fetch profile for GCash info
+            const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', currentUser.id).single();
+            if (profile && profile.gcash_number) {
+                document.getElementById('user-gcash-badge').textContent = `GCash: ${profile.gcash_number}`;
+            }
+
+            loadSalesHistory();
+            loadPurchaseHistory();
+        });
+
+        async function handlePostProduct(event) {
+            event.preventDefault();
+            const title = document.getElementById('p-title').value;
+            const price = parseFloat(document.getElementById('p-price').value);
+            const image_url = document.getElementById('p-image').value;
+            const description = document.getElementById('p-desc').value;
+
+            const { error } = await supabaseClient.from('products').insert([
+                { seller_id: currentUser.id, title, price, image_url, description }
+            ]);
+
+            if (error) {
+                alert(error.message);
+            } else {
+                alert("Product listed successfully! 🌸");
+                document.getElementById('add-product-form').reset();
+            }
+        }
+
+        async function loadSalesHistory() {
+            const container = document.getElementById('sales-history');
+            const { data: sales, error } = await supabaseClient.from('orders').select('*, products(*)').eq('seller_id', currentUser.id);
+
+            if (error || !sales || !sales.length) {
+                container.innerHTML = `<div class="bg-white p-4 rounded-2xl border-2 border-cute-border text-slate-500 font-bold text-xs col-span-full">No items sold yet. 🌸</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            sales.forEach(order => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-2xl border-2 border-cute-border shadow-sm space-y-2";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-xs font-bold text-cute-deeppink">
+                        <span>Order #${order.id.slice(0, 8)}</span>
+                        <span class="bg-cute-lightpink px-2 py-0.5 rounded-full border border-cute-pink">${order.status}</span>
+                    </div>
+                    <p class="font-heading font-bold text-slate-800">${order.products?.title || 'Stationery Item'}</p>
+                    <p class="text-sm font-black text-slate-900">₱${parseFloat(order.amount).toFixed(2)}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        async function loadPurchaseHistory() {
+            const container = document.getElementById('purchase-history');
+            const { data: purchases, error } = await supabaseClient.from('orders').select('*, products(*)').eq('buyer_id', currentUser.id);
+
+            if (error || !purchases || !purchases.length) {
+                container.innerHTML = `<div class="bg-white p-4 rounded-2xl border-2 border-cute-border text-slate-500 font-bold text-xs col-span-full">No purchases made yet. 🌸</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            purchases.forEach(order => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-2xl border-2 border-cute-border shadow-sm space-y-2";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-xs font-bold text-cute-deeppink">
+                        <span>Order #${order.id.slice(0, 8)}</span>
+                        <span class="bg-cute-green text-cute-darkgreen px-2 py-0.5 rounded-full border border-cute-darkgreen">${order.status}</span>
+                    </div>
+                    <p class="font-heading font-bold text-slate-800">${order.products?.title || 'Stationery Item'}</p>
+                    <p class="text-sm font-black text-slate-900">₱${parseFloat(order.amount).toFixed(2)}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>
