@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OFFICESUPPLY. 🌸 - My Account</title>
-    <!-- Google Fonts: Fredoka & Quicksand -->
+    <title>OFFICESUPPLY. 🌸 - Login / Sign Up</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
@@ -44,135 +44,132 @@
         }
     </style>
 </head>
-<body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen">
+<body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen justify-center items-center p-6">
 
-    <!-- HEADER -->
-    <header class="bg-cute-pink text-slate-800 sticky top-0 z-40 shadow-md border-b-4 border-cute-deeppink">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
-                🌸 OFFICESUPPLY. ✨
-            </a>
-            <nav class="flex items-center space-x-6 text-base font-bold text-slate-800">
-                <a href="index.html" class="hover:text-white transition">Home 🌷</a>
-                <a href="store.html" class="hover:text-white transition">Shop 🛍️</a>
-                <a href="dashboard.html" class="hover:text-white transition">Dashboard 📊</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- ACCOUNT CONTENT -->
-    <main class="max-w-4xl mx-auto px-6 py-12 flex-1 w-full space-y-8">
+    <div class="bg-white border-4 border-cute-pink rounded-3xl p-8 max-w-md w-full shadow-lg space-y-6">
         
-        <!-- PROFILE CARD -->
-        <div class="bg-white p-8 rounded-3xl border-4 border-cute-pink shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-            <div class="space-y-2">
-                <span class="bg-cute-lightpink text-cute-deeppink border border-cute-border text-xs font-bold px-3 py-1 rounded-full inline-block">
-                    Active Account Profile 🌸
-                </span>
-                <h1 class="text-3xl font-heading font-extrabold text-slate-900">My Account</h1>
-                <p class="text-sm font-bold text-slate-600">Logged in as: <span id="user-email" class="text-cute-deeppink">Loading...</span></p>
-                <p class="text-xs text-slate-400 font-medium">User ID: <span id="user-id">...</span></p>
-            </div>
+        <!-- HEADER / TOGGLE TABS -->
+        <div class="text-center space-y-2">
+            <h1 class="text-3xl font-heading font-extrabold text-slate-900">🌸 OFFICESUPPLY. ✨</h1>
+            <p class="text-xs font-bold text-slate-500">Welcome! Please sign in or create an account.</p>
+        </div>
 
-            <!-- LOGOUT BUTTON -->
-            <button onclick="handleLogout()" class="bg-red-500 hover:bg-red-600 text-white font-heading font-bold px-6 py-3 rounded-2xl transition shadow-md text-sm flex items-center gap-2">
-                🚪 Log Out
+        <div class="flex bg-cute-lightpink p-1 rounded-2xl border-2 border-cute-border">
+            <button id="tab-login-btn" onclick="switchTab('login')" class="flex-1 py-2 rounded-xl font-heading font-bold text-xs bg-cute-deeppink text-white transition">
+                Log In
+            </button>
+            <button id="tab-signup-btn" onclick="switchTab('signup')" class="flex-1 py-2 rounded-xl font-heading font-bold text-xs text-slate-600 transition">
+                Sign Up
             </button>
         </div>
 
-        <!-- MY LISTED PRODUCTS SECTION -->
-        <div class="bg-white p-8 rounded-3xl border-4 border-cute-pink shadow-lg space-y-6">
-            <div class="flex justify-between items-center border-b-2 border-cute-border pb-4">
-                <div>
-                    <h2 class="text-2xl font-heading font-extrabold text-slate-900">My Product Listings 📦</h2>
-                    <p class="text-xs text-slate-500 font-bold">Items you have put up for sale on the marketplace.</p>
-                </div>
-                <a href="index.html" class="bg-cute-deeppink text-white font-heading font-bold px-4 py-2 rounded-xl text-xs hover:bg-cute-hotpink transition">
-                    + Add New Item 🎀
-                </a>
+        <!-- LOG IN FORM (Email & Password Only) -->
+        <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+                <input type="email" id="login-email" required placeholder="yourname@cute.com" class="w-full px-4 py-2.5 rounded-xl border-2 border-cute-border focus:border-cute-deeppink focus:outline-none text-sm font-medium">
             </div>
-
-            <div id="my-products-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <p class="text-xs font-bold text-slate-400 col-span-full">Loading your products...</p>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+                <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border-2 border-cute-border focus:border-cute-deeppink focus:outline-none text-sm font-medium">
             </div>
-        </div>
+            <button type="submit" class="w-full bg-cute-deeppink hover:bg-cute-hotpink text-white font-heading font-bold py-3 rounded-2xl transition shadow-md text-sm">
+                Log In 🎀
+            </button>
+        </form>
 
-    </main>
+        <!-- SIGN UP FORM (Includes Extra Fields) -->
+        <form id="signup-form" onsubmit="handleSignUp(event)" class="space-y-4 hidden">
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
+                <input type="text" id="signup-fullname" required placeholder="Sakura Haruno" class="w-full px-4 py-2 rounded-xl border-2 border-cute-border focus:border-cute-deeppink focus:outline-none text-sm font-medium">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number</label>
+                <input type="tel" id="signup-phone" placeholder="09123456789" class="w-full px-4 py-2 rounded-xl border-2 border-cute-border focus:border-cute-deeppink focus:outline-none text-sm font-medium">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+                <input type="email" id="signup-email" required placeholder="yourname@cute.com" class="w-full px-4 py-2 rounded-xl border-2 border-cute-border focus:border-cute-deeppink focus:outline-none text-sm font-medium">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+                <input type="password" id="signup-password" required placeholder="••••••••" class="w-full px-4 py-2 rounded-xl border-2 border-cute-border focus:border-cute-deeppink focus:outline-none text-sm font-medium">
+            </div>
+            <button type="submit" class="w-full bg-cute-deeppink hover:bg-cute-hotpink text-white font-heading font-bold py-3 rounded-2xl transition shadow-md text-sm">
+                Create Account 🌸
+            </button>
+        </form>
+
+    </div>
 
     <script>
         const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let currentUser = null;
+        function switchTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const loginBtn = document.getElementById('tab-login-btn');
+            const signupBtn = document.getElementById('tab-signup-btn');
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            
-            if (!session) {
-                alert("Please log in or sign up first! 🌸");
-                window.location.href = 'auth.html';
-                return;
-            }
-
-            currentUser = session.user;
-            document.getElementById('user-email').textContent = currentUser.email;
-            document.getElementById('user-id').textContent = currentUser.id;
-
-            fetchMyProducts();
-        });
-
-        // LOG OUT FUNCTION
-        async function handleLogout() {
-            const { error } = await supabaseClient.auth.signOut();
-            if (!error) {
-                alert("Logged out successfully! 🌸");
-                window.location.href = 'auth.html';
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+                loginBtn.className = "flex-1 py-2 rounded-xl font-heading font-bold text-xs bg-cute-deeppink text-white transition";
+                signupBtn.className = "flex-1 py-2 rounded-xl font-heading font-bold text-xs text-slate-600 transition";
             } else {
-                alert("Error logging out: " + error.message);
+                signupForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                signupBtn.className = "flex-1 py-2 rounded-xl font-heading font-bold text-xs bg-cute-deeppink text-white transition";
+                loginBtn.className = "flex-1 py-2 rounded-xl font-heading font-bold text-xs text-slate-600 transition";
             }
         }
 
-        // FETCH SELLER'S PRODUCTS
-        async function fetchMyProducts() {
-            const { data, error } = await supabaseClient
-                .from('products')
-                .select('*')
-                .eq('seller_id', currentUser.id);
+        // LOG IN: Accepts Email & Password
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
 
-            const container = document.getElementById('my-products-list');
-            container.innerHTML = '';
-
-            if (error || !data || data.length === 0) {
-                container.innerHTML = `<p class="text-xs font-bold text-slate-400 col-span-full">You haven't listed any items for sale yet! 🌸</p>`;
-                return;
-            }
-
-            data.forEach(p => {
-                const card = document.createElement('div');
-                card.className = "flex items-center gap-4 bg-cute-lightpink p-3 rounded-2xl border-2 border-cute-border";
-                card.innerHTML = `
-                    <img src="${p.image_url}" alt="${p.title}" class="w-16 h-16 object-cover rounded-xl border border-cute-border">
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-heading font-bold text-slate-900 text-sm truncate">${p.title}</h4>
-                        <p class="text-xs font-black text-cute-deeppink">₱${parseFloat(p.price).toFixed(2)}</p>
-                    </div>
-                    <button onclick="deleteProduct('${p.id}')" class="text-xs font-bold text-red-500 hover:text-red-700 bg-white px-2.5 py-1 rounded-lg border border-red-200">
-                        Delete
-                    </button>
-                `;
-                container.appendChild(card);
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
             });
+
+            if (error) {
+                alert("Login failed: " + error.message);
+            } else {
+                alert("Welcome back! 🌸");
+                window.location.href = 'account.html';
+            }
         }
 
-        async function deleteProduct(productId) {
-            if (!confirm("Are you sure you want to remove this product?")) return;
+        // SIGN UP: Collects Full Name, Phone, Email, & Password
+        async function handleSignUp(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('signup-fullname').value;
+            const phone = document.getElementById('signup-phone').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
 
-            const { error } = await supabaseClient.from('products').delete().eq('id', productId);
-            if (!error) {
-                fetchMyProducts();
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        full_name: fullName,
+                        phone_number: phone
+                    }
+                }
+            });
+
+            if (error) {
+                alert("Sign Up failed: " + error.message);
             } else {
-                alert("Could not delete product: " + error.message);
+                alert("Account created successfully! 🌸");
+                window.location.href = 'account.html';
             }
         }
     </script>
