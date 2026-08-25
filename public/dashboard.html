@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard | DeskPro</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header>
+    <h1>DeskPro</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="store.html">Store Page</a>
+      <a href="#" id="btn-logout">Logout</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Seller Dashboard</h2>
+    <section style="background:#fff; padding:1.5rem; margin-top:1rem; border-radius:8px;">
+      <h3>Post New Product</h3>
+      <form id="add-product-form">
+        <div class="form-group"><label>Title</label><input type="text" id="p-title" required></div>
+        <div class="form-group"><label>Description</label><textarea id="p-desc" required></textarea></div>
+        <div class="form-group"><label>Price (PHP)</label><input type="number" step="0.01" id="p-price" required></div>
+        <div class="form-group"><label>Image URL</label><input type="url" id="p-image" required></div>
+        <button type="submit" class="btn-cta">List Product</button>
+      </form>
+    </section>
+
+    <section style="margin-top: 3rem;">
+      <h3>Sales History</h3>
+      <div id="sales-history" class="grid"></div>
+    </section>
+
+    <section style="margin-top: 3rem;">
+      <h3>Purchase History</h3>
+      <div id="purchase-history" class="grid"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
