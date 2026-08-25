@@ -1,10 +1,9 @@
 {
-  "name": "office-supplies-marketplace",
+  "name": "office-supplies-store",
   "version": "1.0.0",
-  "description": "Office Supplies E-Commerce Platform",
-  "main": "api/paymongo-checkout.js",
+  "private": true,
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
-    "node-fetch": "^3.3.2"
+    "axios": "^1.6.0"
   }
 }
