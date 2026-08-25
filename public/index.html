@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OFFICESUPPLY. 🌸 - Floral & Cute Workspace Stationery</title>
-    <!-- Google Fonts: Fredoka & Quicksand for a soft, rounded aesthetic -->
+    <!-- Google Fonts: Fredoka & Quicksand -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
@@ -22,12 +22,12 @@
             },
             colors: {
               cute: {
-                pink: '#FFAEC9',       /* Soft Rose Header/Hero Accent */
-                lightpink: '#FFF0F5',  /* Lavender Blush Main Background */
-                deeppink: '#FF69B4',   /* High Contrast Primary Pink */
-                hotpink: '#FF1493',   /* CTA & Hover Accent */
-                green: '#C1E1C1',     /* Floral Pastel Green Sitemap */
-                darkgreen: '#556B2F', /* High Contrast Text for Green Areas */
+                pink: '#FFAEC9',
+                lightpink: '#FFF0F5',
+                deeppink: '#FF69B4',
+                hotpink: '#FF1493',
+                green: '#C1E1C1',
+                darkgreen: '#556B2F',
                 card: '#FFFFFF',
                 border: '#FFD1DC'
               }
@@ -52,30 +52,29 @@
     <!-- 1. HEADER SECTION -->
     <header class="bg-cute-pink text-slate-800 sticky top-0 z-50 shadow-md border-b-4 border-cute-deeppink">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <!-- Brand Logo with Flowers -->
-            <a href="#" class="text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
+            <a href="index.html" class="text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
                 🌸 OFFICESUPPLY. ✨
             </a>
             
             <nav class="hidden md:flex space-x-8 text-base font-bold text-slate-800">
                 <a href="#hero" class="hover:text-white transition">Home 🌷</a>
                 <a href="#features" class="hover:text-white transition">Catalog 🌼</a>
+                <a href="dashboard.html" class="hover:text-white transition">Dashboard 📊</a>
                 <a href="#sitemap" class="hover:text-white transition">Sitemap 🌿</a>
             </nav>
 
             <div class="flex items-center space-x-4">
-                <button onclick="toggleModal('auth-modal')" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-5 py-2 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition shadow-sm text-sm">
+                <button id="auth-btn" onclick="toggleModal('auth-modal')" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-5 py-2 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition shadow-sm text-sm">
                     Account Portal 🎀
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- 2. CALL TO ACTION (RULE OF THIRDS: 2/3 Hero Text, 1/3 Cute Focus Card) -->
+    <!-- 2. CALL TO ACTION (Hero Section) -->
     <section id="hero" class="bg-gradient-to-b from-cute-pink to-cute-lightpink text-slate-800 border-b-2 border-cute-border">
         <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
             
-            <!-- 2/3 Column Hero Content -->
             <div class="md:col-span-2 space-y-6">
                 <span class="inline-block bg-white text-cute-deeppink text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-widest border-2 border-cute-pink shadow-sm">
                     🌸 Cute Workspace Stationery
@@ -90,13 +89,13 @@
                     <a href="#features" class="bg-cute-deeppink text-white font-heading font-bold px-8 py-4 rounded-full shadow-lg hover:bg-cute-hotpink transition transform hover:scale-105 text-base tracking-wide flex items-center gap-2">
                         Shop Flower Power! 🌺
                     </a>
-                    <button onclick="openPortalRole('seller')" class="bg-white text-cute-deeppink font-bold px-6 py-4 rounded-full border-2 border-cute-pink hover:bg-cute-pink hover:text-white transition text-sm">
+                    <button onclick="toggleModal('auth-modal')" class="bg-white text-cute-deeppink font-bold px-6 py-4 rounded-full border-2 border-cute-pink hover:bg-cute-pink hover:text-white transition text-sm">
                         Become a Seller 💖
                     </button>
                 </div>
             </div>
 
-            <!-- 1/3 Column Focus Spotlight Card -->
+            <!-- Spotlight Card -->
             <div class="col-span-1 bg-white p-6 rounded-3xl border-4 border-cute-pink shadow-xl space-y-4 text-center">
                 <div class="text-4xl">🌷</div>
                 <span class="text-xs font-bold text-cute-deeppink uppercase tracking-widest">Featured Cutie</span>
@@ -104,8 +103,8 @@
                 <p class="text-xs text-slate-600">Pastel flower-capped pens with smooth gel ink that blooms on paper!</p>
                 <div class="pt-3 border-t-2 border-dashed border-cute-border flex justify-between items-center px-2">
                     <span class="text-3xl font-heading font-black text-cute-deeppink">₱150.00</span>
-                    <button onclick="handleCheckout('Blossom Gel Pen Set', 150)" class="bg-cute-deeppink text-white font-bold text-xs px-4 py-2.5 rounded-full hover:bg-cute-hotpink transition shadow">
-                        Add to Cart 🛒
+                    <button onclick="handleCheckout('feat-001', 150)" class="bg-cute-deeppink text-white font-bold text-xs px-4 py-2.5 rounded-full hover:bg-cute-hotpink transition shadow">
+                        Buy via GCash 🛒
                     </button>
                 </div>
             </div>
@@ -113,7 +112,7 @@
         </div>
     </section>
 
-    <!-- 3. FEATURES / CATALOG CONTENTS (High Contrast Pink Grid) -->
+    <!-- 3. FEATURES / CATALOG CONTENTS -->
     <main id="features" class="max-w-7xl mx-auto px-6 py-16 flex-1 w-full">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
             <div>
@@ -121,81 +120,17 @@
                 <p class="text-slate-600 text-sm mt-1 font-medium">Browse adorable desk supplies added by our seller community.</p>
             </div>
             <div id="role-badge" class="hidden mt-4 md:mt-0 bg-pink-200 text-cute-deeppink text-xs font-bold px-4 py-2 rounded-full border-2 border-cute-deeppink">
-                🌸 Logged in as Cute Seller
+                🌸 Active User Session
             </div>
         </div>
 
-        <!-- Product Cards Container -->
+        <!-- Dynamic Product Grid loaded from Supabase -->
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            
-            <!-- Item 1 -->
-            <div class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group">
-                <div class="p-6 text-center">
-                    <div class="text-5xl mb-3 group-hover:scale-110 transition transform">📖</div>
-                    <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Notebooks</span>
-                    <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">Flowery Hardcover Notebook</h3>
-                    <p class="text-slate-600 text-xs">A5 ribbon-bound journal with pressed flower motifs and gold foil edges.</p>
-                </div>
-                <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
-                    <span class="text-2xl font-heading font-bold text-slate-900">₱280.00</span>
-                    <button onclick="handleCheckout('Flowery Hardcover Notebook', 280)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
-                        Add to Cart 🛍️
-                    </button>
-                </div>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group">
-                <div class="p-6 text-center">
-                    <div class="text-5xl mb-3 group-hover:scale-110 transition transform">🖍️</div>
-                    <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Highlighters</span>
-                    <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">Cute Petal Highlighters</h3>
-                    <p class="text-slate-600 text-xs">5 soft pastel highlighters connected in a adorable flower shape wheel.</p>
-                </div>
-                <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
-                    <span class="text-2xl font-heading font-bold text-slate-900">₱180.00</span>
-                    <button onclick="handleCheckout('Cute Petal Highlighters', 180)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
-                        Add to Cart 🛍️
-                    </button>
-                </div>
-            </div>
-
-            <!-- Item 3 -->
-            <div class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group">
-                <div class="p-6 text-center">
-                    <div class="text-5xl mb-3 group-hover:scale-110 transition transform">📎</div>
-                    <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Accessories</span>
-                    <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">Blossom Paper Clips</h3>
-                    <p class="text-slate-600 text-xs">Box of 20 vinyl-coated metal clips shaped like cherry blossoms.</p>
-                </div>
-                <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
-                    <span class="text-2xl font-heading font-bold text-slate-900">₱120.00</span>
-                    <button onclick="handleCheckout('Blossom Paper Clips', 120)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
-                        Add to Cart 🛍️
-                    </button>
-                </div>
-            </div>
-
-            <!-- Item 4 -->
-            <div class="bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group">
-                <div class="p-6 text-center">
-                    <div class="text-5xl mb-3 group-hover:scale-110 transition transform">✂️</div>
-                    <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Desk Tools</span>
-                    <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">Pastel Flower Scissors</h3>
-                    <p class="text-slate-600 text-xs">Compact safety scissors featuring cute flower handles and protective sheath.</p>
-                </div>
-                <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
-                    <span class="text-2xl font-heading font-bold text-slate-900">₱190.00</span>
-                    <button onclick="handleCheckout('Pastel Flower Scissors', 190)" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
-                        Add to Cart 🛍️
-                    </button>
-                </div>
-            </div>
-
+            <p class="text-slate-500 font-bold col-span-full text-center">Loading cute products... 🌸</p>
         </div>
     </main>
 
-    <!-- 4. SITEMAP SECTION (Soft Floral Green Harmony) -->
+    <!-- 4. SITEMAP SECTION -->
     <section id="sitemap" class="bg-cute-green text-cute-darkgreen py-12 border-t-4 border-cute-deeppink">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
@@ -204,23 +139,20 @@
                     <li><a href="#features" class="hover:underline">Flower Pens</a></li>
                     <li><a href="#features" class="hover:underline">Pastel Highlighters</a></li>
                     <li><a href="#features" class="hover:underline">Floral Notebooks</a></li>
-                    <li><a href="#features" class="hover:underline">Cute Paper Clips</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="font-heading font-black uppercase text-sm tracking-wider mb-4 border-b-2 border-cute-darkgreen pb-1">Desk Decor 🌼</h4>
                 <ul class="space-y-2 text-sm font-bold">
-                    <li><a href="#" class="hover:underline">Pink Desk Pads</a></li>
-                    <li><a href="#" class="hover:underline">Flower Organizers</a></li>
-                    <li><a href="#" class="hover:underline">Cute Tape Dispensers</a></li>
+                    <li><a href="#features" class="hover:underline">Pink Desk Pads</a></li>
+                    <li><a href="#features" class="hover:underline">Flower Organizers</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="font-heading font-black uppercase text-sm tracking-wider mb-4 border-b-2 border-cute-darkgreen pb-1">Portals 🎀</h4>
                 <ul class="space-y-2 text-sm font-bold">
-                    <li><a href="#" onclick="openPortalRole('buyer')" class="hover:underline">Buyer Login</a></li>
-                    <li><a href="#" onclick="openPortalRole('seller')" class="hover:underline">Seller Registration</a></li>
-                    <li><a href="#" class="hover:underline">PayMongo Payments</a></li>
+                    <li><a href="javascript:void(0)" onclick="toggleModal('auth-modal')" class="hover:underline">Account Access</a></li>
+                    <li><a href="dashboard.html" class="hover:underline">Seller & Buyer Dashboard</a></li>
                 </ul>
             </div>
             <div>
@@ -260,137 +192,177 @@
                     <input type="password" id="password" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
                 </div>
                 <div>
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Choose Role ✨</label>
-                    <select id="user-role" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink font-bold text-slate-700">
-                        <option value="buyer">Buyer (Purchase Cute Gear)</option>
-                        <option value="seller">Seller (Upload Cute Products)</option>
-                    </select>
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">GCash Number 📱</label>
+                    <input type="text" id="gcash" placeholder="09XXXXXXXXX" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
                 </div>
-                <button type="submit" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
-                    Enter Portal 💖
-                </button>
-            </form>
-
-            <!-- Seller Product Upload Box -->
-            <div id="seller-panel" class="hidden border-t-2 border-dashed border-cute-border pt-4 space-y-3">
-                <h4 class="font-heading font-bold text-cute-deeppink text-sm">Add Cute Product (Seller Dashboard) 🌷</h4>
-                <form onsubmit="handleAddProduct(event)" class="space-y-2">
-                    <input type="text" id="prod-title" placeholder="Product Title (e.g. Flower Clips)" required class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink">
-                    <input type="number" id="prod-price" placeholder="Price in PHP (e.g. 150)" step="0.01" required class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink">
-                    <textarea id="prod-desc" placeholder="Product Description..." class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink"></textarea>
-                    <button type="submit" class="w-full bg-cute-pink text-slate-800 font-heading font-extrabold py-2.5 rounded-xl hover:bg-cute-deeppink hover:text-white transition text-xs shadow">
-                        Publish to Marketplace 🌸
+                <div class="flex gap-2 pt-2">
+                    <button type="submit" id="btn-login-action" onclick="setAuthAction('login')" class="flex-1 bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
+                        Login 💖
                     </button>
-                </form>
-            </div>
+                    <button type="submit" id="btn-signup-action" onclick="setAuthAction('signup')" class="flex-1 bg-white text-cute-deeppink border-2 border-cute-deeppink font-heading font-bold py-3 rounded-2xl hover:bg-cute-lightpink transition text-sm">
+                        Register ✨
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
+    <!-- VOICEFLOW AI CHATBOT WIDGET -->
+    <script type="text/javascript">
+      (function(d, t) {
+          var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+          v.onload = function() {
+            window.voiceflow.chat.load({
+              verify: { projectID: 'YOUR_VOICEFLOW_PROJECT_ID' },
+              url: 'https://general-runtime.voiceflow.com',
+              versionID: 'production'
+            });
+          }
+          v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+      })(document, 'script');
+    </script>
+
     <!-- CLIENT CONTROLLER SCRIPT -->
     <script>
-        // Supabase Initialization Config
         const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
         const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-        const supabase = (window.supabase && SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL") 
+        const supabaseClient = (window.supabase && SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL") 
             ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
             : null;
 
+        let authAction = 'login';
+        function setAuthAction(action) { authAction = action; }
+
         function toggleModal(id) {
-            const modal = document.getElementById(id);
-            modal.classList.toggle('hidden');
+            document.getElementById(id).classList.toggle('hidden');
         }
 
-        function openPortalRole(role) {
-            document.getElementById('user-role').value = role;
-            toggleModal('auth-modal');
-        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (supabaseClient) {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) {
+                    document.getElementById('auth-btn').textContent = 'Dashboard 📊';
+                    document.getElementById('auth-btn').onclick = () => window.location.href = 'dashboard.html';
+                    document.getElementById('role-badge').classList.remove('hidden');
+                }
+            }
+            loadProducts();
+        });
 
         async function handleAuth(event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const role = document.getElementById('user-role').value;
+            const gcash = document.getElementById('gcash').value;
 
-            if (!supabase) {
-                alert("Demo Mode Active 🌸: Connect your Supabase keys in code to sync real accounts!");
-                if (role === 'seller') {
-                    document.getElementById('seller-panel').classList.remove('hidden');
-                    document.getElementById('role-badge').classList.remove('hidden');
-                } else {
-                    toggleModal('auth-modal');
-                }
+            if (!supabaseClient) {
+                alert("Please add your Supabase credentials to index.html!");
+                toggleModal('auth-modal');
                 return;
             }
 
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            
-            if (error) {
-                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
-                if (signUpError) return alert(signUpError.message);
-                
-                await supabase.from('profiles').insert([{ id: signUpData.user.id, email, role }]);
-                alert("Welcome! Account created successfully 🌸");
+            if (authAction === 'signup') {
+                const { data, error } = await supabaseClient.auth.signUp({ email, password });
+                if (error) return alert(error.message);
+                if (data.user) {
+                    await supabaseClient.from('profiles').insert([{ id: data.user.id, email, gcash_number: gcash }]);
+                    alert("Account registered successfully! 🌸");
+                    window.location.reload();
+                }
             } else {
-                alert("Logged in successfully! ✨");
-            }
-
-            if (role === 'seller') {
-                document.getElementById('seller-panel').classList.remove('hidden');
-                document.getElementById('role-badge').classList.remove('hidden');
-            } else {
-                toggleModal('auth-modal');
+                const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) return alert(error.message);
+                window.location.reload();
             }
         }
 
-        async function handleCheckout(productName, amount) {
+        async function loadProducts() {
+            const grid = document.getElementById('product-grid');
+            if (!supabaseClient) {
+                grid.innerHTML = `<p class="text-slate-500 font-bold col-span-full text-center">Set your Supabase credentials to fetch products dynamically.</p>`;
+                return;
+            }
+
+            const { data: products, error } = await supabaseClient.from('products').select('*');
+            if (error || !products.length) {
+                grid.innerHTML = `<p class="text-slate-500 font-bold col-span-full text-center">No products listed yet. Be the first to add one! 🌸</p>`;
+                return;
+            }
+
+            grid.innerHTML = '';
+            products.forEach(prod => {
+                const card = document.createElement('div');
+                card.className = "bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group";
+                card.innerHTML = `
+                    <div class="p-6 text-center">
+                        <img src="${prod.image_url || 'https://via.placeholder.com/150'}" alt="${prod.title}" class="h-32 w-32 object-cover mx-auto rounded-2xl mb-3 group-hover:scale-105 transition transform">
+                        <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">${prod.category || 'Stationery'}</span>
+                        <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">${prod.title}</h3>
+                        <p class="text-slate-600 text-xs">${prod.description}</p>
+                    </div>
+                    <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border space-y-3">
+                        <div class="flex justify-between items-center px-2">
+                            <span class="text-2xl font-heading font-bold text-slate-900">₱${parseFloat(prod.price).toFixed(2)}</span>
+                            <button onclick="handleCheckout('${prod.id}', ${prod.price})" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
+                                Buy via GCash 🛒
+                            </button>
+                        </div>
+                        <div class="pt-2 border-t border-cute-border flex items-center justify-between text-xs">
+                            <select id="star-${prod.id}" class="bg-white border border-cute-border rounded-lg px-1 py-0.5 text-xs">
+                                <option value="5">5 ★</option>
+                                <option value="4">4 ★</option>
+                                <option value="3">3 ★</option>
+                                <option value="2">2 ★</option>
+                                <option value="1">1 ★</option>
+                            </select>
+                            <input type="text" id="review-${prod.id}" placeholder="Leave a review..." class="w-1/2 p-1 border border-cute-border rounded-lg text-xs">
+                            <button onclick="submitReview('${prod.id}')" class="bg-cute-pink text-slate-800 font-bold px-2 py-1 rounded-lg text-xs hover:bg-cute-deeppink hover:text-white transition">Post</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        async function handleCheckout(productId, amount) {
+            if (!supabaseClient) return alert("Please configure Supabase.");
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) return alert("Please log in first to purchase! 🌸");
+
             try {
-                const response = await fetch('/api/create-payment', {
+                const res = await fetch('/api/checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        amount: amount,
-                        description: productName,
-                        orderId: "ORD-" + Date.now()
-                    })
+                    body: JSON.stringify({ productId, amount, buyerId: session.user.id })
                 });
-
-                const data = await response.json();
+                const data = await res.json();
                 if (data.checkoutUrl) {
                     window.location.href = data.checkoutUrl;
                 } else {
-                    alert("Redirecting to PayMongo Checkout Link for: " + productName + " (₱" + amount + ")");
+                    alert("Unable to reach PayMongo serverless checkout function.");
                 }
             } catch (err) {
-                alert("🌸 PayMongo Checkout Triggered!\nItem: " + productName + "\nAmount: ₱" + amount + ".00");
+                alert("Checkout service error.");
             }
         }
 
-        function handleAddProduct(event) {
-            event.preventDefault();
-            const title = document.getElementById('prod-title').value;
-            const price = parseFloat(document.getElementById('prod-price').value);
-            const description = document.getElementById('prod-desc').value;
+        async function submitReview(productId) {
+            if (!supabaseClient) return alert("Please configure Supabase.");
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) return alert("Please log in to leave a review! 🌸");
 
-            const container = document.getElementById('product-grid');
-            const newCard = document.createElement('div');
-            newCard.className = "bg-white border-4 border-cute-border rounded-3xl shadow-md hover:shadow-xl transition flex flex-col justify-between overflow-hidden group";
-            newCard.innerHTML = `
-                <div class="p-6 text-center">
-                    <div class="text-5xl mb-3 group-hover:scale-110 transition transform">🌸</div>
-                    <span class="text-xs font-extrabold text-cute-deeppink uppercase tracking-wider">Seller Upload</span>
-                    <h3 class="text-xl font-heading font-bold text-slate-900 mt-1 mb-2">${title}</h3>
-                    <p class="text-slate-600 text-xs">${description}</p>
-                </div>
-                <div class="p-4 bg-cute-lightpink border-t-2 border-cute-border flex justify-between items-center px-6">
-                    <span class="text-2xl font-heading font-bold text-slate-900">₱${price.toFixed(2)}</span>
-                    <button onclick="handleCheckout('${title}', ${price})" class="bg-cute-deeppink text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-cute-hotpink transition shadow">
-                        Add to Cart 🛍️
-                    </button>
-                </div>
-            `;
-            container.appendChild(newCard);
-            alert("Yay! Product added to catalog! 🌸");
-            toggleModal('auth-modal');
+            const rating = document.getElementById(`star-${productId}`).value;
+            const comment = document.getElementById(`review-${productId}`).value;
+
+            const { error } = await supabaseClient.from('reviews').insert([
+                { product_id: productId, buyer_id: session.user.id, rating: parseInt(rating), comment }
+            ]);
+
+            if (error) alert(error.message);
+            else {
+                alert("Review submitted! 🌸");
+                document.getElementById(`review-${productId}`).value = '';
+            }
         }
     </script>
 </body>
