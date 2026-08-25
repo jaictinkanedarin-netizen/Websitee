@@ -239,7 +239,12 @@
                 alert("Login failed: " + error.message);
             } else {
                 alert("Welcome back! 🌸");
-                checkUserSession();
+                // If profile is already customized, jump straight to profile dashboard
+                if (data.user?.user_metadata?.full_name) {
+                    window.location.href = 'profile.html';
+                } else {
+                    checkUserSession();
+                }
             }
         }
 
@@ -314,6 +319,7 @@
                 alert("Profile update failed: " + error.message);
             } else {
                 alert("Profile updated successfully! ✨");
+                window.location.href = 'profile.html'; // Direct redirect to dashboard
             }
         }
 
