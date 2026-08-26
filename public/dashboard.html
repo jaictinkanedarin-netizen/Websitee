@@ -91,15 +91,23 @@
                     <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Price (PHP) ₱</label>
                     <input type="number" step="0.01" id="p-price" required placeholder="150.00" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
                 </div>
+                
+                <!-- DRAG AND DROP FILE UPLOAD AREA -->
                 <div class="md:col-span-2">
-                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Image URL 🖼️</label>
-                    <input type="url" id="p-image" required placeholder="https://images.unsplash.com/..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider mb-1 block">Product Image 🖼️</label>
+                    <div id="drop-zone" onclick="document.getElementById('p-file').click()" class="border-2 border-dashed border-cute-pink bg-cute-lightpink/50 rounded-2xl p-6 text-center cursor-pointer hover:bg-white transition flex flex-col items-center justify-center space-y-2">
+                        <img id="image-preview" src="" alt="Preview" class="hidden w-24 h-24 object-cover rounded-2xl border-2 border-cute-pink shadow-sm mb-2">
+                        <p id="drop-text" class="text-xs font-bold text-cute-deeppink">📸 Drag & drop product photo here</p>
+                        <p id="drop-subtext" class="text-[10px] text-slate-400 font-medium">or click to browse from device</p>
+                        <input type="file" id="p-file" accept="image/*" class="hidden" onchange="previewFile(this.files[0])">
+                    </div>
                 </div>
+
                 <div class="md:col-span-2">
                     <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Description 📝</label>
                     <textarea id="p-desc" rows="2" placeholder="Describe your cute stationery item..." class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink"></textarea>
                 </div>
-                <button type="submit" class="md:col-span-2 bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
+                <button type="submit" id="btn-submit" class="md:col-span-2 bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
                     List Product ✨
                 </button>
             </form>
@@ -130,6 +138,7 @@
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let currentUser = null;
+        let selectedProductFile = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
             const { data: { session } } = await supabaseClient.auth.getSession();
@@ -142,6 +151,8 @@
             currentUser = session.user;
             document.getElementById('user-email-display').textContent = currentUser.email;
 
+            setupDragAndDrop();
+
             // Fetch profile for GCash info
             const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', currentUser.id).single();
             if (profile && profile.gcash_number) {
@@ -152,22 +163,95 @@
             loadPurchaseHistory();
         });
 
+        function setupDragAndDrop() {
+            const dropZone = document.getElementById('drop-zone');
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    previewFile(files[0]);
+                }
+            });
+        }
+
+        function previewFile(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                alert('Please select an image file! 🌸');
+                return;
+            }
+            selectedProductFile = file;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const imgPreview = document.getElementById('image-preview');
+                imgPreview.src = e.target.result;
+                imgPreview.classList.remove('hidden');
+                document.getElementById('drop-text').textContent = "✨ Image selected! Click or drop another to replace.";
+            };
+            reader.readAsDataURL(file);
+        }
+
         async function handlePostProduct(event) {
             event.preventDefault();
-            const title = document.getElementById('p-title').value;
-            const price = parseFloat(document.getElementById('p-price').value);
-            const image_url = document.getElementById('p-image').value;
-            const description = document.getElementById('p-desc').value;
+            const submitBtn = document.getElementById('btn-submit');
 
-            const { error } = await supabaseClient.from('products').insert([
-                { seller_id: currentUser.id, title, price, image_url, description }
-            ]);
+            if (!selectedProductFile) {
+                alert("Please drag & drop or select a product photo! 🌸");
+                return;
+            }
 
-            if (error) {
-                alert(error.message);
-            } else {
+            submitBtn.textContent = 'Uploading Photo & Listing... 🌸';
+            submitBtn.disabled = true;
+
+            try {
+                // Upload photo to Supabase Storage 'products' bucket
+                const fileExt = selectedProductFile.name.split('.').pop();
+                const filePath = `product-${currentUser.id}-${Date.now()}.${fileExt}`;
+
+                const { error: uploadError } = await supabaseClient.storage
+                    .from('products')
+                    .upload(filePath, selectedProductFile, { upsert: true });
+
+                if (uploadError) {
+                    throw uploadError;
+                }
+
+                // Get public URL of uploaded file
+                const { data: publicUrlData } = supabaseClient.storage
+                    .from('products')
+                    .getPublicUrl(filePath);
+
+                const image_url = publicUrlData.publicUrl;
+                const title = document.getElementById('p-title').value;
+                const price = parseFloat(document.getElementById('p-price').value);
+                const description = document.getElementById('p-desc').value;
+
+                // Save record into database table
+                const { error: dbError } = await supabaseClient.from('products').insert([
+                    { seller_id: currentUser.id, title, price, image_url, description }
+                ]);
+
+                if (dbError) throw dbError;
+
                 alert("Product listed successfully! 🌸");
                 document.getElementById('add-product-form').reset();
+                document.getElementById('image-preview').classList.add('hidden');
+                document.getElementById('drop-text').textContent = "📸 Drag & drop product photo here";
+                selectedProductFile = null;
+
+            } catch (err) {
+                alert("Failed to list product: " + err.message);
+            } finally {
+                submitBtn.textContent = 'List Product ✨';
+                submitBtn.disabled = false;
             }
         }
 
