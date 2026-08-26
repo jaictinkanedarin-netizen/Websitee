@@ -53,9 +53,9 @@
                 🌸 OFFICESUPPLY. ✨
             </a>
             <div class="flex gap-2 items-center">
-                <a href="cart.html" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-3 py-1 rounded-full font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition flex items-center gap-1">
-                    🛒 Cart <span id="cart-count-badge" class="bg-cute-deeppink text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
-                </a>
+                <button onclick="toggleCartDrawer()" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-1.5 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition text-xs flex items-center gap-1 shadow-sm">
+                    🛒 Cart (<span id="cart-count">0</span>)
+                </button>
                 <a href="index.html" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-3 py-1 rounded-full font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition">
                     ← Back to Shop
                 </a>
@@ -147,6 +147,33 @@
 
     </main>
 
+    <!-- SHOPPING CART DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl border-l-4 border-cute-pink">
+            <div>
+                <div class="flex justify-between items-center border-b-2 border-cute-border pb-4">
+                    <h3 class="text-2xl font-heading font-extrabold text-slate-900">Your Cart 🛒</h3>
+                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 font-extrabold text-xl">✕</button>
+                </div>
+                <div id="cart-items" class="py-4 space-y-4 max-h-[60vh] overflow-y-auto"></div>
+            </div>
+            <div class="border-t-2 border-cute-border pt-4 space-y-3">
+                <div class="flex justify-between font-heading font-bold text-lg text-slate-900">
+                    <span>Total:</span>
+                    <span id="cart-total">₱0.00</span>
+                </div>
+                <button onclick="handleCheckout()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
+                    Proceed to Checkout 💳
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t-4 border-cute-pink mt-12 py-6 text-center text-xs font-bold text-slate-500">
+        🌸 OFFICESUPPLY. — Cute Korean & Japanese Stationery ✨
+    </footer>
+
     <script>
         const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
@@ -169,10 +196,19 @@
                 return;
             }
 
-            updateCartCount();
+            updateCartUI();
             loadProductDetails();
             loadReviews();
         });
+
+        function getCartFromStorage() {
+            return JSON.parse(localStorage.getItem('cart')) || [];
+        }
+
+        function saveCartToStorage(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+        }
 
         async function loadProductDetails() {
             const { data: product, error } = await supabaseClient
@@ -187,7 +223,7 @@
                 return;
             }
 
-            currentProduct = product; // Store active product object
+            currentProduct = product;
 
             document.getElementById('p-title').textContent = product.title || 'Untitled Product';
             document.getElementById('p-seller').textContent = product.seller_name || 'OFFICESUPPLY Store';
@@ -276,10 +312,7 @@
                 return;
             }
 
-            // Retrieve existing cart array from localStorage
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-            // Check if item already exists in cart
+            let cart = getCartFromStorage();
             const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
 
             if (existingIndex > -1) {
@@ -294,18 +327,76 @@
                 });
             }
 
-            // Save back to localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-
-            alert("Added to cart! 🛒✨");
+            saveCartToStorage(cart);
+            toggleCartDrawer();
         }
 
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-            const badge = document.getElementById('cart-count-badge');
-            if (badge) badge.textContent = totalCount;
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('hidden');
+            if (!drawer.classList.contains('hidden')) {
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const cart = getCartFromStorage();
+            const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+            
+            const badge = document.getElementById('cart-count');
+            if (badge) badge.textContent = totalItems;
+
+            const container = document.getElementById('cart-items');
+            container.innerHTML = '';
+
+            let total = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-xs font-bold text-slate-400 py-10">Your cart is empty! 🌸</p>`;
+            } else {
+                cart.forEach((item, index) => {
+                    const price = parseFloat(item.price) || 0;
+                    const qty = item.quantity || 1;
+                    const itemTotal = price * qty;
+                    total += itemTotal;
+
+                    const row = document.createElement('div');
+                    row.className = "flex items-center justify-between bg-cute-lightpink p-3 rounded-2xl border-2 border-cute-border";
+                    row.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <img src="${item.image_url || 'https://via.placeholder.com/50'}" class="w-10 h-10 object-cover rounded-xl border border-cute-border">
+                            <div>
+                                <p class="font-heading font-bold text-xs text-slate-900">${item.title}</p>
+                                <p class="text-xs font-black text-slate-700">₱${price.toFixed(2)} x ${qty}</p>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-xs font-bold text-red-500 hover:text-red-700 p-1">Remove</button>
+                    `;
+                    container.appendChild(row);
+                });
+            }
+
+            document.getElementById('cart-total').textContent = `₱${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(index) {
+            let cart = getCartFromStorage();
+            cart.splice(index, 1);
+            saveCartToStorage(cart);
+        }
+
+        async function handleCheckout() {
+            const cart = getCartFromStorage();
+            if (cart.length === 0) return alert("Your cart is empty! 🌸");
+
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) {
+                alert("Please log in or sign up before checking out! 🌸");
+                window.location.href = "auth.html";
+                return;
+            }
+
+            window.location.href = 'checkout.html';
         }
     </script>
 </body>
