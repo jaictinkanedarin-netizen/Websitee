@@ -42,6 +42,24 @@
             background-size: 30px 30px;
             background-position: 0 0, 15px 15px;
         }
+
+        /* VOICEFLOW PINK THEME OVERRIDE */
+        #vf-chat-bubble-button,
+        .vf-button,
+        .vf-chat-button,
+        .vf-header,
+        .vf-message--user .vf-message__bubble,
+        div[class*="vfk-"] {
+            background-color: #FF69B4 !important;
+            border-color: #FF69B4 !important;
+            color: #FFFFFF !important;
+        }
+        
+        /* Voiceflow launcher icon and SVG color fix */
+        #vf-chat-bubble-button svg,
+        .vf-button svg {
+            fill: #FFFFFF !important;
+        }
     </style>
 </head>
 <body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen">
@@ -190,7 +208,7 @@
         </div>
     </footer>
 
-    <!-- VOICEFLOW EMBED SCRIPT (PINK THEME UPDATED) -->
+    <!-- VOICEFLOW EMBED SCRIPT -->
     <script type="text/javascript">
       (function(d, t) {
           var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
