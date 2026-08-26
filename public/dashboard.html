@@ -268,7 +268,7 @@
 
             } catch (err) {
                 alert("Failed to list product: " + err.message);
-            } font-medium {
+            } finally {
                 submitBtn.textContent = 'List Product ✨';
                 submitBtn.disabled = false;
             }
@@ -316,7 +316,7 @@
             });
         }
 
-        // Updated Delete Function
+        // Delete Product
         async function handleDeleteProduct(productId) {
             if (!confirm("Are you sure you want to delete this product? 🌸")) return;
 
@@ -325,21 +325,20 @@
                 .delete()
                 .eq('id', productId)
                 .eq('seller_id', currentUser.id)
-                .select(); // Returns deleted row to verify database execution
+                .select();
 
             if (error) {
                 alert("Failed to delete product: " + error.message);
                 return;
             }
 
-            // Checks if Supabase RLS blocked the deletion
             if (!data || data.length === 0) {
                 alert("Deletion was blocked by Supabase Row-Level Security (RLS) policy! Please add a DELETE policy in your Supabase Dashboard.");
                 return;
             }
 
             alert("Product deleted! ✨");
-            loadMyProducts(); // Refreshes UI grid
+            loadMyProducts();
         }
 
         async function loadSalesHistory() {
