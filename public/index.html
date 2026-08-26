@@ -147,7 +147,7 @@
     </div>
 
     <!-- CORNER AI CHATBOT WIDGET -->
-    <div id="ai-chat-widget" class="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+    <div id="ai-chat-widget" class="fixed bottom-5 right-5 z-[60] flex flex-col items-end transition-all duration-300">
         <!-- Floating Toggle Button -->
         <button onclick="toggleAiChat()" class="bg-cute-deeppink text-white p-4 rounded-full shadow-2xl hover:bg-cute-hotpink transition transform hover:scale-105 flex items-center gap-2 font-heading font-bold border-2 border-white">
             <span class="text-xl">🤖</span>
@@ -298,7 +298,6 @@
             products.forEach(p => {
                 const sellerName = p.seller_name || 'Anonymous Seller';
                 const detailUrl = `product-details.html?id=${p.id}`;
-                const stock = p.stock !== undefined ? p.stock : 99;
 
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-3xl border-4 border-cute-pink p-4 flex flex-col justify-between shadow-md hover:shadow-xl transition";
@@ -373,9 +372,18 @@
 
         function toggleCartDrawer() {
             const drawer = document.getElementById('cart-drawer');
+            const aiWidget = document.getElementById('ai-chat-widget');
+            
             drawer.classList.toggle('hidden');
+
+            // Shift AI chatbot to the left of the cart drawer when open
             if (!drawer.classList.contains('hidden')) {
+                aiWidget.classList.remove('right-5');
+                aiWidget.classList.add('right-[29rem]');
                 updateCartUI();
+            } else {
+                aiWidget.classList.remove('right-[29rem]');
+                aiWidget.classList.add('right-5');
             }
         }
 
