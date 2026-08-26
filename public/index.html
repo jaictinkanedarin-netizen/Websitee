@@ -48,17 +48,29 @@
 
     <!-- HEADER -->
     <header class="bg-cute-pink text-slate-800 sticky top-0 z-40 shadow-md border-b-4 border-cute-deeppink">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-wrap justify-between items-center">
+            <a href="index.html" class="text-2xl sm:text-3xl font-heading font-extrabold tracking-wide text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
                 🌸 OFFICESUPPLY. ✨
             </a>
-            <nav class="flex items-center space-x-6 text-base font-bold text-slate-800">
-                <a href="#featured-products" class="hover:text-white transition">Products 🛍️</a>
-                <a href="store.html" class="hover:text-white transition">Store Page 🏪</a>
-                <a href="reviews.html" class="hover:text-white transition">Reviews ⭐️</a>
-                <a href="dashboard.html" class="hover:text-white transition">List your items for sale 📊</a>
-                <a id="nav-account" href="account.html" class="hover:text-white transition">My Account 👤</a>
-                <button onclick="toggleCartDrawer()" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-1.5 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition text-sm flex items-center gap-1 shadow-sm">
+            
+            <!-- Mobile Header Right Actions -->
+            <div class="flex items-center gap-2 md:hidden">
+                <button onclick="toggleCartDrawer()" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-3 py-1 rounded-full font-heading font-bold text-xs flex items-center gap-1 shadow-sm">
+                    🛒 (<span id="cart-count-mobile">0</span>)
+                </button>
+                <button onclick="toggleMobileNav()" class="text-white text-2xl font-bold p-1 focus:outline-none">
+                    ☰
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav id="nav-menu" class="hidden w-full md:w-auto md:flex items-center flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-6 text-sm sm:text-base font-bold text-slate-800 mt-3 md:mt-0 pt-3 md:pt-0 border-t md:border-none border-cute-deeppink/30">
+                <a href="#featured-products" onclick="closeMobileNav()" class="hover:text-white transition w-full md:w-auto text-center py-1">Products 🛍️</a>
+                <a href="store.html" class="hover:text-white transition w-full md:w-auto text-center py-1">Store Page 🏪</a>
+                <a href="reviews.html" class="hover:text-white transition w-full md:w-auto text-center py-1">Reviews ⭐️</a>
+                <a href="dashboard.html" class="hover:text-white transition w-full md:w-auto text-center py-1">List your items 📊</a>
+                <a id="nav-account" href="account.html" class="hover:text-white transition w-full md:w-auto text-center py-1">My Account 👤</a>
+                <button onclick="toggleCartDrawer()" class="hidden md:flex bg-white text-cute-deeppink border-2 border-cute-deeppink px-4 py-1.5 rounded-full font-heading font-bold hover:bg-cute-deeppink hover:text-white transition text-sm items-center gap-1 shadow-sm">
                     🛒 Cart (<span id="cart-count">0</span>)
                 </button>
             </nav>
@@ -66,22 +78,22 @@
     </header>
 
     <!-- SECTION 1: HERO (CENTERED) -->
-    <section class="max-w-7xl mx-auto px-6 pt-12 pb-8 w-full">
-        <div class="max-w-3xl mx-auto space-y-4 text-center">
-            <span class="bg-white border-2 border-cute-deeppink text-cute-deeppink font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 pt-8 sm:pt-12 pb-6 sm:pb-8 w-full">
+        <div class="max-w-3xl mx-auto space-y-3 sm:space-y-4 text-center">
+            <span class="bg-white border-2 border-cute-deeppink text-cute-deeppink font-bold text-[10px] sm:text-xs px-3 sm:px-4 py-1 sm:py-1.5 rounded-full uppercase tracking-wider inline-block">
                 ✨ Premium Korean & Japanese Supplies ✨
             </span>
-            <h1 class="text-4xl md:text-6xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
                 Make Your Desk <span class="text-cute-deeppink">Adorable</span> & Organized 🌸
             </h1>
-            <p class="text-slate-600 max-w-xl mx-auto font-medium text-base">
+            <p class="text-slate-600 max-w-xl mx-auto font-medium text-sm sm:text-base px-2">
                 Discover charming sticky notes, pastel gel pens, aesthetic journals, and desk organizers tailored for modern student and office setups.
             </p>
-            <div class="flex items-center justify-center gap-4 pt-2">
-                <a href="#featured-products" class="bg-cute-deeppink text-white font-heading font-bold px-6 py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
+                <a href="#featured-products" class="w-full sm:w-auto bg-cute-deeppink text-white font-heading font-bold px-6 py-3 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md text-center">
                     Explore Catalog 👇
                 </a>
-                <a href="store.html" class="bg-white text-slate-800 border-2 border-cute-border font-heading font-bold px-6 py-3 rounded-2xl hover:bg-cute-lightpink transition text-sm">
+                <a href="store.html" class="w-full sm:w-auto bg-white text-slate-800 border-2 border-cute-border font-heading font-bold px-6 py-3 rounded-2xl hover:bg-cute-lightpink transition text-sm text-center">
                     Go to Store 🏪
                 </a>
             </div>
@@ -89,36 +101,36 @@
     </section>
 
     <!-- SECTION 2: CATEGORY BANNERS -->
-    <section class="max-w-7xl mx-auto px-6 py-6 w-full">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <a href="pastel-pens.html" class="bg-white p-4 rounded-2xl border-2 border-cute-border shadow-sm text-center hover:border-cute-deeppink transition group">
-                <span class="text-3xl group-hover:scale-110 inline-block transition">✏️</span>
-                <h4 class="font-heading font-bold text-slate-800 text-sm mt-1">Pastel Pens</h4>
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 w-full">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            <a href="pastel-pens.html" class="bg-white p-3 sm:p-4 rounded-2xl border-2 border-cute-border shadow-sm text-center hover:border-cute-deeppink transition group">
+                <span class="text-2xl sm:text-3xl group-hover:scale-110 inline-block transition">✏️</span>
+                <h4 class="font-heading font-bold text-slate-800 text-xs sm:text-sm mt-1">Pastel Pens</h4>
             </a>
-            <a href="aesthetic-planners.html" class="bg-white p-4 rounded-2xl border-2 border-cute-border shadow-sm text-center hover:border-cute-deeppink transition group">
-                <span class="text-3xl group-hover:scale-110 inline-block transition">📓</span>
-                <h4 class="font-heading font-bold text-slate-800 text-sm mt-1">Aesthetic Planners</h4>
+            <a href="aesthetic-planners.html" class="bg-white p-3 sm:p-4 rounded-2xl border-2 border-cute-border shadow-sm text-center hover:border-cute-deeppink transition group">
+                <span class="text-2xl sm:text-3xl group-hover:scale-110 inline-block transition">📓</span>
+                <h4 class="font-heading font-bold text-slate-800 text-xs sm:text-sm mt-1">Aesthetic Planners</h4>
             </a>
-            <a href="washi-tapes.html" class="bg-white p-4 rounded-2xl border-2 border-cute-border shadow-sm text-center hover:border-cute-deeppink transition group">
-                <span class="text-3xl group-hover:scale-110 inline-block transition">🎀</span>
-                <h4 class="font-heading font-bold text-slate-800 text-sm mt-1">Washi Tapes</h4>
+            <a href="washi-tapes.html" class="bg-white p-3 sm:p-4 rounded-2xl border-2 border-cute-border shadow-sm text-center hover:border-cute-deeppink transition group">
+                <span class="text-2xl sm:text-3xl group-hover:scale-110 inline-block transition">🎀</span>
+                <h4 class="font-heading font-bold text-slate-800 text-xs sm:text-sm mt-1">Washi Tapes</h4>
             </a>
-            <a href="desk-mats.html" class="bg-white p-4 rounded-2xl border-2 border-cute-border shadow-sm text-center hover:border-cute-deeppink transition group">
-                <span class="text-3xl group-hover:scale-110 inline-block transition">🖥️</span>
-                <h4 class="font-heading font-bold text-slate-800 text-sm mt-1">Desk Mats</h4>
+            <a href="desk-mats.html" class="bg-white p-3 sm:p-4 rounded-2xl border-2 border-cute-border shadow-sm text-center hover:border-cute-deeppink transition group">
+                <span class="text-2xl sm:text-3xl group-hover:scale-110 inline-block transition">🖥️</span>
+                <h4 class="font-heading font-bold text-slate-800 text-xs sm:text-sm mt-1">Desk Mats</h4>
             </a>
         </div>
     </section>
 
     <!-- SECTION 3: MAIN LONG-SCROLLING PRODUCT FEED -->
-    <main id="featured-products" class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
-        <div class="w-full space-y-6">
-            <div class="flex justify-between items-center bg-white p-4 rounded-3xl border-4 border-cute-pink shadow-sm">
-                <h3 class="font-heading font-extrabold text-xl text-slate-900">Featured Marketplace Items 🛍️</h3>
-                <input type="text" id="search-input" onkeyup="filterProducts()" placeholder="Search items... 🔍" class="w-1/2 md:w-1/3 p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+    <main id="featured-products" class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-1 w-full">
+        <div class="w-full space-y-4 sm:space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-white p-4 rounded-3xl border-4 border-cute-pink shadow-sm">
+                <h3 class="font-heading font-extrabold text-lg sm:text-xl text-slate-900 text-center sm:text-left">Featured Marketplace Items 🛍️</h3>
+                <input type="text" id="search-input" onkeyup="filterProducts()" placeholder="Search items... 🔍" class="w-full sm:w-1/2 md:w-1/3 p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
             </div>
 
-            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                 <p class="text-center col-span-full font-bold text-cute-deeppink py-10">Loading cute supplies... 🌸</p>
             </div>
         </div>
@@ -126,20 +138,20 @@
 
     <!-- SHOPPING CART DRAWER -->
     <div id="cart-drawer" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex justify-end">
-        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl border-l-4 border-cute-pink">
+        <div class="bg-white w-full max-w-md h-full p-4 sm:p-6 flex flex-col justify-between shadow-2xl border-l-0 sm:border-l-4 border-cute-pink">
             <div>
-                <div class="flex justify-between items-center border-b-2 border-cute-border pb-4">
-                    <h3 class="text-2xl font-heading font-extrabold text-slate-900">Your Cart 🛒</h3>
-                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 font-extrabold text-xl">✕</button>
+                <div class="flex justify-between items-center border-b-2 border-cute-border pb-3 sm:pb-4">
+                    <h3 class="text-xl sm:text-2xl font-heading font-extrabold text-slate-900">Your Cart 🛒</h3>
+                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 font-extrabold text-2xl p-1">✕</button>
                 </div>
-                <div id="cart-items" class="py-4 space-y-3 max-h-[60vh] overflow-y-auto pr-1"></div>
+                <div id="cart-items" class="py-3 sm:py-4 space-y-3 max-h-[65vh] overflow-y-auto pr-1"></div>
             </div>
             <div class="border-t-2 border-cute-border pt-4 space-y-3">
-                <div class="flex justify-between font-heading font-bold text-lg text-slate-900">
+                <div class="flex justify-between font-heading font-bold text-base sm:text-lg text-slate-900">
                     <span>Total:</span>
                     <span id="cart-total">₱0.00</span>
                 </div>
-                <button onclick="handleCheckout()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
+                <button onclick="handleCheckout()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-sm sm:text-base shadow-md">
                     Proceed to Checkout 💳
                 </button>
             </div>
@@ -147,15 +159,15 @@
     </div>
 
     <!-- CORNER AI CHATBOT WIDGET -->
-    <div id="ai-chat-widget" class="fixed bottom-5 right-5 z-[60] flex flex-col items-end transition-all duration-300">
+    <div id="ai-chat-widget" class="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[60] flex flex-col items-end transition-all duration-300">
         <!-- Floating Toggle Button -->
-        <button onclick="toggleAiChat()" class="bg-cute-deeppink text-white p-4 rounded-full shadow-2xl hover:bg-cute-hotpink transition transform hover:scale-105 flex items-center gap-2 font-heading font-bold border-2 border-white">
-            <span class="text-xl">🤖</span>
-            <span class="text-xs">Ask Mochi AI 🌸</span>
+        <button onclick="toggleAiChat()" class="bg-cute-deeppink text-white p-3 sm:p-4 rounded-full shadow-2xl hover:bg-cute-hotpink transition transform hover:scale-105 flex items-center gap-1.5 sm:gap-2 font-heading font-bold border-2 border-white">
+            <span class="text-lg sm:text-xl">🤖</span>
+            <span class="text-[11px] sm:text-xs">Ask Mochi AI 🌸</span>
         </button>
 
         <!-- Chat Window -->
-        <div id="ai-chat-box" class="hidden mt-3 w-80 sm:w-96 bg-white rounded-3xl border-4 border-cute-pink shadow-2xl flex flex-col overflow-hidden transition-all duration-300">
+        <div id="ai-chat-box" class="hidden mt-3 w-[calc(100vw-2rem)] max-w-[22rem] sm:w-96 bg-white rounded-3xl border-4 border-cute-pink shadow-2xl flex flex-col overflow-hidden transition-all duration-300">
             <!-- Header -->
             <div class="bg-cute-pink p-3.5 flex justify-between items-center border-b-2 border-cute-deeppink">
                 <div class="flex items-center gap-2">
@@ -165,18 +177,18 @@
                         <p class="text-[10px] font-bold text-slate-700">Stationery & Store Helper</p>
                     </div>
                 </div>
-                <button onclick="toggleAiChat()" class="text-slate-700 hover:text-slate-900 font-black text-sm">✕</button>
+                <button onclick="toggleAiChat()" class="text-slate-700 hover:text-slate-900 font-black text-sm p-1">✕</button>
             </div>
 
             <!-- Messages Area -->
-            <div id="ai-chat-messages" class="p-4 space-y-3 h-72 overflow-y-auto bg-cute-lightpink/30 text-xs">
+            <div id="ai-chat-messages" class="p-3 sm:p-4 space-y-3 h-64 sm:h-72 overflow-y-auto bg-cute-lightpink/30 text-xs">
                 <div class="bg-white p-3 rounded-2xl border border-cute-border shadow-sm max-w-[85%] font-medium text-slate-700">
                     Konnichiwa! 🌸 I'm Mochi. Ask me anything about our stationery or items in the store! ✨
                 </div>
             </div>
 
             <!-- Input Area -->
-            <form onsubmit="handleAiSendMessage(event)" class="p-3 bg-white border-t-2 border-cute-border flex gap-2">
+            <form onsubmit="handleAiSendMessage(event)" class="p-2.5 sm:p-3 bg-white border-t-2 border-cute-border flex gap-2">
                 <input type="text" id="ai-user-input" placeholder="Ask Mochi... 💭" required class="flex-1 p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
                 <button type="submit" id="ai-send-btn" class="bg-cute-deeppink text-white font-heading font-bold px-3 py-2 rounded-xl text-xs hover:bg-cute-hotpink transition">
                     Send 🚀
@@ -187,10 +199,10 @@
 
     <!-- ADD PRODUCT MODAL -->
     <div id="add-product-modal" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl border-4 border-cute-pink p-6 max-w-md w-full space-y-4 shadow-xl">
+        <div class="bg-white rounded-3xl border-4 border-cute-pink p-5 sm:p-6 max-w-md w-full space-y-4 shadow-xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b-2 border-cute-border pb-2">
-                <h3 class="text-xl font-heading font-extrabold text-cute-deeppink">List New Item 🌸</h3>
-                <button onclick="closeModal('add-product-modal')" class="text-slate-400 font-bold text-lg">✕</button>
+                <h3 class="text-lg sm:text-xl font-heading font-extrabold text-cute-deeppink">List New Item 🌸</h3>
+                <button onclick="closeModal('add-product-modal')" class="text-slate-400 font-bold text-lg p-1">✕</button>
             </div>
             <form id="modal-product-form" onsubmit="handlePostProduct(event)" class="space-y-3">
                 <input type="text" id="m-title" required placeholder="Title (e.g. Cherry Gel Pen)" class="w-full p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
@@ -206,9 +218,9 @@
     </div>
 
     <!-- FOOTER -->
-    <footer class="bg-white border-t-4 border-cute-pink mt-12 py-6 text-center text-xs font-bold text-slate-500">
+    <footer class="bg-white border-t-4 border-cute-pink mt-8 sm:mt-12 py-6 text-center text-xs font-bold text-slate-500 px-4">
         🌸 KANE'S OFFICESUPPLY. — Cute Korean & Japanese Stationery ✨
-        <div class="mt-2 space-x-4">
+        <div class="mt-2 space-x-2 sm:space-x-4">
             <a href="index.html" class="text-cute-deeppink hover:underline">Home</a>
             <span>•</span>
             <a href="store.html" class="text-cute-deeppink hover:underline">Store</a>
@@ -230,6 +242,20 @@
             fetchProducts();
             updateCartUI(); // Initialized from localStorage
         });
+
+        function toggleMobileNav() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+        }
+
+        function closeMobileNav() {
+            const menu = document.getElementById('nav-menu');
+            if (window.innerWidth < 768) {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+            }
+        }
 
         // Safe dual-key retrieval
         function getCartFromStorage() {
@@ -304,11 +330,11 @@
                 card.innerHTML = `
                     <div class="space-y-2">
                         <a href="${detailUrl}" class="block overflow-hidden rounded-2xl border-2 border-cute-border">
-                            <img src="${p.image_url}" alt="${p.title}" class="w-full h-44 object-cover hover:scale-105 transition duration-300">
+                            <img src="${p.image_url}" alt="${p.title}" class="w-full h-40 sm:h-44 object-cover hover:scale-105 transition duration-300">
                         </a>
                         
                         <a href="${detailUrl}" class="block hover:text-cute-deeppink transition">
-                            <h4 class="font-heading font-extrabold text-slate-900 text-base leading-tight">${p.title}</h4>
+                            <h4 class="font-heading font-extrabold text-slate-900 text-sm sm:text-base leading-tight">${p.title}</h4>
                         </a>
 
                         <p class="text-[11px] font-bold text-cute-deeppink flex items-center gap-1">
@@ -319,8 +345,8 @@
                     </div>
                     
                     <div class="mt-4 pt-3 border-t-2 border-cute-border flex items-center justify-between">
-                        <span class="text-base font-black text-slate-900">₱${parseFloat(p.price).toFixed(2)}</span>
-                        <button onclick="addToCart('${p.id}')" class="bg-cute-lightpink text-cute-deeppink border-2 border-cute-deeppink px-3 py-1 rounded-xl font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition">
+                        <span class="text-sm sm:text-base font-black text-slate-900">₱${parseFloat(p.price).toFixed(2)}</span>
+                        <button onclick="addToCart('${p.id}')" class="bg-cute-lightpink text-cute-deeppink border-2 border-cute-deeppink px-3 py-1.5 rounded-xl font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition">
                             Add to Cart 🛒
                         </button>
                     </div>
@@ -376,14 +402,18 @@
             
             drawer.classList.toggle('hidden');
 
-            // Shift AI chatbot to the left of the cart drawer when open
+            // Shift AI chatbot safely when cart is opened
             if (!drawer.classList.contains('hidden')) {
-                aiWidget.classList.remove('right-5');
-                aiWidget.classList.add('right-[29rem]');
+                if (window.innerWidth >= 768) {
+                    aiWidget.classList.remove('right-4', 'sm:right-5');
+                    aiWidget.classList.add('right-[29rem]');
+                } else {
+                    aiWidget.classList.add('hidden'); // Hide widget on mobile to prevent overlapping full-screen cart
+                }
                 updateCartUI();
             } else {
-                aiWidget.classList.remove('right-[29rem]');
-                aiWidget.classList.add('right-5');
+                aiWidget.classList.remove('right-[29rem]', 'hidden');
+                aiWidget.classList.add('right-4', 'sm:right-5');
             }
         }
 
@@ -392,7 +422,8 @@
             
             // Total items counter in navigation
             const totalItems = cart.reduce((acc, item) => acc + (parseInt(item.quantity || item.qty || 1, 10)), 0);
-            document.getElementById('cart-count').textContent = totalItems;
+            if (document.getElementById('cart-count')) document.getElementById('cart-count').textContent = totalItems;
+            if (document.getElementById('cart-count-mobile')) document.getElementById('cart-count-mobile').textContent = totalItems;
             
             const container = document.getElementById('cart-items');
             container.innerHTML = '';
@@ -416,7 +447,7 @@
                     }
 
                     const row = document.createElement('div');
-                    row.className = "flex items-center justify-between bg-cute-lightpink/40 p-3 rounded-2xl border-2 border-cute-border shadow-sm hover:border-cute-deeppink transition";
+                    row.className = "flex items-center justify-between bg-cute-lightpink/40 p-2.5 sm:p-3 rounded-2xl border-2 border-cute-border shadow-sm hover:border-cute-deeppink transition";
                     row.innerHTML = `
                         <!-- Checkbox -->
                         <input type="checkbox" ${isSelected ? 'checked' : ''} 
@@ -425,7 +456,7 @@
 
                         <!-- Item Details (Clickable) -->
                         <a href="${detailUrl}" onclick="toggleCartDrawer()" class="flex items-center gap-2 flex-1 ml-2 group overflow-hidden">
-                            <img src="${itemImg}" alt="${itemName}" class="w-10 h-10 object-cover rounded-xl border border-cute-pink group-hover:scale-105 transition">
+                            <img src="${itemImg}" alt="${itemName}" class="w-10 h-10 object-cover rounded-xl border border-cute-pink group-hover:scale-105 transition flex-shrink-0">
                             <div class="overflow-hidden">
                                 <p class="font-heading font-bold text-xs text-slate-900 truncate group-hover:text-cute-deeppink transition">${itemName}</p>
                                 <p class="text-[11px] font-bold text-cute-deeppink">₱${price.toFixed(2)}</p>
@@ -433,16 +464,16 @@
                         </a>
 
                         <!-- Quantity Controls (+ / -) -->
-                        <div class="flex items-center gap-1 bg-white border border-cute-border rounded-xl px-1.5 py-0.5 ml-1">
-                            <button onclick="updateCartQuantity(${index}, -1)" class="text-xs font-bold px-1 text-slate-600 hover:text-cute-deeppink">-</button>
+                        <div class="flex items-center gap-1 bg-white border border-cute-border rounded-xl px-1.5 py-0.5 ml-1 flex-shrink-0">
+                            <button onclick="updateCartQuantity(${index}, -1)" class="text-xs font-bold px-1.5 py-0.5 text-slate-600 hover:text-cute-deeppink">-</button>
                             <span class="text-xs font-bold px-1">${qty}</span>
                             <button onclick="updateCartQuantity(${index}, 1)" 
-                                class="text-xs font-bold px-1 text-slate-600 hover:text-cute-deeppink ${qty >= stockLimit ? 'opacity-30 cursor-not-allowed' : ''}"
+                                class="text-xs font-bold px-1.5 py-0.5 text-slate-600 hover:text-cute-deeppink ${qty >= stockLimit ? 'opacity-30 cursor-not-allowed' : ''}"
                                 ${qty >= stockLimit ? 'disabled' : ''}>+</button>
                         </div>
 
                         <!-- Remove Button -->
-                        <button onclick="removeFromCart(${index})" class="text-[11px] font-bold text-red-500 hover:text-red-700 ml-2">Remove</button>
+                        <button onclick="removeFromCart(${index})" class="text-[11px] font-bold text-red-500 hover:text-red-700 ml-2 p-1 flex-shrink-0">✕</button>
                     `;
                     container.appendChild(row);
                 });
