@@ -409,30 +409,31 @@
                     const isSelected = item.selected !== false;
                     const itemName = item.title || item.name || 'Item';
                     const itemImg = item.image_url || item.img || 'https://via.placeholder.com/50';
+                    const detailUrl = item.id ? `product-details.html?id=${item.id}` : '#';
 
                     if (isSelected) {
                         total += price * qty;
                     }
 
                     const row = document.createElement('div');
-                    row.className = "flex items-center justify-between bg-cute-lightpink/40 p-3 rounded-2xl border-2 border-cute-border shadow-sm";
+                    row.className = "flex items-center justify-between bg-cute-lightpink/40 p-3 rounded-2xl border-2 border-cute-border shadow-sm hover:border-cute-deeppink transition";
                     row.innerHTML = `
                         <!-- Checkbox -->
                         <input type="checkbox" ${isSelected ? 'checked' : ''} 
                             onchange="toggleItemSelection(${index})" 
                             class="w-4 h-4 accent-cute-deeppink cursor-pointer rounded">
 
-                        <!-- Item Details -->
-                        <div class="flex items-center gap-2 flex-1 ml-2">
-                            <img src="${itemImg}" alt="${itemName}" class="w-10 h-10 object-cover rounded-xl border border-cute-pink">
+                        <!-- Item Details (Clickable) -->
+                        <a href="${detailUrl}" onclick="toggleCartDrawer()" class="flex items-center gap-2 flex-1 ml-2 group overflow-hidden">
+                            <img src="${itemImg}" alt="${itemName}" class="w-10 h-10 object-cover rounded-xl border border-cute-pink group-hover:scale-105 transition">
                             <div class="overflow-hidden">
-                                <p class="font-heading font-bold text-xs text-slate-900 truncate">${itemName}</p>
+                                <p class="font-heading font-bold text-xs text-slate-900 truncate group-hover:text-cute-deeppink transition">${itemName}</p>
                                 <p class="text-[11px] font-bold text-cute-deeppink">₱${price.toFixed(2)}</p>
                             </div>
-                        </div>
+                        </a>
 
                         <!-- Quantity Controls (+ / -) -->
-                        <div class="flex items-center gap-1 bg-white border border-cute-border rounded-xl px-1.5 py-0.5">
+                        <div class="flex items-center gap-1 bg-white border border-cute-border rounded-xl px-1.5 py-0.5 ml-1">
                             <button onclick="updateCartQuantity(${index}, -1)" class="text-xs font-bold px-1 text-slate-600 hover:text-cute-deeppink">-</button>
                             <span class="text-xs font-bold px-1">${qty}</span>
                             <button onclick="updateCartQuantity(${index}, 1)" 
