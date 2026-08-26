@@ -158,45 +158,6 @@
         </div>
     </div>
 
-    <!-- CORNER AI CHATBOT WIDGET -->
-    <div id="ai-chat-widget" class="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[60] flex flex-col items-end transition-all duration-300">
-        <!-- Floating Toggle Button -->
-        <button onclick="toggleAiChat()" class="bg-cute-deeppink text-white p-3 sm:p-4 rounded-full shadow-2xl hover:bg-cute-hotpink transition transform hover:scale-105 flex items-center gap-1.5 sm:gap-2 font-heading font-bold border-2 border-white">
-            <span class="text-lg sm:text-xl">🤖</span>
-            <span class="text-[11px] sm:text-xs">Ask Mochi AI 🌸</span>
-        </button>
-
-        <!-- Chat Window -->
-        <div id="ai-chat-box" class="hidden mt-3 w-[calc(100vw-2rem)] max-w-[22rem] sm:w-96 bg-white rounded-3xl border-4 border-cute-pink shadow-2xl flex flex-col overflow-hidden transition-all duration-300">
-            <!-- Header -->
-            <div class="bg-cute-pink p-3.5 flex justify-between items-center border-b-2 border-cute-deeppink">
-                <div class="flex items-center gap-2">
-                    <span class="text-2xl">🤖</span>
-                    <div>
-                        <h4 class="font-heading font-extrabold text-slate-900 text-sm leading-tight">Mochi Assistant 🌸</h4>
-                        <p class="text-[10px] font-bold text-slate-700">Stationery & Store Helper</p>
-                    </div>
-                </div>
-                <button onclick="toggleAiChat()" class="text-slate-700 hover:text-slate-900 font-black text-sm p-1">✕</button>
-            </div>
-
-            <!-- Messages Area -->
-            <div id="ai-chat-messages" class="p-3 sm:p-4 space-y-3 h-64 sm:h-72 overflow-y-auto bg-cute-lightpink/30 text-xs">
-                <div class="bg-white p-3 rounded-2xl border border-cute-border shadow-sm max-w-[85%] font-medium text-slate-700">
-                    Konnichiwa! 🌸 I'm Mochi. Ask me anything about our stationery or items in the store! ✨
-                </div>
-            </div>
-
-            <!-- Input Area -->
-            <form onsubmit="handleAiSendMessage(event)" class="p-2.5 sm:p-3 bg-white border-t-2 border-cute-border flex gap-2">
-                <input type="text" id="ai-user-input" placeholder="Ask Mochi... 💭" required class="flex-1 p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                <button type="submit" id="ai-send-btn" class="bg-cute-deeppink text-white font-heading font-bold px-3 py-2 rounded-xl text-xs hover:bg-cute-hotpink transition">
-                    Send 🚀
-                </button>
-            </form>
-        </div>
-    </div>
-
     <!-- ADD PRODUCT MODAL -->
     <div id="add-product-modal" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl border-4 border-cute-pink p-5 sm:p-6 max-w-md w-full space-y-4 shadow-xl max-h-[90vh] overflow-y-auto">
@@ -229,6 +190,23 @@
         </div>
     </footer>
 
+    <!-- VOICEFLOW EMBED SCRIPT -->
+    <script type="text/javascript">
+      (function(d, t) {
+          var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+          v.onload = function() {
+            window.voiceflow.chat.load({
+              verify: { projectID: '6a8f12d6b71353e2c25dd07b' },
+              url: 'https://general-runtime.voiceflow.com',
+              versionID: 'production'
+            });
+          }
+          v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; 
+          v.type = "text/javascript"; 
+          s.parentNode.insertBefore(v, s);
+      })(document, 'script');
+    </script>
+
     <!-- SCRIPT ENGINE -->
     <script>
         const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
@@ -240,7 +218,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             checkAuthAndUpdateUI();
             fetchProducts();
-            updateCartUI(); // Initialized from localStorage
+            updateCartUI();
         });
 
         function toggleMobileNav() {
@@ -257,12 +235,10 @@
             }
         }
 
-        // Safe dual-key retrieval
         function getCartFromStorage() {
             return JSON.parse(localStorage.getItem('office_supply_cart')) || JSON.parse(localStorage.getItem('cart')) || [];
         }
 
-        // Safe dual-key synchronization
         function saveCartToStorage(cart) {
             if (!cart || cart.length === 0) {
                 localStorage.removeItem('office_supply_cart');
@@ -398,29 +374,15 @@
 
         function toggleCartDrawer() {
             const drawer = document.getElementById('cart-drawer');
-            const aiWidget = document.getElementById('ai-chat-widget');
-            
             drawer.classList.toggle('hidden');
-
-            // Shift AI chatbot safely when cart is opened
             if (!drawer.classList.contains('hidden')) {
-                if (window.innerWidth >= 768) {
-                    aiWidget.classList.remove('right-4', 'sm:right-5');
-                    aiWidget.classList.add('right-[29rem]');
-                } else {
-                    aiWidget.classList.add('hidden'); // Hide widget on mobile to prevent overlapping full-screen cart
-                }
                 updateCartUI();
-            } else {
-                aiWidget.classList.remove('right-[29rem]', 'hidden');
-                aiWidget.classList.add('right-4', 'sm:right-5');
             }
         }
 
         function updateCartUI() {
             const cart = getCartFromStorage();
             
-            // Total items counter in navigation
             const totalItems = cart.reduce((acc, item) => acc + (parseInt(item.quantity || item.qty || 1, 10)), 0);
             if (document.getElementById('cart-count')) document.getElementById('cart-count').textContent = totalItems;
             if (document.getElementById('cart-count-mobile')) document.getElementById('cart-count-mobile').textContent = totalItems;
@@ -449,12 +411,10 @@
                     const row = document.createElement('div');
                     row.className = "flex items-center justify-between bg-cute-lightpink/40 p-2.5 sm:p-3 rounded-2xl border-2 border-cute-border shadow-sm hover:border-cute-deeppink transition";
                     row.innerHTML = `
-                        <!-- Checkbox -->
                         <input type="checkbox" ${isSelected ? 'checked' : ''} 
                             onchange="toggleItemSelection(${index})" 
                             class="w-4 h-4 accent-cute-deeppink cursor-pointer rounded">
 
-                        <!-- Item Details (Clickable) -->
                         <a href="${detailUrl}" onclick="toggleCartDrawer()" class="flex items-center gap-2 flex-1 ml-2 group overflow-hidden">
                             <img src="${itemImg}" alt="${itemName}" class="w-10 h-10 object-cover rounded-xl border border-cute-pink group-hover:scale-105 transition flex-shrink-0">
                             <div class="overflow-hidden">
@@ -463,7 +423,6 @@
                             </div>
                         </a>
 
-                        <!-- Quantity Controls (+ / -) -->
                         <div class="flex items-center gap-1 bg-white border border-cute-border rounded-xl px-1.5 py-0.5 ml-1 flex-shrink-0">
                             <button onclick="updateCartQuantity(${index}, -1)" class="text-xs font-bold px-1.5 py-0.5 text-slate-600 hover:text-cute-deeppink">-</button>
                             <span class="text-xs font-bold px-1">${qty}</span>
@@ -472,7 +431,6 @@
                                 ${qty >= stockLimit ? 'disabled' : ''}>+</button>
                         </div>
 
-                        <!-- Remove Button -->
                         <button onclick="removeFromCart(${index})" class="text-[11px] font-bold text-red-500 hover:text-red-700 ml-2 p-1 flex-shrink-0">✕</button>
                     `;
                     container.appendChild(row);
@@ -566,61 +524,6 @@
 
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-        // --- AI CHATBOT LOGIC (VERCEL API ROUTE) ---
-        function toggleAiChat() {
-            const chatBox = document.getElementById('ai-chat-box');
-            chatBox.classList.toggle('hidden');
-        }
-
-        async function handleAiSendMessage(e) {
-            e.preventDefault();
-            const inputEl = document.getElementById('ai-user-input');
-            const userMsg = inputEl.value.trim();
-            if (!userMsg) return;
-
-            const messagesContainer = document.getElementById('ai-chat-messages');
-
-            // Render User Message
-            const userBubble = document.createElement('div');
-            userBubble.className = "bg-cute-deeppink text-white p-3 rounded-2xl shadow-sm max-w-[85%] font-medium ml-auto text-right";
-            userBubble.textContent = userMsg;
-            messagesContainer.appendChild(userBubble);
-
-            inputEl.value = '';
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-            // Render Loading Message
-            const loadingBubble = document.createElement('div');
-            loadingBubble.className = "bg-white p-3 rounded-2xl border border-cute-border shadow-sm max-w-[85%] font-medium text-slate-400 italic";
-            loadingBubble.textContent = "Mochi is thinking... 🌸";
-            messagesContainer.appendChild(loadingBubble);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-            // Construct store context for AI
-            const productNames = allProducts.map(p => `${p.title} (₱${p.price})`).join(', ');
-
-            try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: userMsg,
-                        context: productNames
-                    })
-                });
-
-                const data = await response.json();
-                
-                loadingBubble.className = "bg-white p-3 rounded-2xl border border-cute-border shadow-sm max-w-[85%] font-medium text-slate-700";
-                loadingBubble.textContent = data.reply || "Oopsie! I couldn't process that right now. Please try again! 🌸";
-            } catch (err) {
-                loadingBubble.className = "bg-white p-3 rounded-2xl border border-cute-border shadow-sm max-w-[85%] font-medium text-slate-700";
-                loadingBubble.textContent = "Oopsie! I couldn't reach my server. Please try again later! 🌸";
-            }
-
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
     </script>
 </body>
 </html>
