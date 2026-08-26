@@ -1,49 +1,180 @@
-<script>
-async function handleCheckoutFormSubmit(event) {
-    event.preventDefault();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - OFFICESUPPLY. 🌸</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { fredoka: ['Fredoka', 'sans-serif'], quicksand: ['Quicksand', 'sans-serif'] },
+            colors: { cute: { pink: '#FFAEC9', lightpink: '#FFF0F5', deeppink: '#FF69B4', hotpink: '#FF1493', border: '#FFD1DC' } }
+          }
+        }
+      }
+    </script>
+    <style>
+        body { font-family: 'Quicksand', sans-serif; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Fredoka', sans-serif; }
+        .floral-bg {
+            background-color: #FFF0F5;
+            background-image: radial-gradient(#FFAEC9 0.75px, transparent 0.75px), radial-gradient(#FFAEC9 0.75px, #FFF0F5 0.75px);
+            background-size: 30px 30px; background-position: 0 0, 15px 15px;
+        }
+    </style>
+</head>
+<body class="floral-bg text-slate-800 antialiased min-h-screen flex flex-col">
 
-    const payButton = document.getElementById('pay-button'); // Ensure your submit button has this ID or update selector
-    if (payButton) {
-        payButton.disabled = true;
-        payButton.textContent = "Connecting to PayMongo... 🌸";
-    }
+    <!-- HEADER -->
+    <header class="bg-cute-pink text-slate-800 sticky top-0 z-40 shadow-md border-b-4 border-cute-deeppink">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-heading font-extrabold text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)] flex items-center gap-2">
+                🌸 OFFICESUPPLY. ✨
+            </a>
+            <a href="index.html" class="text-xs sm:text-sm font-bold text-slate-700 hover:text-white transition">← Cancel & Return 🌷</a>
+        </div>
+    </header>
 
-    // Get cart items from localStorage
-    const cart = JSON.parse(localStorage.getItem('checkout_items')) || JSON.parse(localStorage.getItem('cart')) || [];
+    <!-- MAIN CHECKOUT CONTENT -->
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-1 w-full">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- LEFT: CART & DETAILS -->
+            <div class="md:col-span-2 space-y-6">
+                <!-- Shipping Form -->
+                <div class="bg-white rounded-3xl border-4 border-cute-pink p-6 shadow-md space-y-4">
+                    <h3 class="text-xl font-heading font-extrabold text-slate-900 flex items-center gap-2">Shipping Details 🚚</h3>
+                    <div class="grid grid-cols-1 gap-3 text-xs">
+                        <div>
+                            <label class="font-bold text-slate-600 uppercase">Full Name</label>
+                            <input type="text" id="cust-name" placeholder="Juan Dela Cruz" required class="w-full mt-1 p-2.5 border-2 border-cute-border rounded-xl bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                        </div>
+                        <div>
+                            <label class="font-bold text-slate-600 uppercase">Delivery Address</label>
+                            <input type="text" id="cust-address" placeholder="123 Street, City, Province" required class="w-full mt-1 p-2.5 border-2 border-cute-border rounded-xl bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                        </div>
+                    </div>
+                </div>
 
-    if (cart.length === 0) {
-        alert("Your cart is empty! 🌸");
-        if (payButton) payButton.disabled = false;
-        return;
-    }
+                <!-- Item Summary -->
+                <div class="bg-white rounded-3xl border-4 border-cute-pink p-6 shadow-md space-y-3">
+                    <h3 class="text-xl font-heading font-extrabold text-slate-900">Review Cart Items 📦</h3>
+                    <div id="checkout-item-list" class="space-y-3"></div>
+                </div>
+            </div>
 
-    try {
-        // Send cart items to your Vercel serverless API
-        const response = await fetch('/api/paymongo', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ items: cart })
+            <!-- RIGHT: SUMMARY & PAYMENT ACTION -->
+            <div class="bg-white rounded-3xl border-4 border-cute-pink p-6 shadow-md h-fit space-y-4">
+                <p class="text-[10px] font-bold text-cute-deeppink uppercase tracking-wider">Payment Method</p>
+                <h3 class="text-lg font-heading font-extrabold text-slate-900">GCash / E-Wallet 💳</h3>
+                
+                <div class="border-t-2 border-b-2 border-cute-border py-3 space-y-1 text-xs font-bold">
+                    <div class="flex justify-between text-slate-600">
+                        <span>Subtotal</span>
+                        <span id="subtotal-val">₱0.00</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>Shipping Fee</span>
+                        <span class="text-cute-deeppink">FREE 🌸</span>
+                    </div>
+                    <div class="flex justify-between text-base text-slate-900 pt-2 font-black">
+                        <span>Total Amount</span>
+                        <span id="total-val" class="text-cute-deeppink">₱0.00</span>
+                    </div>
+                </div>
+
+                <button id="pay-btn" onclick="handlePayMongoRedirect()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-sm shadow-md">
+                    Pay with PayMongo 💳
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCheckoutSummary();
         });
 
-        const data = await response.json();
+        function getCheckoutItems() {
+            return JSON.parse(localStorage.getItem('checkout_items')) || JSON.parse(localStorage.getItem('office_supply_cart')) || JSON.parse(localStorage.getItem('cart')) || [];
+        }
 
-        if (data.checkoutUrl) {
-            // REDIRECT TO PAYMONGO (GCash, Maya, Cards)
-            window.location.href = data.checkoutUrl;
-        } else {
-            alert(`Payment Error: ${data.error || 'Failed to generate payment link.'}`);
-            if (payButton) {
-                payButton.disabled = false;
-                payButton.textContent = "Pay with PayMongo 💳";
+        function renderCheckoutSummary() {
+            const items = getCheckoutItems();
+            const container = document.getElementById('checkout-item-list');
+            container.innerHTML = '';
+
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-xs font-bold text-slate-400 py-4 text-center">No items selected for checkout! 🌸</p>`;
+                return;
+            }
+
+            let total = 0;
+            items.forEach(item => {
+                const price = parseFloat(item.price) || 0;
+                const qty = parseInt(item.quantity || item.qty || 1, 10);
+                const title = item.title || item.name || 'Stationery Item';
+                const img = item.image_url || item.img || 'https://via.placeholder.com/50';
+                total += price * qty;
+
+                const row = document.createElement('div');
+                row.className = "flex items-center gap-3 bg-cute-lightpink/40 p-2.5 rounded-2xl border-2 border-cute-border";
+                row.innerHTML = `
+                    <img src="${img}" class="w-12 h-12 object-cover rounded-xl border border-cute-pink flex-shrink-0">
+                    <div class="flex-1 overflow-hidden">
+                        <p class="font-heading font-bold text-xs text-slate-900 truncate">${title}</p>
+                        <p class="text-[11px] font-bold text-cute-deeppink">Qty: ${qty}</p>
+                    </div>
+                    <span class="font-bold text-xs text-slate-900">₱${(price * qty).toFixed(2)}</span>
+                `;
+                container.appendChild(row);
+            });
+
+            document.getElementById('subtotal-val').textContent = `₱${total.toFixed(2)}`;
+            document.getElementById('total-val').textContent = `₱${total.toFixed(2)}`;
+        }
+
+        async function handlePayMongoRedirect() {
+            const items = getCheckoutItems();
+            const payBtn = document.getElementById('pay-btn');
+
+            if (items.length === 0) {
+                alert("Your cart is empty! 🌸");
+                return;
+            }
+
+            payBtn.disabled = true;
+            payBtn.textContent = "Connecting to PayMongo... 🌸";
+
+            try {
+                const response = await fetch('/api/paymongo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: items })
+                });
+
+                const data = await response.json();
+
+                if (data.checkoutUrl) {
+                    window.location.href = data.checkoutUrl;
+                } else {
+                    alert(`Payment Error: ${data.error || 'Unable to start payment session'}`);
+                    payBtn.disabled = false;
+                    payBtn.textContent = "Pay with PayMongo 💳";
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Failed to connect to the payment gateway. Please check your network and backend api! 🌸");
+                payBtn.disabled = false;
+                payBtn.textContent = "Pay with PayMongo 💳";
             }
         }
-    } catch (error) {
-        console.error(error);
-        alert("Could not connect to payment server. Please try again! 🌸");
-        if (payButton) {
-            payButton.disabled = false;
-            payButton.textContent = "Pay with PayMongo 💳";
-        }
-    }
-}
-</script>
+    </script>
+</body>
+</html>
