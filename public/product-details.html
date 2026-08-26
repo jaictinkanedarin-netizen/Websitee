@@ -225,8 +225,14 @@
 
             currentProduct = product;
 
+            // Fetch seller username from product object or default display fallback
+            const sellerUsername = product.seller_username 
+                                || product.seller_name 
+                                || product.user_name 
+                                || 'Anonymous Seller';
+
             document.getElementById('p-title').textContent = product.title || 'Untitled Product';
-            document.getElementById('p-seller').textContent = product.seller_name || 'OFFICESUPPLY Store';
+            document.getElementById('p-seller').textContent = sellerUsername;
             document.getElementById('p-price').textContent = parseFloat(product.price || 0).toFixed(2);
             document.getElementById('p-desc').textContent = product.description || 'No description provided.';
             document.getElementById('p-img').src = product.image_url || 'https://via.placeholder.com/400';
@@ -327,7 +333,7 @@
             btn.disabled = false;
 
             if (error) {
-                alert("Failed to submit review: " + error.message);
+                alert("Failed to delete review: " + error.message);
             } else {
                 alert("Review submitted! ✨");
                 document.getElementById('rev-comment').value = '';
