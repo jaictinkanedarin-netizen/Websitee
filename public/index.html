@@ -103,7 +103,7 @@
         </div>
     </section>
 
-    <!-- SECTION 2: CATEGORY BANNERS (Links to 4 Dedicated Section Pages) -->
+    <!-- SECTION 2: CATEGORY BANNERS -->
     <section class="max-w-7xl mx-auto px-6 py-6 w-full">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <a href="pastel-pens.html" class="bg-white p-4 rounded-2xl border-2 border-cute-border shadow-sm text-center hover:border-cute-deeppink transition group">
@@ -229,14 +229,14 @@
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const defaultProducts = [
-            { id: "p1", title: "Sakura Blossom Gel Pens (6 Set)", price: 180.00, image_url: "https://images.unsplash.com/photo-1585336261026-67576887146d?w=500&auto=format&fit=crop&q=60", description: "0.5mm smooth gel pens in soft pastel barrels." },
-            { id: "p2", title: "Aesthetic Grid Spiral Journal", price: 240.00, image_url: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=60", description: "Bleed-proof paper perfect for study notes and journaling." },
-            { id: "p3", title: "Kawaii Strawberry Sticky Notes", price: 85.00, image_url: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=500&auto=format&fit=crop&q=60", description: "Cute sticky notes for planner reminders and memos." },
-            { id: "p4", title: "Pastel Desk Mat & Mouse Pad", price: 350.00, image_url: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?w=500&auto=format&fit=crop&q=60", description: "Water-resistant large mat to protect your workspace." },
-            { id: "p5", title: "Milk Carton Leatherette Pencil Case", price: 150.00, image_url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=500&auto=format&fit=crop&q=60", description: "Large capacity pen pouch shaped like Japanese milk box." },
-            { id: "p6", title: "Floral Washi Tape Bundle (10 Rolls)", price: 195.00, image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60", description: "Decorative paper tapes for bullet journals and crafts." },
-            { id: "p7", title: "Vintage Brass Fountain Pen", price: 420.00, image_url: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=500&auto=format&fit=crop&q=60", description: "Elegant refillable metallic fountain pen." },
-            { id: "p8", title: "Gradient Pastel Highlighters (5 Set)", price: 160.00, image_url: "https://images.unsplash.com/photo-1569683795645-b62e50fbf103?w=500&auto=format&fit=crop&q=60", description: "Soft aesthetic colors that won't bleed through paper." }
+            { id: "p1", title: "Sakura Blossom Gel Pens (6 Set)", price: 180.00, seller_name: "sandbina", image_url: "https://images.unsplash.com/photo-1585336261026-67576887146d?w=500&auto=format&fit=crop&q=60", description: "0.5mm smooth gel pens in soft pastel barrels." },
+            { id: "p2", title: "Aesthetic Grid Spiral Journal", price: 240.00, seller_name: "OFFICESUPPLY Store", image_url: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=60", description: "Bleed-proof paper perfect for study notes and journaling." },
+            { id: "p3", title: "Kawaii Strawberry Sticky Notes", price: 85.00, seller_name: "OFFICESUPPLY Store", image_url: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=500&auto=format&fit=crop&q=60", description: "Cute sticky notes for planner reminders and memos." },
+            { id: "p4", title: "Pastel Desk Mat & Mouse Pad", price: 350.00, seller_name: "OFFICESUPPLY Store", image_url: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?w=500&auto=format&fit=crop&q=60", description: "Water-resistant large mat to protect your workspace." },
+            { id: "p5", title: "Milk Carton Leatherette Pencil Case", price: 150.00, seller_name: "sandbina", image_url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=500&auto=format&fit=crop&q=60", description: "Large capacity pen pouch shaped like Japanese milk box." },
+            { id: "p6", title: "Floral Washi Tape Bundle (10 Rolls)", price: 195.00, seller_name: "OFFICESUPPLY Store", image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60", description: "Decorative paper tapes for bullet journals and crafts." },
+            { id: "p7", title: "Vintage Brass Fountain Pen", price: 420.00, seller_name: "OFFICESUPPLY Store", image_url: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=500&auto=format&fit=crop&q=60", description: "Elegant refillable metallic fountain pen." },
+            { id: "p8", title: "Gradient Pastel Highlighters (5 Set)", price: 160.00, seller_name: "OFFICESUPPLY Store", image_url: "https://images.unsplash.com/photo-1569683795645-b62e50fbf103?w=500&auto=format&fit=crop&q=60", description: "Soft aesthetic colors that won't bleed through paper." }
         ];
 
         let allProducts = [];
@@ -282,14 +282,28 @@
             container.innerHTML = '';
 
             products.forEach(p => {
+                const sellerName = p.seller_name || 'OFFICESUPPLY Store';
+                const detailUrl = `product-details.html?id=${p.id}`;
+
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-3xl border-4 border-cute-pink p-4 flex flex-col justify-between shadow-md hover:shadow-xl transition";
                 card.innerHTML = `
-                    <div class="space-y-3">
-                        <img src="${p.image_url}" alt="${p.title}" class="w-full h-44 object-cover rounded-2xl border-2 border-cute-border">
-                        <h4 class="font-heading font-extrabold text-slate-900 text-base leading-tight">${p.title}</h4>
+                    <div class="space-y-2">
+                        <a href="${detailUrl}" class="block overflow-hidden rounded-2xl border-2 border-cute-border">
+                            <img src="${p.image_url}" alt="${p.title}" class="w-full h-44 object-cover hover:scale-105 transition duration-300">
+                        </a>
+                        
+                        <a href="${detailUrl}" class="block hover:text-cute-deeppink transition">
+                            <h4 class="font-heading font-extrabold text-slate-900 text-base leading-tight">${p.title}</h4>
+                        </a>
+
+                        <p class="text-[11px] font-bold text-cute-deeppink flex items-center gap-1">
+                            🛍️ Seller: <span class="text-slate-600 font-semibold">${sellerName}</span>
+                        </p>
+
                         <p class="text-slate-500 text-xs font-medium line-clamp-2">${p.description || 'Aesthetic stationery item.'}</p>
                     </div>
+                    
                     <div class="mt-4 pt-3 border-t-2 border-cute-border flex items-center justify-between">
                         <span class="text-base font-black text-slate-900">₱${parseFloat(p.price).toFixed(2)}</span>
                         <button onclick="addToCart('${p.id}')" class="bg-cute-lightpink text-cute-deeppink border-2 border-cute-deeppink px-3 py-1 rounded-xl font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition">
@@ -303,7 +317,7 @@
 
         function filterProducts() {
             const q = document.getElementById('search-input').value.toLowerCase();
-            const filtered = allProducts.filter(p => p.title.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
+            const filtered = allProducts.filter(p => p.title.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)) || (p.seller_name && p.seller_name.toLowerCase().includes(q)));
             renderProducts(filtered);
         }
 
@@ -426,8 +440,11 @@
             const image_url = document.getElementById('m-image').value;
             const description = document.getElementById('m-desc').value;
 
+            // Get profile name from user session metadata or email fallback
+            const seller_name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email.split('@')[0];
+
             const { error } = await supabaseClient.from('products').insert([
-                { seller_id: session.user.id, title, price, image_url, description }
+                { seller_id: session.user.id, seller_name, title, price, image_url, description }
             ]);
 
             if (!error) {
