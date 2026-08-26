@@ -16,16 +16,16 @@ export default async function handler(req, res) {
     const secretKey = process.env.PAYMONGO_SECRET_KEY;
 
     if (!secretKey) {
-      return res.status(500).json({ error: 'PAYMONGO_SECRET_KEY missing in Vercel' });
+      return res.status(500).json({ error: 'PAYMONGO_SECRET_KEY missing in Vercel environment variables' });
     }
 
     if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ error: 'Cart items are missing.' });
+      return res.status(400).json({ error: 'No items in cart' });
     }
 
     const lineItems = items.map(item => {
       const rawPrice = parseFloat(item.price) || 0;
-      const cleanPrice = Math.max(Math.round(rawPrice * 100), 10000); // 100 PHP minimum
+      const cleanPrice = Math.max(Math.round(rawPrice * 100), 10000); // Minimum PHP 100.00
       return {
         name: item.title || item.name || 'Stationery Item',
         amount: cleanPrice,
@@ -50,8 +50,8 @@ export default async function handler(req, res) {
             show_line_items: true,
             line_items: lineItems,
             payment_method_types: ['card', 'gcash', 'paymaya', 'grab_pay'],
-            success_url: `${origin}/checkout.html?status=success`,
-            cancel_url: `${origin}/checkout.html`
+            success_url: `${origin}/public/checkout.html?status=success`,
+            cancel_url: `${origin}/public/checkout.html`
           }
         }
       })
@@ -66,7 +66,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ checkoutUrl: data.data.attributes.checkout_url });
 
   } catch (error) {
-    console.error('PayMongo API Error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error('PayMongo Backend Error:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
