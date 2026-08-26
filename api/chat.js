@@ -1,7 +1,4 @@
-import { GoogleGenAI } from '@google/genai';
-
 export default async function handler(req, res) {
-  // Setup CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -13,29 +10,38 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    return res.status(500).json({ reply: "API Key missing in Vercel environment variables! 🌸" });
+    return res.status(500).json({ reply: "API Key missing in Vercel settings! 🌸" });
   }
 
-  try {
-    // Initialize the official Google Gen AI SDK
-    const ai = new GoogleGenAI({ apiKey });
-
-    const prompt = `You are Mochi 🌸, a cute, helpful, and friendly AI assistant for an online stationery shop named OFFICESUPPLY. 
+  const prompt = `You are Mochi 🌸, a cute, helpful, and friendly AI assistant for an online stationery shop named OFFICESUPPLY. 
 Store Context / Inventory: ${context || 'Various cute stationery items'}. 
 User asked: ${message}
 Keep your answer cheerful, brief, and helpful.`;
 
-    // Calling gemini-2.5-flash via the official SDK
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-    });
+  // List of models to attempt in order
+  const models = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro'];
 
-    const reply = response.text || "Konnichiwa! How can I help you today? 🌸";
-    return res.status(200).json({ reply });
+  for (const model of models) {
+    try {
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const apiRes = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      });
 
-  } catch (err) {
-    console.error('Gemini SDK Error:', err);
-    return res.status(500).json({ reply: `Gemini Error: ${err.message || 'Failed to process request'}` });
+      const data = await apiRes.json();
+
+      if (apiRes.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+        const reply = data.candidates[0].content.parts[0].text;
+        return res.status(200).json({ reply });
+      }
+    } catch (err) {
+      console.error(`Attempt with ${model} failed:`, err);
+    }
   }
+
+  return res.status(500).json({ reply: "Oopsie! Mochi couldn't process that right now. Please try again! 🌸" });
 }
