@@ -131,7 +131,7 @@
         const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Cleaned up orders state
+        // Orders state
         const userOrders = {
             purchases: [],
             ship: [],
@@ -139,8 +139,8 @@
             rate: []
         };
 
-        // Cart items synced from localStorage
-        let cart = JSON.parse(localStorage.getItem('office_supply_cart')) || [];
+        // Load cart from multiple possible storage keys
+        let cart = JSON.parse(localStorage.getItem('office_supply_cart')) || JSON.parse(localStorage.getItem('cart')) || [];
 
         document.addEventListener('DOMContentLoaded', () => {
             loadUserProfile();
@@ -194,13 +194,13 @@
             }
         }
 
-        // Render shopping cart
+        // Safe Cart Renderer
         function renderCart() {
             const container = document.getElementById('cart-items-container');
             const totalEl = document.getElementById('cart-total');
             const countEl = document.getElementById('cart-count');
 
-            if (cart.length === 0) {
+            if (!cart || cart.length === 0) {
                 container.innerHTML = `<p class="text-xs text-center font-bold text-slate-400 py-4">Your cart is currently empty 🌸</p>`;
                 totalEl.textContent = "₱0.00";
                 countEl.textContent = "0 items";
@@ -212,17 +212,23 @@
             container.innerHTML = '';
 
             cart.forEach((item, index) => {
-                const itemTotal = item.price * item.qty;
+                // Property fallbacks to eliminate undefined/NaN
+                const itemName = item.name || item.title || item.product_name || 'Item';
+                const itemPrice = parseFloat(item.price || item.cost || 0);
+                const itemQty = parseInt(item.qty || item.quantity || 1, 10);
+                const itemImg = item.img || item.image || item.image_url || 'https://via.placeholder.com/60';
+
+                const itemTotal = itemPrice * itemQty;
                 total += itemTotal;
-                totalItems += item.qty;
+                totalItems += itemQty;
 
                 container.innerHTML += `
                     <div class="flex items-center justify-between border-2 border-cute-border bg-cute-lightpink/40 rounded-2xl p-3">
                         <div class="flex items-center gap-3">
-                            <img src="${item.img || 'https://via.placeholder.com/60'}" class="w-12 h-12 rounded-xl object-cover border border-cute-pink">
+                            <img src="${itemImg}" alt="${itemName}" class="w-12 h-12 rounded-xl object-cover border border-cute-pink">
                             <div>
-                                <h4 class="text-xs font-bold text-slate-800">${item.name}</h4>
-                                <p class="text-[11px] font-semibold text-cute-deeppink">₱${Number(item.price).toFixed(2)} x ${item.qty}</p>
+                                <h4 class="text-xs font-bold text-slate-800">${itemName}</h4>
+                                <p class="text-[11px] font-semibold text-cute-deeppink">₱${itemPrice.toFixed(2)} x ${itemQty}</p>
                             </div>
                         </div>
                         <button onclick="removeCartItem(${index})" class="text-xs text-red-500 hover:text-red-700 font-bold px-2 py-1 bg-white border border-red-200 rounded-lg shadow-sm">Remove</button>
@@ -232,7 +238,10 @@
 
             totalEl.textContent = `₱${total.toFixed(2)}`;
             countEl.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''}`;
+            
+            // Sync updated values to local storage
             localStorage.setItem('office_supply_cart', JSON.stringify(cart));
+            localStorage.setItem('cart', JSON.stringify(cart));
         }
 
         function removeCartItem(index) {
@@ -256,7 +265,7 @@
             const list = userOrders[tabKey] || [];
 
             if (list.length === 0) {
-                container.innerHTML = `<p class="text-xs text-center font-bold text-slate-400 py-6">Your cart is currently empty 🌸</p>`;
+                container.innerHTML = `<p class="text-xs text-center font-bold text-slate-400 py-6">No orders found 🌸</p>`;
                 return;
             }
 
