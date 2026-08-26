@@ -131,7 +131,6 @@
         const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Orders state
         const userOrders = {
             purchases: [],
             ship: [],
@@ -139,7 +138,7 @@
             rate: []
         };
 
-        // Load cart from multiple possible storage keys
+        // Reads from BOTH possible cart storage locations
         let cart = JSON.parse(localStorage.getItem('office_supply_cart')) || JSON.parse(localStorage.getItem('cart')) || [];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -194,7 +193,7 @@
             }
         }
 
-        // Safe Cart Renderer
+        // Render shopping cart safely and sync storage
         function renderCart() {
             const container = document.getElementById('cart-items-container');
             const totalEl = document.getElementById('cart-total');
@@ -204,6 +203,10 @@
                 container.innerHTML = `<p class="text-xs text-center font-bold text-slate-400 py-4">Your cart is currently empty 🌸</p>`;
                 totalEl.textContent = "₱0.00";
                 countEl.textContent = "0 items";
+
+                // Delete keys completely when cart is empty so page refresh stays empty
+                localStorage.removeItem('office_supply_cart');
+                localStorage.removeItem('cart');
                 return;
             }
 
@@ -212,7 +215,6 @@
             container.innerHTML = '';
 
             cart.forEach((item, index) => {
-                // Property fallbacks to eliminate undefined/NaN
                 const itemName = item.name || item.title || item.product_name || 'Item';
                 const itemPrice = parseFloat(item.price || item.cost || 0);
                 const itemQty = parseInt(item.qty || item.quantity || 1, 10);
@@ -238,8 +240,8 @@
 
             totalEl.textContent = `₱${total.toFixed(2)}`;
             countEl.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''}`;
-            
-            // Sync updated values to local storage
+
+            // Sync to both key names
             localStorage.setItem('office_supply_cart', JSON.stringify(cart));
             localStorage.setItem('cart', JSON.stringify(cart));
         }
