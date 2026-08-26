@@ -62,10 +62,10 @@
             
             <!-- TOGGLE BUTTONS -->
             <div class="flex bg-cute-lightpink p-1.5 rounded-2xl border-2 border-cute-border">
-                <button id="tab-login" onclick="switchMode('login')" class="w-1/2 py-2 rounded-xl font-heading font-bold text-sm bg-cute-deeppink text-white transition shadow-sm">
+                <button id="tab-login" type="button" onclick="switchMode('login')" class="w-1/2 py-2 rounded-xl font-heading font-bold text-sm bg-cute-deeppink text-white transition shadow-sm">
                     Log In 🌸
                 </button>
-                <button id="tab-signup" onclick="switchMode('signup')" class="w-1/2 py-2 rounded-xl font-heading font-bold text-sm text-slate-600 transition hover:text-cute-deeppink">
+                <button id="tab-signup" type="button" onclick="switchMode('signup')" class="w-1/2 py-2 rounded-xl font-heading font-bold text-sm text-slate-600 transition hover:text-cute-deeppink">
                     Sign Up ✨
                 </button>
             </div>
@@ -75,7 +75,15 @@
                 <p id="form-subtitle" class="text-xs text-slate-500 font-bold mt-1">Log in to manage your orders & account details.</p>
             </div>
 
+            <!-- ALERT MESSAGE CONTAINER -->
+            <div id="alert-box" class="hidden p-3 rounded-2xl text-xs font-bold border-2"></div>
+
             <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div id="name-field-group" class="hidden">
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Full Name</label>
+                    <input type="text" id="auth-name" placeholder="Your Name" class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                </div>
+
                 <div>
                     <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Email Address</label>
                     <input type="email" id="auth-email" placeholder="your@email.com" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
@@ -83,7 +91,7 @@
 
                 <div>
                     <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Password</label>
-                    <input type="password" id="auth-password" placeholder="••••••••" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
+                    <input type="password" id="auth-password" minlength="6" placeholder="••••••••" required class="w-full mt-1 p-3 border-2 border-cute-border rounded-2xl text-sm bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
                 </div>
 
                 <button type="submit" id="btn-submit" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
@@ -100,14 +108,33 @@
 
         let isSignUp = false;
 
+        function showAlert(msg, isError = true) {
+            const box = document.getElementById('alert-box');
+            box.classList.remove('hidden', 'bg-red-50', 'text-red-600', 'border-red-200', 'bg-green-50', 'text-green-700', 'border-green-200');
+            
+            if (isError) {
+                box.classList.add('bg-red-50', 'text-red-600', 'border-red-200');
+            } else {
+                box.classList.add('bg-green-50', 'text-green-700', 'border-green-200');
+            }
+            
+            box.textContent = msg;
+        }
+
+        function hideAlert() {
+            document.getElementById('alert-box').classList.add('hidden');
+        }
+
         function switchMode(mode) {
             isSignUp = mode === 'signup';
+            hideAlert();
             
             const tabLogin = document.getElementById('tab-login');
             const tabSignup = document.getElementById('tab-signup');
             const title = document.getElementById('form-title');
             const subtitle = document.getElementById('form-subtitle');
             const btn = document.getElementById('btn-submit');
+            const nameGroup = document.getElementById('name-field-group');
 
             if (isSignUp) {
                 tabSignup.className = "w-1/2 py-2 rounded-xl font-heading font-bold text-sm bg-cute-deeppink text-white transition shadow-sm";
@@ -115,43 +142,63 @@
                 title.textContent = "Create Account ✨";
                 subtitle.textContent = "Sign up to start buying & selling aesthetic stationery!";
                 btn.textContent = "Create My Account ✨";
+                nameGroup.classList.remove('hidden');
             } else {
                 tabLogin.className = "w-1/2 py-2 rounded-xl font-heading font-bold text-sm bg-cute-deeppink text-white transition shadow-sm";
                 tabSignup.className = "w-1/2 py-2 rounded-xl font-heading font-bold text-sm text-slate-600 transition hover:text-cute-deeppink";
                 title.textContent = "Welcome Back! 🌸";
                 subtitle.textContent = "Log in to manage your orders & account details.";
                 btn.textContent = "Log In ✨";
+                nameGroup.classList.add('hidden');
             }
         }
 
         async function handleAuthSubmit(e) {
             e.preventDefault();
-            const email = document.getElementById('auth-email').value;
+            hideAlert();
+
+            const email = document.getElementById('auth-email').value.trim();
             const password = document.getElementById('auth-password').value;
+            const fullName = document.getElementById('auth-name').value.trim();
             const btn = document.getElementById('btn-submit');
 
             btn.disabled = true;
             btn.textContent = "Processing... 🌸";
 
-            if (isSignUp) {
-                const { data, error } = await supabaseClient.auth.signUp({ email, password });
-                if (error) {
-                    alert("Sign Up Error: " + error.message);
-                } else {
-                    alert("Account created successfully! Logging you in... 🌸");
-                    window.location.href = 'account.html';
-                }
-            } else {
-                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) {
-                    alert("Login Error: " + error.message);
-                } else {
-                    window.location.href = 'account.html';
-                }
-            }
+            try {
+                if (isSignUp) {
+                    const { data, error } = await supabaseClient.auth.signUp({ 
+                        email, 
+                        password,
+                        options: {
+                            data: { full_name: fullName || email.split('@')[0] }
+                        }
+                    });
 
-            btn.disabled = false;
-            btn.textContent = isSignUp ? "Create My Account ✨" : "Log In ✨";
+                    if (error) {
+                        showAlert("Sign Up Error: " + error.message, true);
+                    } else if (data?.user && data?.session === null) {
+                        showAlert("Account created! Please check your email to confirm your account before logging in 🌸", false);
+                    } else {
+                        showAlert("Account created successfully! Redirecting... 🌸", false);
+                        setTimeout(() => window.location.href = 'index.html', 1500);
+                    }
+                } else {
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                    
+                    if (error) {
+                        showAlert("Login Error: " + error.message, true);
+                    } else {
+                        showAlert("Success! Redirecting to shop... 🌸", false);
+                        setTimeout(() => window.location.href = 'index.html', 1000);
+                    }
+                }
+            } catch (err) {
+                showAlert("An unexpected error occurred. Please try again! 🌸", true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = isSignUp ? "Create My Account ✨" : "Log In ✨";
+            }
         }
     </script>
 </body>
