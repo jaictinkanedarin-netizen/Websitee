@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // Allow requests from your frontend
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -17,17 +16,16 @@ export default async function handler(req, res) {
     const secretKey = process.env.PAYMONGO_SECRET_KEY;
 
     if (!secretKey) {
-      return res.status(500).json({ error: 'PAYMONGO_SECRET_KEY is missing in Vercel Environment Variables.' });
+      return res.status(500).json({ error: 'PAYMONGO_SECRET_KEY missing in Vercel' });
     }
 
     if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ error: 'Cart items are missing or invalid.' });
+      return res.status(400).json({ error: 'Cart items are missing.' });
     }
 
-    // Convert items into PayMongo format (amounts must be in centavos)
     const lineItems = items.map(item => {
       const rawPrice = parseFloat(item.price) || 0;
-      const cleanPrice = Math.max(Math.round(rawPrice * 100), 10000); // Minimum 100 PHP (10000 centavos) for PayMongo API
+      const cleanPrice = Math.max(Math.round(rawPrice * 100), 10000); // 100 PHP minimum
       return {
         name: item.title || item.name || 'Stationery Item',
         amount: cleanPrice,
@@ -69,6 +67,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('PayMongo API Error:', error);
-    return res.status(500).json({ error: 'Internal server error while connecting to PayMongo.' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
