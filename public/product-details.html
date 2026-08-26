@@ -52,7 +52,10 @@
             <a href="index.html" class="text-2xl font-heading font-extrabold text-white drop-shadow-[0_2px_2px_rgba(255,105,180,0.8)]">
                 🌸 OFFICESUPPLY. ✨
             </a>
-            <div class="flex gap-2">
+            <div class="flex gap-2 items-center">
+                <a href="cart.html" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-3 py-1 rounded-full font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition flex items-center gap-1">
+                    🛒 Cart <span id="cart-count-badge" class="bg-cute-deeppink text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                </a>
                 <a href="index.html" class="bg-white text-cute-deeppink border-2 border-cute-deeppink px-3 py-1 rounded-full font-heading font-bold text-xs hover:bg-cute-deeppink hover:text-white transition">
                     ← Back to Shop
                 </a>
@@ -151,6 +154,7 @@
 
         let productId = null;
         let currentUser = null;
+        let currentProduct = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -165,6 +169,7 @@
                 return;
             }
 
+            updateCartCount();
             loadProductDetails();
             loadReviews();
         });
@@ -181,6 +186,8 @@
                 window.location.href = 'index.html';
                 return;
             }
+
+            currentProduct = product; // Store active product object
 
             document.getElementById('p-title').textContent = product.title || 'Untitled Product';
             document.getElementById('p-seller').textContent = product.seller_name || 'OFFICESUPPLY Store';
@@ -213,10 +220,10 @@
                 return `
                     <div class="bg-cute-lightpink/40 border border-cute-border p-4 rounded-2xl space-y-1">
                         <div class="flex justify-between items-center">
-                            <span class="text-xs font-bold text-slate-800">${rev.user_name || 'Anonymous Buyer'}</span>
+                            <span class="text-xs font-bold text-slate-800">${rev.user_name || rev.name || 'Anonymous Buyer'}</span>
                             <span class="text-xs">${stars}</span>
                         </div>
-                        <p class="text-xs text-slate-600 font-medium">${rev.comment}</p>
+                        <p class="text-xs text-slate-600 font-medium">${rev.comment || rev.content || ''}</p>
                     </div>
                 `;
             }).join('');
@@ -264,7 +271,41 @@
         }
 
         function addToCart() {
+            if (!currentProduct) {
+                alert("Product information is still loading!");
+                return;
+            }
+
+            // Retrieve existing cart array from localStorage
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Check if item already exists in cart
+            const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+            } else {
+                cart.push({
+                    id: currentProduct.id,
+                    title: currentProduct.title,
+                    price: currentProduct.price,
+                    image_url: currentProduct.image_url,
+                    quantity: 1
+                });
+            }
+
+            // Save back to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+
             alert("Added to cart! 🛒✨");
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            const badge = document.getElementById('cart-count-badge');
+            if (badge) badge.textContent = totalCount;
         }
     </script>
 </body>
