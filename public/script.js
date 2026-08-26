@@ -1,40 +1,31 @@
-// Find your send button and input box by their IDs or classes
-const sendBtn = document.querySelector('.send-btn'); // Replace with your actual button class/ID
-const chatInput = document.querySelector('.chat-input'); // Replace with your actual input class/ID
-const chatMessages = document.querySelector('.chat-messages'); // The container where messages appear
+async function sendToMochi() {
+  const inputEl = document.querySelector('input[placeholder*="Ask Mochi"]');
+  const chatBox = document.querySelector('.mochi-messages-container'); // Adjust class to match your chat container
+  const userText = inputEl.value.trim();
 
-async function sendMessage() {
-  const userText = chatInput.value.trim();
   if (!userText) return;
 
-  // 1. Display the user's message in the Mochi window
-  chatMessages.innerHTML += `<div class="user-msg"><b>User:</b> ${userText}</div>`;
-  chatInput.value = '';
+  // 1. Show User message in UI
+  chatBox.innerHTML += `<div style="text-align:right; margin:8px; color:white; background:#ff69b4; padding:8px 12px; border-radius:12px; display:inline-block;">${userText}</div>`;
+  inputEl.value = '';
 
+  // 2. Send message to your Vercel backend route
   try {
-    // 2. Call your Vercel serverless API
-    const response = await fetch('/api/chat', {
+    const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: userText }),
+      body: JSON.stringify({ message: userText })
     });
 
-    const data = await response.json();
+    const data = await res.json();
 
-    // 3. Display Mochi's AI response in the chat window
     if (data.reply) {
-      chatMessages.innerHTML += `<div class="mochi-msg"><b>Mochi:</b> ${data.reply}</div>`;
+      // 3. Render real AI response
+      chatBox.innerHTML += `<div style="text-align:left; margin:8px; background:#fff0f5; color:#333; padding:8px 12px; border-radius:12px; white-space:pre-wrap;">${data.reply}</div>`;
     } else {
-      chatMessages.innerHTML += `<div class="error-msg">Mochi couldn't reply right now!</div>`;
+      chatBox.innerHTML += `<div style="color:red; margin:8px;">Error: ${data.error}</div>`;
     }
-  } catch (error) {
-    console.error('Error:', error);
-    chatMessages.innerHTML += `<div class="error-msg">Connection error! Check browser console.</div>`;
+  } catch (err) {
+    chatBox.innerHTML += `<div style="color:red; margin:8px;">Failed to connect to server.</div>`;
   }
 }
-
-// Attach the function to click and enter key events
-sendBtn.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') sendMessage();
-});
