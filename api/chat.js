@@ -1,49 +1,31 @@
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
-  const { message, context } = req.body || {};
-  const apiKey = process.env.GEMINI_API_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({ reply: "API Key missing in Vercel environment variables! 🌸" });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const prompt = `You are Mochi 🌸, a cute, helpful, and friendly AI assistant for an online stationery shop named OFFICESUPPLY. 
-Store Context / Inventory: ${context || 'Various cute stationery items'}. 
-User asked: ${message}
-Keep your answer cheerful, brief, and helpful.`;
+  const { message } = req.body;
 
-  // Array of active supported models
-  const models = ['gemini-2.5-flash', 'gemini-2.5-flash-lite'];
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: 'You are Mochi, a helpful assistant for an aesthetic Korean and Japanese stationery shop.' },
+          { role: 'user', content: message }
+        ],
+      }),
+    });
 
-  for (const model of models) {
-    try {
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-      const apiRes = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': apiKey.trim()
-        },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }]
-        })
-      });
+    const data = await response.json();
+    const reply = data.choices[0].message.content;
 
-      const data = await apiRes.json();
-
-      if (apiRes.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-        return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
-      }
-    } catch (err) {
-      console.error(`Attempt failed for ${model}:`, err);
-    }
+    res.status(200).json({ reply });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to generate response' });
   }
-
-  return res.status(500).json({ reply: "Oopsie! Mochi couldn't process that right now. Please check your API key! 🌸" });
 }
