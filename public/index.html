@@ -184,12 +184,22 @@
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let allProducts = [];
-        let cart = [];
 
         document.addEventListener('DOMContentLoaded', async () => {
             checkAuthAndUpdateUI();
             fetchProducts();
+            updateCartUI(); // Initialized from localStorage
         });
+
+        // Helper functions for localStorage synchronization
+        function getCartFromStorage() {
+            return JSON.parse(localStorage.getItem('cart')) || [];
+        }
+
+        function saveCartToStorage(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+        }
 
         async function checkAuthAndUpdateUI() {
             const { data: { session } } = await supabaseClient.auth.getSession();
@@ -282,52 +292,80 @@
             const product = allProducts.find(p => p.id === productId);
             if (!product) return;
 
+            let cart = getCartFromStorage();
             const existingIndex = cart.findIndex(item => item.id === productId);
+            
             if (existingIndex > -1) {
-                cart[existingIndex].quantity += 1;
+                cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
             } else {
-                cart.push({ ...product, quantity: 1 });
+                cart.push({
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    image_url: product.image_url,
+                    quantity: 1
+                });
             }
 
-            updateCartUI();
+            saveCartToStorage(cart);
             toggleCartDrawer();
         }
 
         function toggleCartDrawer() {
-            document.getElementById('cart-drawer').classList.toggle('hidden');
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('hidden');
+            if (!drawer.classList.contains('hidden')) {
+                updateCartUI(); // Refresh state whenever opening
+            }
         }
 
         function updateCartUI() {
-            document.getElementById('cart-count').textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+            const cart = getCartFromStorage();
+            const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+            
+            document.getElementById('cart-count').textContent = totalItems;
+            
             const container = document.getElementById('cart-items');
             container.innerHTML = '';
 
             let total = 0;
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
 
-                const row = document.createElement('div');
-                row.className = "flex items-center justify-between bg-cute-lightpink p-3 rounded-2xl border-2 border-cute-border";
-                row.innerHTML = `
-                    <div>
-                        <p class="font-heading font-bold text-xs text-slate-900">${item.title}</p>
-                        <p class="text-xs font-black text-slate-700">₱${item.price} x ${item.quantity}</p>
-                    </div>
-                    <button onclick="removeFromCart('${item.id}')" class="text-xs font-bold text-red-500 hover:text-red-700">Remove</button>
-                `;
-                container.appendChild(row);
-            });
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-xs font-bold text-slate-400 py-10">Your cart is empty! 🌸</p>`;
+            } else {
+                cart.forEach((item, index) => {
+                    const price = parseFloat(item.price) || 0;
+                    const qty = item.quantity || 1;
+                    const itemTotal = price * qty;
+                    total += itemTotal;
+
+                    const row = document.createElement('div');
+                    row.className = "flex items-center justify-between bg-cute-lightpink p-3 rounded-2xl border-2 border-cute-border";
+                    row.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <img src="${item.image_url || 'https://via.placeholder.com/50'}" class="w-10 h-10 object-cover rounded-xl border border-cute-border">
+                            <div>
+                                <p class="font-heading font-bold text-xs text-slate-900">${item.title}</p>
+                                <p class="text-xs font-black text-slate-700">₱${price.toFixed(2)} x ${qty}</p>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-xs font-bold text-red-500 hover:text-red-700 p-1">Remove</button>
+                    `;
+                    container.appendChild(row);
+                });
+            }
 
             document.getElementById('cart-total').textContent = `₱${total.toFixed(2)}`;
         }
 
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCartUI();
+        function removeFromCart(index) {
+            let cart = getCartFromStorage();
+            cart.splice(index, 1);
+            saveCartToStorage(cart);
         }
 
         async function handleCheckout() {
+            const cart = getCartFromStorage();
             if (cart.length === 0) return alert("Your cart is empty! 🌸");
 
             const { data: { session } } = await supabaseClient.auth.getSession();
@@ -337,7 +375,6 @@
                 return;
             }
 
-            localStorage.setItem('office_supply_cart', JSON.stringify(cart));
             window.location.href = 'checkout.html';
         }
 
