@@ -1,13 +1,13 @@
 export default async function handler(req, res) {
-  // Allow requests from your frontend
+  // Only allow POST requests
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { message } = req.body || {};
+  const { message } = req.body;
 
   if (!message) {
-    return res.status(400).json({ error: 'No message provided' });
+    return res.status(400).json({ error: 'Message is required' });
   }
 
   try {
@@ -15,33 +15,33 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { 
-            role: 'system', 
-            content: 'You are Mochi, a super cute, helpful assistant for "Kane\'s Office Supply" store. Keep responses friendly, sweet, and brief with cute emojis!' 
+          {
+            role: 'system',
+            content: `You are Mochi, the AI shopping assistant for "Kane's Office Supply". 
+            - Store items: Pastel pens, aesthetic planners, washi tapes, cute organizers.
+            - Location: Tagum City, Davao del Norte.
+            - Answer customer questions directly with clear, numbered steps when explaining how to do something on the site.`
           },
-          { role: 'user', content: message },
-        ],
-      }),
+          { role: 'user', content: message }
+        ]
+      })
     });
 
     const data = await response.json();
 
-    // Check if OpenAI returned an API error (e.g., bad key, billing)
     if (data.error) {
-      console.error('OpenAI Error:', data.error);
       return res.status(500).json({ error: data.error.message });
     }
 
-    const reply = data.choices[0].message.content;
-    return res.status(200).json({ reply });
+    // Returns the AI's actual generated answer
+    return res.status(200).json({ reply: data.choices[0].message.content });
 
   } catch (err) {
-    console.error('Server Error:', err);
-    return res.status(500).json({ error: 'Server connection failed' });
+    return res.status(500).json({ error: 'Failed to fetch AI response' });
   }
 }
