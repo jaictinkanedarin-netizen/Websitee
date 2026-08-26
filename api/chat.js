@@ -18,30 +18,32 @@ Store Context / Inventory: ${context || 'Various cute stationery items'}.
 User asked: ${message}
 Keep your answer cheerful, brief, and helpful.`;
 
-  // List of models to attempt in order
-  const models = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro'];
+  // Native v1beta endpoint using x-goog-api-key header for AQ keys
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`;
 
-  for (const model of models) {
-    try {
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-      const apiRes = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }]
-        })
-      });
+  try {
+    const apiRes = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey.trim()
+      },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }]
+      })
+    });
 
-      const data = await apiRes.json();
+    const data = await apiRes.json();
 
-      if (apiRes.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-        const reply = data.candidates[0].content.parts[0].text;
-        return res.status(200).json({ reply });
-      }
-    } catch (err) {
-      console.error(`Attempt with ${model} failed:`, err);
+    if (apiRes.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+      return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
     }
-  }
 
-  return res.status(500).json({ reply: "Oopsie! Mochi couldn't process that right now. Please try again! 🌸" });
+    console.error('Gemini API Error:', data);
+    return res.status(500).json({ reply: `Gemini Error: ${data.error?.message || 'Failed to process'}` });
+
+  } catch (err) {
+    console.error('Server execution error:', err);
+    return res.status(500).json({ reply: "Oopsie! Network connection issue. Please try again! 🌸" });
+  }
 }
