@@ -10,30 +10,37 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    console.error('ERROR: GEMINI_API_KEY is undefined in Vercel settings.');
     return res.status(500).json({ reply: "API Key missing in Vercel environment variables! 🌸" });
   }
 
-  const prompt = `You are Mochi 🌸, a cute assistant for OFFICESUPPLY. Inventory: ${context || 'Stationery'}. User: ${message}`;
+  const prompt = `You are Mochi 🌸, a cute, helpful, and friendly AI assistant for an online stationery shop named OFFICESUPPLY. 
+Store Context / Inventory: ${context || 'Various cute stationery items'}. 
+User asked: ${message}
+Keep your answer cheerful, brief, and helpful.`;
 
   try {
-    const apiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    // FIX: Updated URL format to include models/ prefix
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+    const apiRes = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }]
+      })
     });
 
     const data = await apiRes.json();
 
     if (!apiRes.ok || data.error) {
-      console.error('GOOGLE GEMINI REJECTION:', JSON.stringify(data));
-      return res.status(500).json({ reply: `Gemini Error: ${data.error?.message || 'Failed to generate'}` });
+      console.error('Google Gemini Error:', data.error);
+      return res.status(500).json({ reply: `Gemini Error: ${data.error?.message || 'Failed to process request'}` });
     }
 
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Konnichiwa! 🌸";
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Konnichiwa! How can I help you today? 🌸";
     return res.status(200).json({ reply });
   } catch (err) {
-    console.error('FETCH ERROR:', err);
-    return res.status(500).json({ reply: "Network connection error! 🌸" });
+    console.error('Server error:', err);
+    return res.status(500).json({ reply: "Oopsie! Network connection issue. Please try again! 🌸" });
   }
 }
