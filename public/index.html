@@ -44,7 +44,6 @@
         }
 
         /* VOICEFLOW WIDGET POSITION ADJUSTMENT */
-        /* Shifts the Voiceflow widget to the left of the side cart when cart is open */
         body.cart-open #vf-chat-bubble-button,
         body.cart-open .vf-widget-button,
         body.cart-open div[class*="vfk-button"] {
@@ -154,22 +153,22 @@
         </div>
     </main>
 
-    <!-- SHOPPING CART DRAWER -->
-    <div id="cart-drawer" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex justify-end">
-        <div class="bg-white w-full max-w-md h-full p-4 sm:p-6 flex flex-col justify-between shadow-2xl border-l-0 sm:border-l-4 border-cute-pink">
+    <!-- FLOATING RECTANGULAR SHOPPING CART MODAL -->
+    <div id="cart-drawer" class="fixed top-16 right-4 sm:top-20 sm:right-6 z-50 hidden opacity-0 scale-95 transition-all duration-300 transform pointer-events-none">
+        <div class="bg-white w-80 sm:w-96 rounded-3xl p-4 sm:p-6 flex flex-col justify-between shadow-2xl border-4 border-cute-pink pointer-events-auto">
             <div>
-                <div class="flex justify-between items-center border-b-2 border-cute-border pb-3 sm:pb-4">
-                    <h3 class="text-xl sm:text-2xl font-heading font-extrabold text-slate-900">Your Cart 🛒</h3>
-                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 font-extrabold text-2xl p-1">✕</button>
+                <div class="flex justify-between items-center border-b-2 border-cute-border pb-3">
+                    <h3 class="text-lg sm:text-xl font-heading font-extrabold text-slate-900">Your Cart 🛒</h3>
+                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 font-extrabold text-xl p-1">✕</button>
                 </div>
-                <div id="cart-items" class="py-3 sm:py-4 space-y-3 max-h-[65vh] overflow-y-auto pr-1"></div>
+                <div id="cart-items" class="py-3 space-y-3 max-h-[50vh] overflow-y-auto pr-1"></div>
             </div>
             <div class="border-t-2 border-cute-border pt-4 space-y-3">
-                <div class="flex justify-between font-heading font-bold text-base sm:text-lg text-slate-900">
+                <div class="flex justify-between font-heading font-bold text-sm sm:text-base text-slate-900">
                     <span>Total:</span>
                     <span id="cart-total">₱0.00</span>
                 </div>
-                <button onclick="handleCheckout()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-sm sm:text-base shadow-md">
+                <button onclick="handleCheckout()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-xs sm:text-sm shadow-md">
                     Proceed to Checkout 💳
                 </button>
             </div>
@@ -392,17 +391,35 @@
             }
 
             saveCartToStorage(cart);
-            toggleCartDrawer();
+            
+            // Ensure cart is visible when adding items
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer.classList.contains('hidden')) {
+                toggleCartDrawer();
+            }
         }
 
         function toggleCartDrawer() {
             const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('hidden');
+            const isHidden = drawer.classList.contains('hidden');
 
-            // Toggles body class to shift the Voiceflow button whenever the cart is open
-            document.body.classList.toggle('cart-open', !drawer.classList.contains('hidden'));
+            if (isHidden) {
+                drawer.classList.remove('hidden');
+                setTimeout(() => {
+                    drawer.classList.remove('opacity-0', 'scale-95');
+                    drawer.classList.add('opacity-100', 'scale-100');
+                }, 10);
+            } else {
+                drawer.classList.remove('opacity-100', 'scale-100');
+                drawer.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    drawer.classList.add('hidden');
+                }, 300);
+            }
 
-            if (!drawer.classList.contains('hidden')) {
+            document.body.classList.toggle('cart-open', isHidden);
+
+            if (isHidden) {
                 updateCartUI();
             }
         }
