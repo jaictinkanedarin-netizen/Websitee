@@ -1,33 +1,48 @@
-// api/checkout.js
 export default async function handler(req, res) {
+  // Allow requests from your frontend
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { items, amount, buyerId } = req.body;
-
   try {
-    // Format items for PayMongo Line Items
-    const lineItems = items && items.length > 0 
-      ? items.map(item => ({
-          currency: 'PHP',
-          amount: Math.round(item.price * 100), // PayMongo expects amount in centavos
-          name: `${item.title} (${item.selectedVariant || 'Standard'})`,
-          quantity: item.quantity || 1
-        }))
-      : [{
-          currency: 'PHP',
-          amount: Math.round(amount * 100),
-          name: 'Office Supply Checkout',
-          quantity: 1
-        }];
+    const { items } = req.body || {};
+    const secretKey = process.env.PAYMONGO_SECRET_KEY;
 
-    const options = {
+    if (!secretKey) {
+      return res.status(500).json({ error: 'PAYMONGO_SECRET_KEY is missing in Vercel Environment Variables.' });
+    }
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: 'Cart items are missing or invalid.' });
+    }
+
+    // Convert items into PayMongo format (amounts must be in centavos)
+    const lineItems = items.map(item => {
+      const rawPrice = parseFloat(item.price) || 0;
+      const cleanPrice = Math.max(Math.round(rawPrice * 100), 10000); // Minimum 100 PHP (10000 centavos) for PayMongo API
+      return {
+        name: item.title || item.name || 'Stationery Item',
+        amount: cleanPrice,
+        currency: 'PHP',
+        quantity: parseInt(item.quantity || item.qty || 1, 10)
+      };
+    });
+
+    const origin = req.headers.origin || `https://${req.headers.host}`;
+
+    const paymongoResponse = await fetch('https://api.paymongo.com/v1/checkout_sessions', {
       method: 'POST',
       headers: {
-        accept: 'application/json',
         'Content-Type': 'application/json',
-        authorization: `Basic ${Buffer.from(process.env.PAYMONGO_SECRET_KEY + ':').toString('base64')}`
+        'Authorization': `Basic ${Buffer.from(secretKey + ':').toString('base64')}`
       },
       body: JSON.stringify({
         data: {
@@ -35,23 +50,25 @@ export default async function handler(req, res) {
             send_email_receipt: true,
             show_description: true,
             show_line_items: true,
-            payment_method_types: ['gcash', 'paymaya', 'card', 'dob'],
             line_items: lineItems,
-            description: `Order for Buyer ID: ${buyerId || 'Guest'}`
+            payment_method_types: ['card', 'gcash', 'paymaya', 'grab_pay'],
+            success_url: `${origin}/checkout.html?status=success`,
+            cancel_url: `${origin}/checkout.html`
           }
         }
       })
-    };
+    });
 
-    const response = await fetch('https://api.paymongo.com/v1/checkout_sessions', options);
-    const data = await response.json();
+    const data = await paymongoResponse.json();
 
-    if (data.data && data.data.attributes && data.data.attributes.checkout_url) {
-      return res.status(200).json({ checkoutUrl: data.data.attributes.checkout_url });
-    } else {
-      return res.status(400).json({ error: 'Failed to create checkout session', details: data });
+    if (data.errors) {
+      return res.status(400).json({ error: data.errors[0].detail });
     }
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+
+    return res.status(200).json({ checkoutUrl: data.data.attributes.checkout_url });
+
+  } catch (error) {
+    console.error('PayMongo API Error:', error);
+    return res.status(500).json({ error: 'Internal server error while connecting to PayMongo.' });
   }
 }
