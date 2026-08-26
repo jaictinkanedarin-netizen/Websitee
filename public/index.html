@@ -110,47 +110,17 @@
         </div>
     </section>
 
-    <!-- SECTION 3: MAIN LONG-SCROLLING PRODUCT FEED & SIDEBAR -->
+    <!-- SECTION 3: MAIN LONG-SCROLLING PRODUCT FEED -->
     <main id="featured-products" class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <div class="lg:col-span-2 space-y-6">
-                <div class="flex justify-between items-center bg-white p-4 rounded-3xl border-4 border-cute-pink shadow-sm">
-                    <h3 class="font-heading font-extrabold text-xl text-slate-900">Featured Marketplace Items 🛍️</h3>
-                    <input type="text" id="search-input" onkeyup="filterProducts()" placeholder="Search items... 🔍" class="w-1/2 p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
-                </div>
-
-                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <p class="text-center col-span-full font-bold text-cute-deeppink py-10">Loading cute supplies... 🌸</p>
-                </div>
+        <div class="w-full space-y-6">
+            <div class="flex justify-between items-center bg-white p-4 rounded-3xl border-4 border-cute-pink shadow-sm">
+                <h3 class="font-heading font-extrabold text-xl text-slate-900">Featured Marketplace Items 🛍️</h3>
+                <input type="text" id="search-input" onkeyup="filterProducts()" placeholder="Search items... 🔍" class="w-1/2 md:w-1/3 p-2.5 border-2 border-cute-border rounded-xl text-xs bg-cute-lightpink focus:outline-none focus:border-cute-deeppink">
             </div>
 
-            <div class="lg:col-span-1 space-y-6">
-                <section class="bg-white p-6 rounded-3xl border-4 border-cute-pink shadow-lg space-y-4 sticky top-24">
-                    <div>
-                        <span class="text-[10px] font-bold text-cute-deeppink uppercase tracking-wider">Community Feedback 💬</span>
-                        <h3 class="text-xl font-heading font-extrabold text-slate-900">Reviews 🌸</h3>
-                        <p class="text-[11px] text-slate-500 font-bold">Bot spam is automatically flagged.</p>
-                    </div>
-
-                    <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-3 bg-cute-lightpink p-3.5 rounded-2xl border-2 border-cute-border">
-                        <input type="text" id="rev-name" placeholder="Your Name" required class="w-full p-2 border-2 border-cute-border rounded-xl text-xs focus:outline-none focus:border-cute-deeppink">
-                        <textarea id="rev-content" rows="3" placeholder="Leave a review!" required class="w-full p-2 border-2 border-cute-border rounded-xl text-xs focus:outline-none focus:border-cute-deeppink"></textarea>
-                        <button type="submit" class="w-full bg-cute-deeppink text-white font-heading font-bold py-2 rounded-xl text-xs hover:bg-cute-hotpink transition shadow-sm">
-                            Post Review ✨
-                        </button>
-                    </form>
-
-                    <div id="reviews-list" class="space-y-3 max-h-80 overflow-y-auto pr-1">
-                        <p class="text-xs font-bold text-slate-400">Loading reviews...</p>
-                    </div>
-                    
-                    <div class="pt-2 border-t border-cute-border text-center">
-                        <a href="reviews.html" class="text-xs font-bold text-cute-deeppink hover:underline">View All Reviews Page ⭐️ →</a>
-                    </div>
-                </section>
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <p class="text-center col-span-full font-bold text-cute-deeppink py-10">Loading cute supplies... 🌸</p>
             </div>
-
         </div>
     </main>
 
@@ -219,7 +189,6 @@
         document.addEventListener('DOMContentLoaded', async () => {
             checkAuthAndUpdateUI();
             fetchProducts();
-            fetchReviews();
         });
 
         async function checkAuthAndUpdateUI() {
@@ -370,48 +339,6 @@
 
             localStorage.setItem('office_supply_cart', JSON.stringify(cart));
             window.location.href = 'checkout.html';
-        }
-
-        async function fetchReviews() {
-            const { data } = await supabaseClient.from('reviews').select('*').order('created_at', { ascending: false });
-            const container = document.getElementById('reviews-list');
-            container.innerHTML = '';
-
-            if (!data || data.length === 0) {
-                container.innerHTML = `<p class="text-xs font-bold text-slate-400">No reviews yet. Be the first! 🌸</p>`;
-                return;
-            }
-
-            data.forEach(r => {
-                const card = document.createElement('div');
-                card.className = "bg-white p-3 rounded-xl border border-cute-border shadow-sm";
-                card.innerHTML = `
-                    <div class="flex justify-between items-center text-xs font-bold text-cute-deeppink">
-                        <span>${r.author_name}</span>
-                        <span class="text-[9px] text-slate-400">Verified Human 🌸</span>
-                    </div>
-                    <p class="text-xs text-slate-700 mt-1">${r.content}</p>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        async function handleReviewSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('rev-name').value;
-            const content = document.getElementById('rev-content').value;
-
-            const botPatterns = [/as an ai/i, /language model/i, /i cannot feel/i, /openai/i, /http:/i, /https:/i];
-            if (botPatterns.some(pattern => pattern.test(content))) {
-                alert("Automated or AI-generated reviews are not allowed! 🌸");
-                return;
-            }
-
-            const { error } = await supabaseClient.from('reviews').insert([{ author_name: name, content }]);
-            if (!error) {
-                document.getElementById('review-form').reset();
-                fetchReviews();
-            }
         }
 
         async function handlePostProduct(e) {
