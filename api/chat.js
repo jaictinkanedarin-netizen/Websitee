@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    return res.status(500).json({ reply: "API Key missing in Vercel settings! 🌸" });
+    return res.status(500).json({ reply: "API Key missing in Vercel environment variables! 🌸" });
   }
 
   const prompt = `You are Mochi 🌸, a cute, helpful, and friendly AI assistant for an online stationery shop named OFFICESUPPLY. 
@@ -18,32 +18,32 @@ Store Context / Inventory: ${context || 'Various cute stationery items'}.
 User asked: ${message}
 Keep your answer cheerful, brief, and helpful.`;
 
-  // Native v1beta endpoint using x-goog-api-key header for AQ keys
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`;
+  // Array of active supported models
+  const models = ['gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 
-  try {
-    const apiRes = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': apiKey.trim()
-      },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }]
-      })
-    });
+  for (const model of models) {
+    try {
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+      const apiRes = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey.trim()
+        },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      });
 
-    const data = await apiRes.json();
+      const data = await apiRes.json();
 
-    if (apiRes.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-      return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
+      if (apiRes.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+        return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
+      }
+    } catch (err) {
+      console.error(`Attempt failed for ${model}:`, err);
     }
-
-    console.error('Gemini API Error:', data);
-    return res.status(500).json({ reply: `Gemini Error: ${data.error?.message || 'Failed to process'}` });
-
-  } catch (err) {
-    console.error('Server execution error:', err);
-    return res.status(500).json({ reply: "Oopsie! Network connection issue. Please try again! 🌸" });
   }
+
+  return res.status(500).json({ reply: "Oopsie! Mochi couldn't process that right now. Please check your API key! 🌸" });
 }
