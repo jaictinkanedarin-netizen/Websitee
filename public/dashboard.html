@@ -113,6 +113,14 @@
             </form>
         </section>
 
+        <!-- MY LISTED PRODUCTS SECTION -->
+        <section class="space-y-4">
+            <h3 class="text-2xl font-heading font-extrabold text-slate-900">My Listed Products 📦</h3>
+            <div id="my-products-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <p class="text-slate-500 font-bold col-span-full">Loading listed products...</p>
+            </div>
+        </section>
+
         <!-- SALES HISTORY -->
         <section class="space-y-4">
             <h3 class="text-2xl font-heading font-extrabold text-slate-900">Sales History 📊</h3>
@@ -159,6 +167,7 @@
                 document.getElementById('user-gcash-badge').textContent = `GCash: ${profile.gcash_number}`;
             }
 
+            loadMyProducts();
             loadSalesHistory();
             loadPurchaseHistory();
         });
@@ -247,11 +256,108 @@
                 document.getElementById('drop-text').textContent = "📸 Drag & drop product photo here";
                 selectedProductFile = null;
 
+                loadMyProducts(); // Refresh product list
+
             } catch (err) {
                 alert("Failed to list product: " + err.message);
             } finally {
                 submitBtn.textContent = 'List Product ✨';
                 submitBtn.disabled = false;
+            }
+        }
+
+        // Load seller's posted products
+        async function loadMyProducts() {
+            const container = document.getElementById('my-products-list');
+            const { data: products, error } = await supabaseClient
+                .from('products')
+                .select('*')
+                .eq('seller_id', currentUser.id)
+                .order('id', { ascending: false });
+
+            if (error || !products || !products.length) {
+                container.innerHTML = `<div class="bg-white p-4 rounded-2xl border-2 border-cute-border text-slate-500 font-bold text-xs col-span-full">No products listed yet. 🌸</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-2xl border-2 border-cute-border shadow-sm space-y-3 flex flex-col justify-between";
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <img src="${product.image_url}" alt="${product.title}" class="w-full h-32 object-cover rounded-xl border border-cute-pink">
+                        <h4 class="font-heading font-bold text-slate-800 text-lg">${product.title}</h4>
+                        <p class="text-xs text-slate-500 line-clamp-2">${product.description || 'No description'}</p>
+                        <p class="text-sm font-black text-cute-deeppink">₱${parseFloat(product.price).toFixed(2)}</p>
+                    </div>
+                    <div class="flex gap-2 pt-2 border-t border-slate-100">
+                        <button onclick="handleEditProduct('${product.id}', '${escapeQuotes(product.title)}', ${product.price}, '${escapeQuotes(product.description)}')" class="flex-1 bg-cute-lightpink text-cute-deeppink font-bold text-xs py-2 rounded-xl border border-cute-pink hover:bg-cute-pink hover:text-white transition">
+                            Edit ✏️
+                        </button>
+                        <button onclick="handleDeleteProduct('${product.id}')" class="flex-1 bg-red-50 text-red-500 font-bold text-xs py-2 rounded-xl border border-red-200 hover:bg-red-500 hover:text-white transition">
+                            Delete 🗑️
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function escapeQuotes(str) {
+            return (str || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+
+        // Delete Product
+        async function handleDeleteProduct(productId) {
+            if (!confirm("Are you sure you want to delete this product? 🌸")) return;
+
+            const { error } = await supabaseClient
+                .from('products')
+                .delete()
+                .eq('id', productId)
+                .eq('seller_id', currentUser.id);
+
+            if (error) {
+                alert("Failed to delete product: " + error.message);
+            } else {
+                alert("Product deleted! ✨");
+                loadMyProducts();
+            }
+        }
+
+        // Edit Product
+        async function handleEditProduct(productId, currentTitle, currentPrice, currentDesc) {
+            const newTitle = prompt("Edit Title:", currentTitle);
+            if (newTitle === null) return;
+
+            const newPriceStr = prompt("Edit Price (PHP):", currentPrice);
+            if (newPriceStr === null) return;
+            const newPrice = parseFloat(newPriceStr);
+
+            const newDesc = prompt("Edit Description:", currentDesc);
+            if (newDesc === null) return;
+
+            if (!newTitle || isNaN(newPrice)) {
+                alert("Invalid input! Please provide a valid title and price.");
+                return;
+            }
+
+            const { error } = await supabaseClient
+                .from('products')
+                .update({
+                    title: newTitle,
+                    price: newPrice,
+                    description: newDesc
+                })
+                .eq('id', productId)
+                .eq('seller_id', currentUser.id);
+
+            if (error) {
+                alert("Failed to update product: " + error.message);
+            } else {
+                alert("Product updated successfully! 🌸");
+                loadMyProducts();
             }
         }
 
