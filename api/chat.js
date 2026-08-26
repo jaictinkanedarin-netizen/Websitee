@@ -19,8 +19,8 @@ User asked: ${message}
 Keep your answer cheerful, brief, and helpful.`;
 
   try {
-    // FIX: Updated URL format to include models/ prefix
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    // Updated to gemini-2.0-flash endpoint
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
     const apiRes = await fetch(endpoint, {
       method: 'POST',
