@@ -161,7 +161,7 @@
 
                 const data = await response.json();
 
-                if (data.checkoutUrl) {
+                if (response.ok && data.checkoutUrl) {
                     window.location.href = data.checkoutUrl;
                 } else {
                     alert(`Payment Error: ${data.error || 'Unable to start payment session'}`);
@@ -169,8 +169,8 @@
                     payBtn.textContent = "Pay with PayMongo 💳";
                 }
             } catch (err) {
-                console.error(err);
-                alert("Failed to connect to the payment gateway. Please check your network and backend api! 🌸");
+                console.error('Fetch error:', err);
+                alert("Failed to connect to /api/paymongo. Ensure api/paymongo.js is in your GitHub repo and deployed on Vercel. 🌸");
                 payBtn.disabled = false;
                 payBtn.textContent = "Pay with PayMongo 💳";
             }
