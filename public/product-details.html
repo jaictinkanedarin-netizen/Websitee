@@ -147,22 +147,22 @@
 
     </main>
 
-    <!-- SHOPPING CART DRAWER -->
-    <div id="cart-drawer" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex justify-end">
-        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl border-l-4 border-cute-pink">
+    <!-- FLOATING RECTANGULAR SHOPPING CART MODAL -->
+    <div id="cart-drawer" class="fixed top-16 right-4 sm:top-20 sm:right-6 z-50 hidden opacity-0 scale-95 transition-all duration-300 transform pointer-events-none">
+        <div class="bg-white w-80 sm:w-96 rounded-3xl p-4 sm:p-6 flex flex-col justify-between shadow-2xl border-4 border-cute-pink pointer-events-auto">
             <div>
-                <div class="flex justify-between items-center border-b-2 border-cute-border pb-4">
-                    <h3 class="text-2xl font-heading font-extrabold text-slate-900">Your Cart 🛒</h3>
-                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 font-extrabold text-xl">✕</button>
+                <div class="flex justify-between items-center border-b-2 border-cute-border pb-3">
+                    <h3 class="text-lg sm:text-xl font-heading font-extrabold text-slate-900">Your Cart 🛒</h3>
+                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 font-extrabold text-xl p-1">✕</button>
                 </div>
-                <div id="cart-items" class="py-4 space-y-4 max-h-[60vh] overflow-y-auto"></div>
+                <div id="cart-items" class="py-3 space-y-3 max-h-[50vh] overflow-y-auto pr-1"></div>
             </div>
             <div class="border-t-2 border-cute-border pt-4 space-y-3">
-                <div class="flex justify-between font-heading font-bold text-lg text-slate-900">
+                <div class="flex justify-between font-heading font-bold text-sm sm:text-base text-slate-900">
                     <span>Total:</span>
                     <span id="cart-total">₱0.00</span>
                 </div>
-                <button onclick="handleCheckout()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3.5 rounded-2xl hover:bg-cute-hotpink transition text-base shadow-md">
+                <button onclick="handleCheckout()" class="w-full bg-cute-deeppink text-white font-heading font-bold py-3 rounded-2xl hover:bg-cute-hotpink transition text-xs sm:text-sm shadow-md">
                     Proceed to Checkout 💳
                 </button>
             </div>
@@ -202,11 +202,17 @@
         });
 
         function getCartFromStorage() {
-            return JSON.parse(localStorage.getItem('cart')) || [];
+            return JSON.parse(localStorage.getItem('office_supply_cart')) || JSON.parse(localStorage.getItem('cart')) || [];
         }
 
         function saveCartToStorage(cart) {
-            localStorage.setItem('cart', JSON.stringify(cart));
+            if (!cart || cart.length === 0) {
+                localStorage.removeItem('office_supply_cart');
+                localStorage.removeItem('cart');
+            } else {
+                localStorage.setItem('office_supply_cart', JSON.stringify(cart));
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
             updateCartUI();
         }
 
@@ -333,7 +339,7 @@
             btn.disabled = false;
 
             if (error) {
-                alert("Failed to delete review: " + error.message);
+                alert("Failed to submit review: " + error.message);
             } else {
                 alert("Review submitted! ✨");
                 document.getElementById('rev-comment').value = '';
@@ -349,35 +355,66 @@
 
             let cart = getCartFromStorage();
             const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
+            const stockLimit = parseInt(currentProduct.stock || currentProduct.max_stock || 99, 10);
 
             if (existingIndex > -1) {
-                cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+                const currentQty = parseInt(cart[existingIndex].quantity || cart[existingIndex].qty || 1, 10);
+                if (currentQty >= stockLimit) {
+                    alert(`Sorry! Only ${stockLimit} items available in stock 🌸`);
+                    return;
+                }
+                cart[existingIndex].quantity = currentQty + 1;
+                cart[existingIndex].qty = currentQty + 1;
             } else {
                 cart.push({
                     id: currentProduct.id,
                     title: currentProduct.title,
+                    name: currentProduct.title,
                     price: currentProduct.price,
                     image_url: currentProduct.image_url,
-                    quantity: 1
+                    img: currentProduct.image_url,
+                    quantity: 1,
+                    qty: 1,
+                    stock: stockLimit,
+                    selected: true
                 });
             }
 
             saveCartToStorage(cart);
-            toggleCartDrawer();
+            
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer.classList.contains('hidden')) {
+                toggleCartDrawer();
+            }
         }
 
         function toggleCartDrawer() {
             const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('hidden');
-            if (!drawer.classList.contains('hidden')) {
+            const isHidden = drawer.classList.contains('hidden');
+
+            if (isHidden) {
+                drawer.classList.remove('hidden');
+                setTimeout(() => {
+                    drawer.classList.remove('opacity-0', 'scale-95');
+                    drawer.classList.add('opacity-100', 'scale-100');
+                }, 10);
+            } else {
+                drawer.classList.remove('opacity-100', 'scale-100');
+                drawer.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    drawer.classList.add('hidden');
+                }, 300);
+            }
+
+            if (isHidden) {
                 updateCartUI();
             }
         }
 
         function updateCartUI() {
             const cart = getCartFromStorage();
-            const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
             
+            const totalItems = cart.reduce((acc, item) => acc + (parseInt(item.quantity || item.qty || 1, 10)), 0);
             const badge = document.getElementById('cart-count');
             if (badge) badge.textContent = totalItems;
 
@@ -391,27 +428,45 @@
             } else {
                 cart.forEach((item, index) => {
                     const price = parseFloat(item.price) || 0;
-                    const qty = item.quantity || 1;
-                    const itemTotal = price * qty;
-                    total += itemTotal;
+                    const qty = parseInt(item.quantity || item.qty || 1, 10);
+                    const isSelected = item.selected !== false;
+                    const itemName = item.title || item.name || 'Item';
+                    const itemImg = item.image_url || item.img || 'https://via.placeholder.com/50';
+
+                    if (isSelected) {
+                        total += price * qty;
+                    }
 
                     const row = document.createElement('div');
-                    row.className = "flex items-center justify-between bg-cute-lightpink p-3 rounded-2xl border-2 border-cute-border";
+                    row.className = "flex items-center justify-between bg-cute-lightpink/40 p-2.5 sm:p-3 rounded-2xl border-2 border-cute-border shadow-sm hover:border-cute-deeppink transition";
                     row.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <img src="${item.image_url || 'https://via.placeholder.com/50'}" class="w-10 h-10 object-cover rounded-xl border border-cute-border">
-                            <div>
-                                <p class="font-heading font-bold text-xs text-slate-900">${item.title}</p>
-                                <p class="text-xs font-black text-slate-700">₱${price.toFixed(2)} x ${qty}</p>
+                        <input type="checkbox" ${isSelected ? 'checked' : ''} 
+                            onchange="toggleItemSelection(${index})" 
+                            class="w-4 h-4 accent-cute-deeppink cursor-pointer rounded">
+
+                        <div class="flex items-center gap-2 flex-1 ml-2 overflow-hidden">
+                            <img src="${itemImg}" alt="${itemName}" class="w-10 h-10 object-cover rounded-xl border border-cute-pink flex-shrink-0">
+                            <div class="overflow-hidden">
+                                <p class="font-heading font-bold text-xs text-slate-900 truncate">${itemName}</p>
+                                <p class="text-[11px] font-bold text-cute-deeppink">₱${price.toFixed(2)} x ${qty}</p>
                             </div>
                         </div>
-                        <button onclick="removeFromCart(${index})" class="text-xs font-bold text-red-500 hover:text-red-700 p-1">Remove</button>
+
+                        <button onclick="removeFromCart(${index})" class="text-[11px] font-bold text-red-500 hover:text-red-700 ml-2 p-1 flex-shrink-0">✕</button>
                     `;
                     container.appendChild(row);
                 });
             }
 
             document.getElementById('cart-total').textContent = `₱${total.toFixed(2)}`;
+        }
+
+        function toggleItemSelection(index) {
+            let cart = getCartFromStorage();
+            if (!cart[index]) return;
+
+            cart[index].selected = cart[index].selected === false ? true : false;
+            saveCartToStorage(cart);
         }
 
         function removeFromCart(index) {
@@ -422,7 +477,10 @@
 
         async function handleCheckout() {
             const cart = getCartFromStorage();
+            const selectedItems = cart.filter(item => item.selected !== false);
+
             if (cart.length === 0) return alert("Your cart is empty! 🌸");
+            if (selectedItems.length === 0) return alert("Please select at least one item to checkout! 🌸");
 
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) {
@@ -431,6 +489,7 @@
                 return;
             }
 
+            localStorage.setItem('checkout_items', JSON.stringify(selectedItems));
             window.location.href = 'checkout.html';
         }
     </script>
