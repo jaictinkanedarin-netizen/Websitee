@@ -42,6 +42,24 @@
             background-size: 30px 30px;
             background-position: 0 0, 15px 15px;
         }
+
+        /* VOICEFLOW WIDGET POSITION ADJUSTMENT */
+        /* Shifts the Voiceflow widget to the left of the side cart when cart is open */
+        body.cart-open #vf-chat-bubble-button,
+        body.cart-open .vf-widget-button,
+        body.cart-open div[class*="vfk-button"] {
+            right: 460px !important;
+            bottom: 20px !important;
+        }
+
+        @media (max-width: 640px) {
+            body.cart-open #vf-chat-bubble-button,
+            body.cart-open .vf-widget-button,
+            body.cart-open div[class*="vfk-button"] {
+                right: 20px !important;
+                bottom: 120px !important;
+            }
+        }
     </style>
 </head>
 <body class="floral-bg text-slate-800 antialiased flex flex-col min-h-screen">
@@ -200,6 +218,9 @@
               url: 'https://general-runtime.voiceflow.com',
               voice: {
                 url: 'https://runtime-api.voiceflow.com'
+              },
+              theme: {
+                color: '#FF69B4'
               }
             });
           }
@@ -377,6 +398,10 @@
         function toggleCartDrawer() {
             const drawer = document.getElementById('cart-drawer');
             drawer.classList.toggle('hidden');
+
+            // Toggles body class to shift the Voiceflow button whenever the cart is open
+            document.body.classList.toggle('cart-open', !drawer.classList.contains('hidden'));
+
             if (!drawer.classList.contains('hidden')) {
                 updateCartUI();
             }
