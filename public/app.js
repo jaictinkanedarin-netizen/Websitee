@@ -1,5 +1,5 @@
-const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://vlbtdmobfohoonzpflgq.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex';
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 document.addEventListener('DOMContentLoaded', async () => {
