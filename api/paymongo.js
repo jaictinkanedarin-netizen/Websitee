@@ -25,7 +25,8 @@ export default async function handler(req, res) {
 
     const lineItems = items.map(item => {
       const rawPrice = parseFloat(item.price) || 0;
-      const cleanPrice = Math.max(Math.round(rawPrice * 100), 10000); // Minimum PHP 100.00
+      // Converts price to centavos (e.g., 60.00 PHP becomes 6000 centavos)
+      const cleanPrice = Math.round(rawPrice * 100); 
       return {
         name: item.title || item.name || 'Stationery Item',
         amount: cleanPrice,
@@ -49,9 +50,10 @@ export default async function handler(req, res) {
             show_description: true,
             show_line_items: true,
             line_items: lineItems,
-            payment_method_types: ['card', 'gcash', 'paymaya', 'grab_pay'],
-            success_url: `${origin}/public/checkout.html?status=success`,
-            cancel_url: `${origin}/public/checkout.html`
+            // Added 'qrph' to match your active dashboard payment method:
+            payment_method_types: ['qrph', 'gcash', 'paymaya', 'card', 'grab_pay', 'dob'],
+            success_url: `${origin}/checkout.html?status=success`,
+            cancel_url: `${origin}/checkout.html`
           }
         }
       })
